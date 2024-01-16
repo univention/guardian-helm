@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.0.1...v0.1.0) (2024-01-16)
+
+
+### Features
+
+* **helm:** compatibility updates for new release ([9d54b64](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/9d54b64b159df48c05b2e566b7624109d6c06fd7))
+
 ## 0.0.1 (2024-01-16)
 
 
