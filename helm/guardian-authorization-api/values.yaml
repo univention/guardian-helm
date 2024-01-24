@@ -35,7 +35,7 @@ guardianAuthorizationApi:
   # -- Sets the log level of the application.
   guardianAuthzLoggingLevel: "DEBUG"
   # -- If set to True, the logging output is structured as a JSON object.
-  guardianAuthzLoggingStructured: True
+  guardianAuthzLoggingStructured: true
   # -- Defines the format of the log output, if not structured. The possible options are described in https://loguru.readthedocs.io/en/stable/api/logger.html.
   guardianAuthzLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
 

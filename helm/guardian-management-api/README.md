@@ -22,8 +22,8 @@ This chart does install the Guardian Management API as well as its UI.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | postgresql | ^13.2.24 |
-| oci://gitregistry.knut.univention.de/univention/customers/dataport/upx/common-helm/helm | ums-common(common) | ^0.6.0 |
+| oci://gitregistry.knut.univention.de/univention/customers/dataport/upx/common-helm/helm | common | 0.* |
+| oci://registry-1.docker.io/bitnamicharts | postgresql | ~12.7.1 |
 
 ## Values
 
