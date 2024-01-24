@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.1.0...v0.2.0) (2024-01-24)
+
+
+### Features
+
+* Add "ingress.host" into linter_values ([dda95f0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/dda95f076410f7251a7915d4469f5af2b160c54c))
+* Downgrade the bundled postgresql to "~12.7.1" ([d1437c4](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/d1437c424cd773428320e0b0f52f6f83701a5c55))
+
 ## [0.1.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.0.1...v0.1.0) (2024-01-16)
 
 
