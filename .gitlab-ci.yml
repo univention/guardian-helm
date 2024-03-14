@@ -1,7 +1,8 @@
 ---
+
 include:
   - project: "univention/customers/dataport/upx/common-ci"
-    ref: "v1.16.1"
+    ref: "v1.25.0"
     file:
       - "defaults/stages.yaml"
       - "defaults/souvap-workflow.yaml"
@@ -14,4 +15,5 @@ lint-pre-commit:
   before_script:
     # Compose lint would fail without the referenced env files
     - helm repo add bitnami https://charts.bitnami.com/bitnami
+
 ...
