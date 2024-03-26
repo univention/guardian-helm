@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.2.0...v0.2.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* **ci:** update common-ci from v1.16.1 to v1.25.0 ([31ad20d](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/31ad20dbde317c15c67fd1f3f98b2958ea40a29a))
+
 ## [0.2.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.1.0...v0.2.0) (2024-01-24)
 
 
