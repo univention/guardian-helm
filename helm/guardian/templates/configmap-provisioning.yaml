@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+---
+
+apiVersion: "v1"
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.provisioning.extraLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.provisioning.extraLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.provisioning.extraAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.provisioning.extraAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+
+data:
+  NUBUS_BASE_URL: {{ .Values.provisioning.config.nubusBaseUrl | quote }}
+  KEYCLOAK_URL: {{ .Values.provisioning.config.keycloak.url | quote }}
+  KEYCLOAK_FQDN: {{ .Values.provisioning.config.keycloak.fqdn | quote }}
+  KEYCLOAK_REALM: {{ .Values.provisioning.config.keycloak.realm | quote }}
+  KEYCLOAK_ADMIN: {{ .Values.provisioning.config.keycloak.admin | quote }}
+  wait-for-keycloak.py: |
+    #!/usr/bin/python3
+    import requests
+    import time
+    import sys
+    import os
+
+    keycloak_url = os.environ.get('KEYCLOAK_URL')
+    max_retries = 60
+    retries = 0
+
+    while True:
+        try:
+            response = requests.get(keycloak_url)
+            if response.status_code == 200:
+                print('Keycloak is available')
+                sys.exit(0)
+        except requests.exceptions.ConnectionError:
+            print('Could not reach keycloak, retrying...')
+            pass
+        time.sleep(1)
+
+  provision.sh: |
+    #!/bin/bash
+    set -e
+
+    univention-keycloak "$@" \
+        --keycloak-url "$KEYCLOAK_URL" \
+        --binduser "$KEYCLOAK_ADMIN" \
+        --bindpwd "$KEYCLOAK_ADMIN_PASSWORD" \
+        --realm "$KEYCLOAK_REALM" \
+        oidc/rp create \
+        --host-fqdn "$KEYCLOAK_FQDN" \
+        --name guardian-ui \
+        --app-url "$NUBUS_BASE_URL" \
+        --redirect-uri "$NUBUS_BASE_URL/univention/guardian/*" \
+        --add-audience-mapper guardian-ui
+    univention-keycloak "$@" \
+        --keycloak-url "$KEYCLOAK_URL" \
+        --binduser "$KEYCLOAK_ADMIN" \
+        --bindpwd "$KEYCLOAK_ADMIN_PASSWORD" \
+        --realm "$KEYCLOAK_REALM" \
+        oidc/rp create \
+        --host-fqdn "$KEYCLOAK_FQDN" \
+        --client-secret "$GUARDIAN_MANAGEMENT_API_CLIENT_SECRET" \
+        --name guardian-management-api \
+        --app-url "$NUBUS_BASE_URL" \
+        --redirect-uri "$NUBUS_BASE_URL/univention/guardian/*" \
+        --add-audience-mapper guardian-management-api
+    univention-keycloak "$@" \
+        --keycloak-url "$KEYCLOAK_URL" \
+        --binduser "$KEYCLOAK_ADMIN" \
+        --bindpwd "$KEYCLOAK_ADMIN_PASSWORD" \
+        --realm "$KEYCLOAK_REALM" \
+        oidc/rp create \
+        --host-fqdn "$KEYCLOAK_FQDN" \
+        --name guardian-scripts \
+        --app-url "$NUBUS_BASE_URL" \
+        --redirect-uri "$NUBUS_BASE_URL/univention/guardian/*" \
+        --add-audience-mapper guardian-scripts
+
+    echo "Provisioning successful"
+
+...

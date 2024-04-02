@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+---
+
+apiVersion: "v1"
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.authorizationApi.extraLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.authorizationApi.extraLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.authorizationApi.extraAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.authorizationApi.extraAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+
+data:
+  HOME: "{{ .Values.authorizationApi.config.home }}"
+  GUARDIAN__AUTHZ__CORS__ALLOWED_ORIGINS: "{{ .Values.authorizationApi.config.guardianAuthzCorsAllowedOrigins }}"
+  GUARDIAN__AUTHZ__ADAPTER__SETTINGS_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterSettingsPort }}"
+  GUARDIAN__AUTHZ__ADAPTER__PERSISTENCE_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterAppPersistencePort }}"
+  GUARDIAN__AUTHZ__ADAPTER__POLICY_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterPolicyPort }}"
+  GUARDIAN__AUTHZ__ADAPTER__AUTHENTICATION_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterAuthenticationPort }}"
+  IS_UNIVENTION_APPCENTER: "{{ .Values.authorizationApi.config.isUniventionAppCenter }}"
+  UDM_DATA_ADAPTER__URL: "{{ .Values.authorizationApi.config.udmDataAdapterUrl }}"
+  UDM_DATA_ADAPTER__USERNAME_FILE: "{{ .Values.authorizationApi.config.udmDataAdapterUsernameFile }}"
+  UDM_DATA_ADAPTER__PASSWORD_FILE: "{{ .Values.authorizationApi.config.udmDataAdapterPasswordFile  }}"
+  OPA_ADAPTER__URL: "{{ .Values.authorizationApi.config.opaAdapterUrl }}"
+  GUARDIAN__AUTHZ__LOGGING__LEVEL: "{{ .Values.authorizationApi.config.guardianAuthzLoggingLevel }}"
+  GUARDIAN__AUTHZ__LOGGING__STRUCTURED: "{{ .Values.authorizationApi.config.guardianAuthzLoggingStructured }}"
+  GUARDIAN__AUTHZ__LOGGING__FORMAT: "{{ .Values.authorizationApi.config.guardianAuthzLoggingFormat }}"
+  OAUTH_ADAPTER__WELL_KNOWN_URL: "{{ .Values.authorizationApi.config.oauthAdapterWellKnownUrl }}"
+
+...

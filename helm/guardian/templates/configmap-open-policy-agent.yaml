@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+---
+
+apiVersion: "v1"
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-open-policy-agent" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.openPolicyAgent.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.openPolicyAgent.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.openPolicyAgent.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.openPolicyAgent.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+
+data:
+  IS_UNIVENTION_APPCENTER: "{{ .Values.openPolicyAgent.config.isUniventionAppCenter }}"
+  OPA_DATA_BUNDLE: "{{ .Values.openPolicyAgent.config.opaDataBundle }}"
+  OPA_POLICY_BUNDLE: "{{ .Values.openPolicyAgent.config.opaPolicyBundle }}"
+  OPA_POLLING_MIN_DELAY: "{{ .Values.openPolicyAgent.config.opaPollingMinDelay }}"
+  OPA_POLLING_MAX_DELAY: "{{ .Values.openPolicyAgent.config.opaPollingMaxDelay }}"
+  OPA_GUARDIAN_MANAGEMENT_URL: "{{ .Values.openPolicyAgent.config.opaGuardianManagementUrl }}"
+...

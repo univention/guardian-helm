@@ -1,0 +1,113 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.provisioning.extraLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.provisioning.extraLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  ttlSecondsAfterFinished: {{ .Values.provisioning.ttlSecondsAfterFinished }}
+  template:
+    metadata:
+      name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+      labels:
+        {{- include "common.labels.standard" . | nindent 8 }}
+      annotations:
+        checksum/config: '{{ include (print $.Template.BasePath "/configmap-provisioning.yaml") . | sha256sum }}'
+        {{- if .Values.provisioning.extraAnnotations }}
+        {{ toYaml .Values.provisioning.extraAnnotations | nindent 8 }}
+        {{- end }}
+    spec:
+      restartPolicy: {{ coalesce .Values.provisioning.restartPolicy .Values.global.restartPolicy | quote }}
+      {{- with .Values.provisioning.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+      - name: "wait-for-keycloak"
+        image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
+        imagePullPolicy: {{ coalesce .Values.provisioning.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+        envFrom:
+          - configMapRef:
+              name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+        {{- if .Values.provisioning.credentialSecretName }}
+          - secretRef:
+              name: {{ .Values.provisioning.credentialSecretName | quote }}
+        {{- end }}
+        {{- with .Values.provisioning.extraEnvVars }}
+          {{- . | toYaml | nindent 10 }}
+        {{- end }}
+        command: ["/usr/bin/python3", "/scripts/wait-for-keycloak.py"]
+        {{- if .Values.provisioning.args }}
+        args: {{ .Values.provisioning.args }}
+        {{- end }}
+        {{- with .Values.provisioning.resources }}
+        resources:
+        {{ toYaml . | indent 10 }}
+        {{- end }}
+        volumeMounts:
+          - name: "wait-for-keycloak"
+            mountPath: "/scripts"
+          {{- if .Values.provisioning.extraVolumeMounts }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumeMounts "context" .) | nindent 10 }}
+          {{- end }}
+      containers:
+      - name: "keycloak-provisioning"
+        image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
+        imagePullPolicy: {{ coalesce .Values.provisioning.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+        envFrom:
+          - configMapRef:
+              name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+        {{- if .Values.provisioning.credentialSecretName }}
+          - secretRef:
+              name: {{ .Values.provisioning.credentialSecretName | quote }}
+        {{- end }}
+        {{- with .Values.provisioning.extraEnvVars }}
+          {{- . | toYaml | nindent 10 }}
+        {{- end }}
+        command: ["/bin/bash", "/scripts/provision.sh"]
+        {{- if .Values.provisioning.args }}
+        args: {{ .Values.provisioning.args }}
+        {{- end }}
+        {{- with .Values.provisioning.resources }}
+        resources:
+        {{ toYaml . | indent 10 }}
+        {{- end }}
+        volumeMounts:
+          - name: "provisioning"
+            mountPath: "/scripts"
+          {{- if .Values.provisioning.extraVolumeMounts }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumeMounts "context" .) | nindent 10 }}
+          {{- end }}
+      {{- with .Values.provisioning.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with .Values.provisioning.affinity }}
+      affinity:
+        {{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with .Values.provisioning.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 }}
+      {{- end }}
+      volumes:
+        - name: "wait-for-keycloak"
+          configMap:
+            name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+        - name: "provisioning"
+          configMap:
+            name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+        {{- if .Values.provisioning.extraVolumes }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumes  "context" .) | nindent 8 }}
+        {{- end }}
+  backoffLimit: {{ .Values.provisioning.backoffLimit }}

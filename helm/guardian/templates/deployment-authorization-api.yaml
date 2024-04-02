@@ -1,0 +1,114 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+
+---
+
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.authorizationApi.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-authorization-api.yaml") . | sha256sum }}
+        {{- with .Values.authorizationApi.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "common.labels.standard" . | nindent 8 }}
+    spec:
+      {{- with .Values.authorizationApi.affinity }}
+      affinity:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.authorizationApi.tolerations }}
+      tolerations:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.authorizationApi.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.authorizationApi.podSecurityContext }}
+      securityContext:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- if .Values.authorizationApi.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.authorizationApi.imagePullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: "authorization-api"
+          securityContext:
+            {{- toYaml .Values.authorizationApi.securityContext | nindent 12 }}
+          image: "{{ coalesce .Values.authorizationApi.image.registry .Values.global.imageRegistry }}/{{ .Values.authorizationApi.image.repository }}{{ if .Values.authorizationApi.image.sha256 }}@sha256:{{ .Values.authorizationApi.image.sha256 }}{{ else }}:{{ .Values.authorizationApi.image.tag }}{{ end }}"
+          imagePullPolicy: {{ coalesce .Values.authorizationApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
+          {{- if .Values.authorizationApi.credentialSecretName }}
+            - secretRef:
+                name: {{ .Values.authorizationApi.credentialSecretName | quote }}
+          {{- end }}
+          {{- with .Values.authorizationApi.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
+          ports:
+            {{- range $key, $value := .Values.authorizationApi.service.ports }}
+            - name: {{ $key }}
+              containerPort: {{ $value.containerPort }}
+              protocol: {{ $value.protocol }}
+            {{- end }}
+          {{- if .Values.authorizationApi.probes.liveness.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /guardian/authorization/openapi.json
+              port: http
+            initialDelaySeconds: {{ .Values.authorizationApi.probes.liveness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.authorizationApi.probes.liveness.timeoutSeconds }}
+            periodSeconds: {{ .Values.authorizationApi.probes.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.authorizationApi.probes.liveness.failureThreshold }}
+            successThreshold: {{ .Values.authorizationApi.probes.liveness.successThreshold }}
+          {{- end }}
+          {{- if .Values.authorizationApi.probes.readiness.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /guardian/authorization/openapi.json
+              port: http
+            initialDelaySeconds: {{ .Values.authorizationApi.probes.readiness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.authorizationApi.probes.readiness.timeoutSeconds }}
+            periodSeconds: {{ .Values.authorizationApi.probes.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.authorizationApi.probes.readiness.failureThreshold }}
+            successThreshold: {{ .Values.authorizationApi.probes.readiness.successThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.authorizationApi.resources | nindent 12 }}
+          volumeMounts:
+            - name: "secrets"
+              mountPath: "/var/secrets"
+            - name: "tmp"
+              mountPath: "/tmp"
+            {{- if .Values.authorizationApi.extraVolumeMounts }}
+              {{- include "common.tplvalues.render" (dict "value" .Values.authorizationApi.extraVolumeMounts "context" .) | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: "tmp"
+          emptyDir: {}
+        - name: "secrets"
+          secret:
+            secretName: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
+        {{- if .Values.authorizationApi.extraVolumes }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.authorizationApi.extraVolumes  "context" .) | nindent 8 }}
+        {{- end }}
+...
+
