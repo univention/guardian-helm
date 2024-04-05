@@ -14,7 +14,7 @@ spec:
   replicas: {{ .Values.managementApi.replicaCount }}
   selector:
     matchLabels:
-      {{- include "common.labels.matchLabels" . | nindent 6 }}
+      {{- printf "%s-api" (include "common.labels.matchLabels" .) | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -23,7 +23,7 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "common.labels.standard" . | nindent 8 }}
+        {{- printf "%s-api" (include "common.labels.matchLabels" .) | nindent 8 }}
     spec:
       {{- with .Values.managementApi.affinity }}
       affinity:

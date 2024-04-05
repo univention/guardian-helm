@@ -29,7 +29,7 @@ spec:
       {{- end }}
     {{- end }}
   selector:
-    {{- include "common.labels.matchLabels" . | nindent 4 }}
+    {{- printf "%s-ui" (include "common.labels.matchLabels" .) | nindent 4 }}
 
 ...
 {{- end }}
