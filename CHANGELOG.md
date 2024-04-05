@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.2.1...v0.3.0) (2024-04-05)
+
+
+### Features
+
+* **docker:** univention-keycloak provisioning init image ([012d65b](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/012d65bc54740fe258afc866c01e0c0f1768e0b0))
+* **helm:** provisioning job and refactor ([c7b3573](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/c7b3573c78ea2981d22b91e5ebfffb1eb0d9f77b))
+
+
+### Bug Fixes
+
+* different service selector matchLabels for -ui and -api ([5f29ab4](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/5f29ab41a60c4ce8d741845f53d3c42c0d35b6b3))
+* **docs:** better documentation for configuration values ([e07c86a](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/e07c86acf1d7077a06cb582e1069eb82aa9ea9cc))
+
 ## [0.2.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.2.0...v0.2.1) (2024-03-26)
 
 
