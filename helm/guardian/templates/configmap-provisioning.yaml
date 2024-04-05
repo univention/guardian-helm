@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
+{{- if .Values.provisioning.enabled }}
 ---
 
 apiVersion: "v1"
@@ -87,3 +88,4 @@ data:
     echo "Provisioning successful"
 
 ...
+{{- end }}

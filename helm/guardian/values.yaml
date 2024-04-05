@@ -55,23 +55,31 @@ authorizationApi:
     sha256: null
 
   config:
+    # -- Directory that Guardian will use to save the bundles and configuration.
     home: "/guardian_service_dir"
     # -- Comma-separated list of hosts that are allowed to make cross-origin resource sharing (CORS) requests to the server.
     guardianAuthzCorsAllowedOrigins: "*"
+    # -- Port and adapter to specify where to read the settings from. Defaults to `env` for environment.
     guardianAuthzAdapterSettingsPort: "env"
+    # -- Port and adapter to specify where to store the application data.
     guardianAuthzAdapterAppPersistencePort: "udm_data"
+    # -- Port and adapter for policies. Defaults to `opa` for Open Policy Agent.
     guardianAuthzAdapterPolicyPort: "opa"
+    # -- Port and adapter for authentication. Use `fast_api_oauth` for integrated OIDC support.
     guardianAuthzAdapterAuthenticationPort: "fast_api_oauth"
     isUniventionAppCenter: 0
     # -- The URL of the UDM REST API for data queries.
     udmDataAdapterUrl: "http://udm-rest-api/univention/udm"
     # -- Username for authenticating against the UDM REST API
     udmDataAdapterUsername: "admin"
+    # -- File where the UDM username will be stored.
     udmDataAdapterUsernameFile: "/var/secrets/udmDataAdapterUsername"
     # -- Password for authenticating against the UDM REST API
     udmDataAdapterPassword: ""
+    # -- File where the UDM password will be stored.
     udmDataAdapterPasswordFile: "/var/secrets/udmDataAdapterPassword"
-    opaAdapterUrl: "http://open-policy-agent:8181/"
+    # -- URL to Open Policy Agent.
+    opaAdapterUrl: "http://ums-guardian-open-policy-agent:8181/"
     # -- OIDC well-known url
     oauthAdapterWellKnownUrl: "http://keycloak/realms/souvap/.well-known/openid-configuration"
     # -- Sets the log level of the application.
@@ -188,26 +196,39 @@ managementApi:
     sha256: null
 
   config:
+    # -- Directory that Guardian will use to save the bundles and configuration.
     home: "/guardian_service_dir"
     # -- Comma-separated list of hosts that are allowed to make cross-origin resource sharing (CORS) requests to the server.
     guardianManagementCorsAllowedOrigins: "*"
+    # -- Port and adapter for where to get the settings from. Defaults to `env` to read from environment.
     guardianManagementAdapterSettingsPort: "env"
+    # -- Port and adapter for persisting app data. Defaults to `sql`.
     guardianManagementAdapterAppPersistencePort: "sql"
+    # -- Port and adapter for persisting conditions. Defaults to `sql`.
     guardianManagementAdapterConditionPersistencePort: "sql"
+    # -- Port and adapter for persisting contexts. Defaults to `sql`.
     guardianManagementAdapterContextPersistencePort: "sql"
+    # -- Port and adapter for persisting namespaces. Defaults to `sql`.
     guardianManagementAdapterNamespacePersistencePort: "sql"
+    # -- Port and adapter for persisting permissions. Defaults to `sql`.
     guardianManagementAdapterPermissionPersistencePort: "sql"
+    # -- Port and adapter for persisting roles. Defaults to `sql`.
     guardianManagementAdapterRolePersistencePort: "sql"
+    # -- Port and adapter for persisting capabilities. Defaults to `sql`.
     guardianManagementAdapterCapabilityPersistencePort: "sql"
+    # -- Port and adapter for authentication. Use `fast_api_oauth` for integrated OIDC support.
     guardianManagementAdapterAuthenticationPort: "fast_api_oauth"
     # -- URL to the Authorization API.
     guardianManagementAdapterAuthorizationApiUrl: "http://guardian-management-api/guardian/authorization"
     guardianManagementAdapterResourceAuthorizationPort: "guardian"
     isUniventionAppCenter: 0
+    # -- Dialect of the database.
     sqlPersistenceAdapterDialect: "postgresql"
     # -- Identity Provider well known URL
     oauthAdapterWellKnownUrl: "http://keycloak/realms/souvap/.well-known/openid-configuration"
+    # -- File where the machine-to-machine secret will be saved.
     oauthAdapterM2mSecretFile: "/var/secrets/oauthAdapterM2mSecret"
+    # -- Machine-to-machine secret.
     oauthAdapterM2mSecret: "stub_client_secret"
     # -- Sets the log level of the application.
     guardianManagementLoggingLevel: "DEBUG"
@@ -217,7 +238,7 @@ managementApi:
     guardianManagementLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
     # -- Defines the base URL of the API. If unset the url is generated from hostname and domainname.
     guardianManagementBaseUrl: "http://guardian-management"
-    # -- The reference to the secret containing the LDAP and machine secret.
+    # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.
     secretRef: "guardian-keycloak-client-secret"
 
 
@@ -314,15 +335,17 @@ managementUi:
     sha256: null
 
   config:
+    # -- Port and adapter for authentication. Defaults to `keycloak`.
     viteManagementUiAdapterAuthenticationPort: "keycloak"
+    # -- Port and adapter to use as data source for the UI. Defaults to `api` for Guardian's Management API.
     viteManagementUiAdapterDataPort: "api"
-    # -- URL for the Guardian Management API.
+    # -- URL for the Guardian Management API from outside. Will be queried from the client.
     viteApiDataAdapterUri: "http://localhost:8000/guardian/management"
     # -- Base URI of the Keycloak server for authentication.
     viteKeycloakAuthenticationAdapterSsoUri: "http://localhost:8097"
     # -- Keycloak authentication realm.
     viteKeycloakAuthenticationAdapterRealm: "ucs"
-    # -- Keycloak client ID.
+    # -- Keycloak client ID. Must be provisioned either by the `provisioning` job in this chart or manually.
     viteKeycloakAuthenticationAdapterClientId: "guardian-ui"
 
   ingress:
@@ -504,27 +527,35 @@ openPolicyAgent:
 
 # -- The Guardian Keycloak provisioning job
 provisioning:
+  # -- Whether to run the provisioning job to create the Guardian clients in Keycloak or not.
+  enabled: true
   restartPolicy: "OnFailure"
   backoffLimit: 900
+  # -- Time in seconds until the job gets deleted
   ttlSecondsAfterFinished: 300
   image:
-    imagePullPolicy: "Always"
     imagePullSecrets: []
 
     registry: "gitregistry.knut.univention.de"
     repository: "univention/customers/dataport/upx/guardian-helm/guardian-init"
-    tag: "0.3.0-pre-jconde-guardian-provisioning"
+    tag: "0.3.0"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
   config:
+    # -- Base URL for setting in Keycloak application URL.
     nubusBaseUrl: "https://portal.uv-example.gaia.open-desk.cloud/"
+    # -- Keycloak specific settings.
     keycloak:
+      # -- Internal URL to reach Keycloak for provisioning.
       url: "http://ums-keycloak:8080"
+      # -- Fully qualified domain name for Keycloak.
       fqdn: "id.uv-example.gaia.open-desk.cloud/"
+      # -- Realm where the Guardian clients should be created.
       realm: "opendesk"
+      # -- Keycloak admin user for the master realm.
       admin: "kcadmin"
-  # -- The name of a secret that contains `KEYCLOAK_ADMIN_PASSWORD` and `GUARDIAN_MANAGEMENT_API_CLIENT_SECRET`
+  # -- The name of a secret that contains `KEYCLOAK_ADMIN_PASSWORD` and `GUARDIAN_MANAGEMENT_API_CLIENT_SECRET`.
   credentialSecretName: "guardian-keycloak-secret"
 
   tolerations: []

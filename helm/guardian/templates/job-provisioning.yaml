@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
+{{- if .Values.provisioning.enabled }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -111,3 +112,5 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}
   backoffLimit: {{ .Values.provisioning.backoffLimit }}
+...
+{{- end }}
