@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+{{- if .Values.authorizationApi.ingress.enabled -}}
+---
+
+apiVersion: {{ include "common.capabilities.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+  {{- with .Values.authorizationApi.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.authorizationApi.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.authorizationApi.ingress.ingressClassName }}
+  {{- end }}
+  {{- if .Values.authorizationApi.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.authorizationApi.ingress.host | quote }}
+      secretName: "{{ .Values.authorizationApi.ingress.tls.secretName }}"
+  {{- end }}
+  rules:
+    - host: {{ .Values.authorizationApi.ingress.host | quote }}
+      http:
+        paths:
+          {{- range .Values.authorizationApi.ingress.paths }}
+          - pathType: {{ .pathType }}
+            path: {{ .path }}
+            {{- if .backend }}
+            backend: {{- (toYaml .backend) | nindent 14 }}
+            {{- else }}
+            backend: {{- default (include "common.ingress.backend" (dict "serviceName" (include "common.names.fullname" $) "servicePort" "http" "context" $)) | nindent 14 }}
+            {{- end }}
+          {{- end }}
+
+...
+{{- end }}

@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+---
+
+apiVersion: "v1"
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.managementApi.extraLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.managementApi.extraLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.managementApi.extraAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.managementApi.extraAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+
+data:
+  HOME: "{{ .Values.managementApi.config.home }}"
+  GUARDIAN__MANAGEMENT__CORS__ALLOWED_ORIGINS: "{{ .Values.managementApi.config.guardianManagementCorsAllowedOrigins }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__SETTINGS_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterSettingsPort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__APP_PERSISTENCE_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterAppPersistencePort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__CONDITION_PERSISTENCE_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterConditionPersistencePort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__CONTEXT_PERSISTENCE_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterContextPersistencePort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__NAMESPACE_PERSISTENCE_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterNamespacePersistencePort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__PERMISSION_PERSISTENCE_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterPermissionPersistencePort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__ROLE_PERSISTENCE_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterRolePersistencePort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__CAPABILITY_PERSISTENCE_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterCapabilityPersistencePort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__AUTHENTICATION_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterAuthenticationPort }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__AUTHORIZATION_API_URL: "{{ .Values.managementApi.config.guardianManagementAdapterAuthorizationApiUrl }}"
+  GUARDIAN__MANAGEMENT__ADAPTER__RESOURCE_AUTHORIZATION_PORT: "{{ .Values.managementApi.config.guardianManagementAdapterResourceAuthorizationPort }}"
+  # NOTE: Seems to be only used during stopping the containers for univention-app command
+  # We can probably drop it, since it is used on some bash termiation script
+  IS_UNIVENTION_APPCENTER: "{{ .Values.managementApi.config.isUniventionAppCenter }}"
+  OAUTH_ADAPTER__WELL_KNOWN_URL: "{{ .Values.managementApi.config.oauthAdapterWellKnownUrl }}"
+  OAUTH_ADAPTER__M2M_SECRET_FILE: "{{ .Values.managementApi.config.oauthAdapterM2mSecretFile }}"
+  GUARDIAN__MANAGEMENT__LOGGING__LEVEL: "{{ .Values.managementApi.config.guardianManagementLoggingLevel }}"
+  GUARDIAN__MANAGEMENT__LOGGING__STRUCTURED: "{{ .Values.managementApi.config.guardianManagementLoggingStructured }}"
+  GUARDIAN__MANAGEMENT__LOGGING__FORMAT: "{{ .Values.managementApi.config.guardianManagementLoggingFormat }}"
+  GUARDIAN__MANAGEMENT__BASE_URL: "{{ .Values.managementApi.config.guardianManagementBaseUrl }}"
+  SQL_PERSISTENCE_ADAPTER__DIALECT: "{{ .Values.managementApi.config.sqlPersistenceAdapterDialect }}"
+
+  {{- if .Values.postgresql.bundled }}
+  SQL_PERSISTENCE_ADAPTER__HOST: "{{ printf "%s-postgresql" (include "common.names.fullname" .) }}"
+  SQL_PERSISTENCE_ADAPTER__PORT: 5432
+  {{- else }}
+  SQL_PERSISTENCE_ADAPTER__HOST: "{{ .Values.postgresql.connection.host }}"
+  {{- end }}
+  SQL_PERSISTENCE_ADAPTER__PORT: "{{ .Values.postgresql.connection.port }}"
+  SQL_PERSISTENCE_ADAPTER__USERNAME: "{{ .Values.postgresql.auth.username }}"
+  SQL_PERSISTENCE_ADAPTER__DB_NAME: "{{ .Values.postgresql.auth.database }}"
+  SQL_PERSISTENCE_ADAPTER__PASSWORD: "{{ .Values.postgresql.auth.password }}"
+
+...

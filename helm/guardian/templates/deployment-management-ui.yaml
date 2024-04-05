@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+
+---
+
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.managementUi.replicaCount }}
+  selector:
+    matchLabels:
+      {{- printf "%s-ui" (include "common.labels.matchLabels" .) | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-management-ui.yaml") . | sha256sum }}
+        {{- with .Values.managementUi.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- printf "%s-ui" (include "common.labels.matchLabels" .) | nindent 8 }}
+    spec:
+      {{- with .Values.managementUi.affinity }}
+      affinity:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.managementUi.tolerations }}
+      tolerations:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.managementUi.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.managementUi.podSecurityContext }}
+      securityContext:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- if .Values.managementUi.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.managementUi.imagePullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
+      {{- end }}
+      containers:
+        - name: "management-ui"
+          securityContext:
+            {{- toYaml .Values.managementUi.securityContext | nindent 12 }}
+          image: "{{ .Values.managementUi.image.registry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
+          imagePullPolicy: {{ .Values.managementUi.image.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+          ports:
+            {{- range $key, $value := .Values.managementUi.service.ports }}
+            - name: {{ $key }}
+              containerPort: {{ $value.containerPort }}
+              protocol: {{ $value.protocol }}
+            {{- end }}
+          {{- if .Values.managementUi.probes.liveness.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.managementUi.probes.liveness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.managementUi.probes.liveness.timeoutSeconds }}
+            periodSeconds: {{ .Values.managementUi.probes.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.managementUi.probes.liveness.failureThreshold }}
+            successThreshold: {{ .Values.managementUi.probes.liveness.successThreshold }}
+          {{- end }}
+          {{- if .Values.managementUi.probes.readiness.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: {{ .Values.managementUi.probes.readiness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.managementUi.probes.readiness.timeoutSeconds }}
+            periodSeconds: {{ .Values.managementUi.probes.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.managementUi.probes.readiness.failureThreshold }}
+            successThreshold: {{ .Values.managementUi.probes.readiness.successThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.managementUi.resources | nindent 12 }}
+...
+

@@ -1,0 +1,120 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+
+---
+
+apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+kind: Deployment
+metadata:
+  name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.managementApi.replicaCount }}
+  selector:
+    matchLabels:
+      {{- printf "%s-api" (include "common.labels.matchLabels" .) | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-management-api.yaml") . | sha256sum }}
+        {{- with .Values.managementApi.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- printf "%s-api" (include "common.labels.matchLabels" .) | nindent 8 }}
+    spec:
+      {{- with .Values.managementApi.affinity }}
+      affinity:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.managementApi.tolerations }}
+      tolerations:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.managementApi.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- with .Values.managementApi.podSecurityContext }}
+      securityContext:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
+      {{- if .Values.managementApi.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.managementApi.imagePullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
+      {{- end }}
+      initContainers:
+        - name: "database-migrations"
+          image: "{{ .Values.managementApi.image.registry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
+          command: ["alembic", "upgrade", "head"]
+          imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+      containers:
+        - name: "management-api"
+          securityContext:
+            {{- toYaml .Values.managementApi.securityContext | nindent 12 }}
+          image: "{{ .Values.managementApi.image.registry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
+          imagePullPolicy: {{ .Values.managementApi.image.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+          ports:
+            {{- range $key, $value := .Values.managementApi.service.ports }}
+            - name: {{ $key }}
+              containerPort: {{ $value.containerPort }}
+              protocol: {{ $value.protocol }}
+            {{- end }}
+          {{- if .Values.managementApi.probes.liveness.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /guardian/management/openapi.json
+              port: http
+            initialDelaySeconds: {{ .Values.managementApi.probes.liveness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.managementApi.probes.liveness.timeoutSeconds }}
+            periodSeconds: {{ .Values.managementApi.probes.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.managementApi.probes.liveness.failureThreshold }}
+            successThreshold: {{ .Values.managementApi.probes.liveness.successThreshold }}
+          {{- end }}
+          {{- if .Values.managementApi.probes.readiness.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /guardian/management/openapi.json
+              port: http
+            initialDelaySeconds: {{ .Values.managementApi.probes.readiness.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.managementApi.probes.readiness.timeoutSeconds }}
+            periodSeconds: {{ .Values.managementApi.probes.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.managementApi.probes.readiness.failureThreshold }}
+            successThreshold: {{ .Values.managementApi.probes.readiness.successThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.managementApi.resources | nindent 12 }}
+          volumeMounts:
+            - name: "secrets"
+              mountPath: "/var/secrets"
+            - name: "bundles"
+              mountPath: "/guardian_service_dir/bundle_server"
+            - name: "tmp"
+              mountPath: "/tmp"
+            {{- if .Values.managementApi.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.managementApi.extraVolumeMounts "context" .) | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: "bundles"
+          emptyDir: {}
+        - name: "tmp"
+          emptyDir: {}
+        - name: "secrets"
+          secret:
+            secretName: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+        {{- if .Values.managementApi.extraVolumes }}
+          {{- include "common.tplvalues.render" (dict "value" .Values.managementApi.extraVolumes  "context" .) | nindent 8 }}
+        {{- end }}
+
+...
+

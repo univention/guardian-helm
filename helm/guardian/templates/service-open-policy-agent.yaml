@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+{{- if .Values.openPolicyAgent.service.enabled }}
+---
+
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: {{ printf "%s-open-policy-agent" (include "common.names.fullname" .) }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+spec:
+  type: {{ .Values.openPolicyAgent.service.type }}
+  {{- if .Values.openPolicyAgent.service.sessionAffinity.enabled }}
+  sessionAffinity: "ClientIP"
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.openPolicyAgent.service.sessionAffinity.timeoutSeconds }}
+  {{- end }}
+  ports:
+    {{- range $key, $value := .Values.openPolicyAgent.service.ports }}
+    - port: {{ $value.port }}
+      targetPort: {{ $key }}
+      protocol: {{ $value.protocol }}
+      name: {{ $key }}
+      {{- if and (eq $.Values.openPolicyAgent.service.type "NodePort") $value.nodePort }}
+      nodePort: {{ $value.nodePort }}
+      {{- end }}
+    {{- end }}
+  selector:
+    {{- include "common.labels.matchLabels" . | nindent 4 }}
+
+...
+{{- end }}

@@ -9,11 +9,39 @@ include:
       - "jobs/lint-pre-commit.yaml"
       - "jobs/lint-commit-messages.yaml"
       - "jobs/semantic-release-env.yaml"
+      - "jobs/container-build-souvap.yaml"
       - "jobs/package-and-publish-helm-charts-souvap.yaml"
+
+.build-matrix: &build-matrix
+  - IMAGE_NAME:
+      - "guardian-init"
 
 lint-pre-commit:
   before_script:
     # Compose lint would fail without the referenced env files
     - helm repo add bitnami https://charts.bitnami.com/bitnami
 
+container-build:
+  parallel:
+    matrix: *build-matrix
+
+container-generate-sbom:
+  parallel:
+    matrix: *build-matrix
+
+container-sign:
+  parallel:
+    matrix: *build-matrix
+
+container-security-scan:
+  parallel:
+    matrix: *build-matrix
+
+push-image-souvap:
+  parallel:
+    matrix: *build-matrix
+
+container-sign-souvap:
+  parallel:
+    matrix: *build-matrix
 ...

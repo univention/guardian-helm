@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+---
+
+apiVersion: "v1"
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.managementUi.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.managementUi.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.managementUi.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.managementUi.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+
+data:
+  VITE__MANAGEMENT_UI__ADAPTER__AUTHENTICATION_PORT: "{{ .Values.managementUi.config.viteManagementUiAdapterAuthenticationPort }}"
+  VITE__MANAGEMENT_UI__ADAPTER__DATA_PORT: "{{ .Values.managementUi.config.viteManagementUiAdapterDataPort }}"
+  VITE__API_DATA_ADAPTER__URI: "{{ .Values.managementUi.config.viteApiDataAdapterUri }}"
+  VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__SSO_URI: "{{ .Values.managementUi.config.viteKeycloakAuthenticationAdapterSsoUri }}"
+  VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__REALM: "{{ .Values.managementUi.config.viteKeycloakAuthenticationAdapterRealm }}"
+  VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__CLIENT_ID: "{{ .Values.managementUi.config.viteKeycloakAuthenticationAdapterClientId }}"
+
+...

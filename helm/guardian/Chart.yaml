@@ -1,0 +1,39 @@
+---
+
+apiVersion: v2
+name: "guardian"
+description: |
+  The Guardian provides an authorization service for apps used with a Nubus system.
+  Authorization is the confirmation of a user’s access to some resource, such
+  as the ability to modify a user’s data, export data from a system, or view a
+  web page. It’s important to note that the Guardian itself only informs about
+  the result of an authorization request. The app itself must enforce the
+  result of any authorization.
+
+  The authorization service consists of three applications:
+    - Management API
+    - Authorization API
+    - Management UI
+    - Open Policy Agent
+  At a minimum, you must install the Management API, the Authorization API and
+  the Open Policy Agent. The Management UI provides an optional graphical user
+  interface for the Management API.
+
+  More documentation can be found at https://docs.software-univention.de/guardian-manual/latest
+
+type: "application"
+
+version: "0.1.0"
+
+appVersion: "2.0.0"
+
+dependencies:
+  - name: "common"
+    repository: "https://charts.bitnami.com/bitnami"
+    version: "^2.x.x"
+  - name: "postgresql"
+    repository: "https://charts.bitnami.com/bitnami"
+    version: "~12.7.1"
+    condition: "postgresql.bundled"
+
+...

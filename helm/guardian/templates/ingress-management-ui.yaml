@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+
+{{- if .Values.managementUi.ingress.enabled -}}
+---
+
+apiVersion: {{ include "common.capabilities.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+  {{- with .Values.managementUi.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.managementUi.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.managementUi.ingress.ingressClassName }}
+  {{- end }}
+  {{- if .Values.managementUi.ingress.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.managementUi.ingress.host | quote }}
+      secretName: "{{ .Values.managementUi.ingress.tls.secretName }}"
+  {{- end }}
+  rules:
+    - host: {{ .Values.managementUi.ingress.host | quote }}
+      http:
+        paths:
+          {{- range .Values.managementUi.ingress.paths }}
+          - pathType: {{ .pathType }}
+            path: {{ .path }}
+            {{- if .backend }}
+            backend: {{- (toYaml .backend) | nindent 14 }}
+            {{- else }}
+            backend: {{- default (include "common.ingress.backend" (dict "serviceName" (include "common.names.fullname" $) "servicePort" "http" "context" $)) | nindent 14 }}
+            {{- end }}
+          {{- end }}
+
+...
+{{- end }}
