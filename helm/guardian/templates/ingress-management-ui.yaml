@@ -16,7 +16,7 @@ metadata:
   {{- end }}
 spec:
   {{- if .Values.managementUi.ingress.ingressClassName }}
-  ingressClassName: {{ .Values.managementUi.ingress.ingressClassName }}
+  ingressClassName: {{ coalesce .Values.managementUi.ingress.ingressClassName .Values.global.ingressClassName }}
   {{- end }}
   {{- if .Values.managementUi.ingress.tls.enabled }}
   tls:

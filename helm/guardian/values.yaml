@@ -94,7 +94,7 @@ authorizationApi:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
+    enabled: false
     ingressClassName: "nginx"
     host: null
     paths:
@@ -247,7 +247,7 @@ managementApi:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
+    enabled: false
     ingressClassName: "nginx"
     host: null
     paths:
@@ -353,7 +353,7 @@ managementUi:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
+    enabled: false
     ingressClassName: "nginx"
     host: null
     paths:
@@ -469,7 +469,7 @@ openPolicyAgent:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
+    enabled: false
     ingressClassName: "nginx"
     host: null
     paths:
@@ -546,8 +546,8 @@ provisioning:
     sha256: null
 
   config:
-    # -- Base URL for setting in Keycloak application URL.
-    nubusBaseUrl: "https://portal.uv-example.gaia.open-desk.cloud/"
+    # -- Base URL for setting in Keycloak application URL without backslash.
+    nubusBaseUrl: "https://portal.uv-example.gaia.open-desk.cloud"
     # -- Keycloak specific settings.
     keycloak:
       # -- Internal URL to reach Keycloak for provisioning.

@@ -80,7 +80,7 @@ This chart does install the Guardian Authorization API.
     "tag": "2.0.0"
   },
   "ingress": {
-    "enabled": true,
+    "enabled": false,
     "host": null,
     "ingressClassName": "nginx",
     "paths": [
@@ -329,7 +329,7 @@ null
 			<td>authorizationApi.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-true
+false
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -511,7 +511,7 @@ true
     "tag": "2.0.0"
   },
   "ingress": {
-    "enabled": true,
+    "enabled": false,
     "host": null,
     "ingressClassName": "nginx",
     "paths": [
@@ -805,7 +805,7 @@ null
 			<td>managementApi.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-true
+false
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -967,7 +967,7 @@ null
 			<td>managementUi.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-true
+false
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -1444,7 +1444,7 @@ null
 			<td>openPolicyAgent.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-true
+false
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -1874,7 +1874,7 @@ true
       "realm": "opendesk",
       "url": "http://ums-keycloak:8080"
     },
-    "nubusBaseUrl": "https://portal.uv-example.gaia.open-desk.cloud/"
+    "nubusBaseUrl": "https://portal.uv-example.gaia.open-desk.cloud"
   },
   "credentialSecretName": "guardian-keycloak-secret",
   "enabled": true,
@@ -1947,10 +1947,10 @@ true
 			<td>provisioning.config.nubusBaseUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"https://portal.uv-example.gaia.open-desk.cloud/"
+"https://portal.uv-example.gaia.open-desk.cloud"
 </pre>
 </td>
-			<td>Base URL for setting in Keycloak application URL.</td>
+			<td>Base URL for setting in Keycloak application URL without backslash.</td>
 		</tr>
 		<tr>
 			<td>provisioning.credentialSecretName</td>

@@ -16,7 +16,7 @@ metadata:
   {{- end }}
 spec:
   {{- if .Values.openPolicyAgent.ingress.ingressClassName }}
-  ingressClassName: {{ .Values.openPolicyAgent.ingress.ingressClassName }}
+  ingressClassName: {{ coalesce .Values.openPolicyAgent.ingress.ingressClassName .Values.global.ingressClassName }}
   {{- end }}
   {{- if .Values.openPolicyAgent.ingress.tls.enabled }}
   tls:
