@@ -21,11 +21,11 @@ spec:
   {{- if .Values.authorizationApi.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.authorizationApi.ingress.host | quote }}
+        - {{ required "The \"ingress host\" is required." .Values.authorizationApi.ingress.host | quote }}
       secretName: "{{ .Values.authorizationApi.ingress.tls.secretName }}"
   {{- end }}
   rules:
-    - host: {{ .Values.authorizationApi.ingress.host | quote }}
+    - host: {{ required "The \"ingress host\" is required." .Values.authorizationApi.ingress.host | quote }}
       http:
         paths:
           {{- range .Values.authorizationApi.ingress.paths }}
