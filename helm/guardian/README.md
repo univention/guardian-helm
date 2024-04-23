@@ -57,16 +57,17 @@ This chart does install the Guardian Authorization API.
     "guardianAuthzAdapterSettingsPort": "env",
     "guardianAuthzCorsAllowedOrigins": "*",
     "guardianAuthzLoggingFormat": "\u003cgreen\u003e{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}\u003c/green\u003e | \u003clevel\u003e{level}\u003c/level\u003e | \u003clevel\u003e{message}\u003c/level\u003e | {extra}",
-    "guardianAuthzLoggingLevel": "DEBUG",
+    "guardianAuthzLoggingLevel": "",
     "guardianAuthzLoggingStructured": true,
     "home": "/guardian_service_dir",
     "isUniventionAppCenter": 0,
-    "oauthAdapterWellKnownUrl": "http://keycloak/realms/souvap/.well-known/openid-configuration",
-    "opaAdapterUrl": "http://ums-guardian-open-policy-agent:8181/",
+    "oauthAdapterWellKnownUrl": "",
+    "opaAdapterUrl": "",
+    "secretRef": "",
     "udmDataAdapterPassword": "",
     "udmDataAdapterPasswordFile": "/var/secrets/udmDataAdapterPassword",
-    "udmDataAdapterUrl": "http://udm-rest-api/univention/udm",
-    "udmDataAdapterUsername": "admin",
+    "udmDataAdapterUrl": "",
+    "udmDataAdapterUsername": "",
     "udmDataAdapterUsernameFile": "/var/secrets/udmDataAdapterUsername"
   },
   "environment": {},
@@ -134,7 +135,16 @@ This chart does install the Guardian Authorization API.
     }
   },
   "replicaCount": 1,
-  "resources": {},
+  "resources": {
+    "limits": {
+      "cpu": "4",
+      "memory": "4Gi"
+    },
+    "requests": {
+      "cpu": "250m",
+      "memory": "512Mi"
+    }
+  },
   "securityContext": {
     "allowPrivilegeEscalation": false,
     "capabilities": {
@@ -179,7 +189,7 @@ This chart does install the Guardian Authorization API.
 "udm_data"
 </pre>
 </td>
-			<td>Port and adapter to specify where to store the application data.</td>
+			<td>Port and adapter to specify where to store the application data. Example: "udm_data"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.guardianAuthzAdapterAuthenticationPort</td>
@@ -188,7 +198,7 @@ This chart does install the Guardian Authorization API.
 "fast_api_oauth"
 </pre>
 </td>
-			<td>Port and adapter for authentication. Use `fast_api_oauth` for integrated OIDC support.</td>
+			<td>Port and adapter for authentication. Use `fast_api_oauth` for integrated OIDC support. Example: "fast_api_oauth"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.guardianAuthzAdapterPolicyPort</td>
@@ -197,7 +207,7 @@ This chart does install the Guardian Authorization API.
 "opa"
 </pre>
 </td>
-			<td>Port and adapter for policies. Defaults to `opa` for Open Policy Agent.</td>
+			<td>Port and adapter for policies. Defaults to `opa` for Open Policy Agent. Example: "opa"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.guardianAuthzAdapterSettingsPort</td>
@@ -206,7 +216,7 @@ This chart does install the Guardian Authorization API.
 "env"
 </pre>
 </td>
-			<td>Port and adapter to specify where to read the settings from. Defaults to `env` for environment.</td>
+			<td>Port and adapter to specify where to read the settings from. Defaults to `env` for environment. Example: "env"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.guardianAuthzCorsAllowedOrigins</td>
@@ -215,7 +225,7 @@ This chart does install the Guardian Authorization API.
 "*"
 </pre>
 </td>
-			<td>Comma-separated list of hosts that are allowed to make cross-origin resource sharing (CORS) requests to the server.</td>
+			<td>Comma-separated list of hosts that are allowed to make cross-origin resource sharing (CORS) requests to the server. Example: "*"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.guardianAuthzLoggingFormat</td>
@@ -224,16 +234,16 @@ This chart does install the Guardian Authorization API.
 "\u003cgreen\u003e{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}\u003c/green\u003e | \u003clevel\u003e{level}\u003c/level\u003e | \u003clevel\u003e{message}\u003c/level\u003e | {extra}"
 </pre>
 </td>
-			<td>Defines the format of the log output, if not structured. The possible options are described in https://loguru.readthedocs.io/en/stable/api/logger.html.</td>
+			<td>Defines the format of the log output, if not structured. The possible options are described in https://loguru.readthedocs.io/en/stable/api/logger.html. Example: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.guardianAuthzLoggingLevel</td>
 			<td>string</td>
 			<td><pre lang="json">
-"DEBUG"
+""
 </pre>
 </td>
-			<td>Sets the log level of the application.</td>
+			<td>Sets the log level of the application. Chart defaults to: "DEBUG"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.guardianAuthzLoggingStructured</td>
@@ -242,7 +252,7 @@ This chart does install the Guardian Authorization API.
 true
 </pre>
 </td>
-			<td>If set to True, the logging output is structured as a JSON object.</td>
+			<td>If set to True, the logging output is structured as a JSON object. Example: true</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.home</td>
@@ -251,25 +261,34 @@ true
 "/guardian_service_dir"
 </pre>
 </td>
-			<td>Directory that Guardian will use to save the bundles and configuration.</td>
+			<td>Directory that Guardian will use to save the bundles and configuration. Example: /guardian_service_dir</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.oauthAdapterWellKnownUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://keycloak/realms/souvap/.well-known/openid-configuration"
+""
 </pre>
 </td>
-			<td>OIDC well-known url</td>
+			<td>OIDC well-known url Example: "http://keycloak/realms/souvap/.well-known/openid-configuration"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.opaAdapterUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://ums-guardian-open-policy-agent:8181/"
+""
 </pre>
 </td>
-			<td>URL to Open Policy Agent.</td>
+			<td>URL to Open Policy Agent. Example: "http://ums-guardian-open-policy-agent:8181/"</td>
+		</tr>
+		<tr>
+			<td>authorizationApi.config.secretRef</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>The reference to the secret containing `udmDataAdapterPassword` and `udmDataAdapterUsername` secret. Example: "guardian-udm-secret"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.udmDataAdapterPassword</td>
@@ -278,7 +297,7 @@ true
 ""
 </pre>
 </td>
-			<td>Password for authenticating against the UDM REST API</td>
+			<td>Password for authenticating against the UDM REST API. Do not use, see `secretRef` below. Example: "password"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.udmDataAdapterPasswordFile</td>
@@ -287,25 +306,25 @@ true
 "/var/secrets/udmDataAdapterPassword"
 </pre>
 </td>
-			<td>File where the UDM password will be stored.</td>
+			<td>File where the UDM password will be stored. Example: "/var/secrets/udmDataAdapterPassword"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.udmDataAdapterUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://udm-rest-api/univention/udm"
+""
 </pre>
 </td>
-			<td>The URL of the UDM REST API for data queries.</td>
+			<td>The URL of the UDM REST API for data queries. Example: "http://udm-rest-api/univention/udm"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.udmDataAdapterUsername</td>
 			<td>string</td>
 			<td><pre lang="json">
-"admin"
+""
 </pre>
 </td>
-			<td>Username for authenticating against the UDM REST API</td>
+			<td>Username for authenticating against the UDM REST API Do not use, see `secretRef` below. Example: "cn=admin"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.config.udmDataAdapterUsernameFile</td>
@@ -314,7 +333,7 @@ true
 "/var/secrets/udmDataAdapterUsername"
 </pre>
 </td>
-			<td>File where the UDM username will be stored.</td>
+			<td>File where the UDM username will be stored. Example: "/var/secrets/udmDataAdapterUsername"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.image.sha256</td>
@@ -478,7 +497,7 @@ false
   "config": {
     "guardianManagementAdapterAppPersistencePort": "sql",
     "guardianManagementAdapterAuthenticationPort": "fast_api_oauth",
-    "guardianManagementAdapterAuthorizationApiUrl": "http://guardian-management-api/guardian/authorization",
+    "guardianManagementAdapterAuthorizationApiUrl": "",
     "guardianManagementAdapterCapabilityPersistencePort": "sql",
     "guardianManagementAdapterConditionPersistencePort": "sql",
     "guardianManagementAdapterContextPersistencePort": "sql",
@@ -487,17 +506,17 @@ false
     "guardianManagementAdapterResourceAuthorizationPort": "guardian",
     "guardianManagementAdapterRolePersistencePort": "sql",
     "guardianManagementAdapterSettingsPort": "env",
-    "guardianManagementBaseUrl": "http://guardian-management",
+    "guardianManagementBaseUrl": "",
     "guardianManagementCorsAllowedOrigins": "*",
     "guardianManagementLoggingFormat": "\u003cgreen\u003e{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}\u003c/green\u003e | \u003clevel\u003e{level}\u003c/level\u003e | \u003clevel\u003e{message}\u003c/level\u003e | {extra}",
     "guardianManagementLoggingLevel": "DEBUG",
     "guardianManagementLoggingStructured": true,
     "home": "/guardian_service_dir",
     "isUniventionAppCenter": 0,
-    "oauthAdapterM2mSecret": "stub_client_secret",
+    "oauthAdapterM2mSecret": "",
     "oauthAdapterM2mSecretFile": "/var/secrets/oauthAdapterM2mSecret",
-    "oauthAdapterWellKnownUrl": "http://keycloak/realms/souvap/.well-known/openid-configuration",
-    "secretRef": "guardian-keycloak-client-secret",
+    "oauthAdapterWellKnownUrl": "",
+    "secretRef": "",
     "sqlPersistenceAdapterDialect": "postgresql"
   },
   "environment": {},
@@ -565,7 +584,16 @@ false
     }
   },
   "replicaCount": 1,
-  "resources": {},
+  "resources": {
+    "limits": {
+      "cpu": "4",
+      "memory": "4Gi"
+    },
+    "requests": {
+      "cpu": "250m",
+      "memory": "512Mi"
+    }
+  },
   "securityContext": {
     "allowPrivilegeEscalation": false,
     "capabilities": {
@@ -625,10 +653,10 @@ false
 			<td>managementApi.config.guardianManagementAdapterAuthorizationApiUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://guardian-management-api/guardian/authorization"
+""
 </pre>
 </td>
-			<td>URL to the Authorization API.</td>
+			<td>URL to the Authorization API. Example: http://guardian-management-api/guardian/authorization</td>
 		</tr>
 		<tr>
 			<td>managementApi.config.guardianManagementAdapterCapabilityPersistencePort</td>
@@ -697,10 +725,10 @@ false
 			<td>managementApi.config.guardianManagementBaseUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://guardian-management"
+""
 </pre>
 </td>
-			<td>Defines the base URL of the API. If unset the url is generated from hostname and domainname.</td>
+			<td>Defines the base URL of the API. If unset the url is generated from hostname and domainname. Example: "http://example.test/guardian/management"</td>
 		</tr>
 		<tr>
 			<td>managementApi.config.guardianManagementCorsAllowedOrigins</td>
@@ -751,10 +779,10 @@ true
 			<td>managementApi.config.oauthAdapterM2mSecret</td>
 			<td>string</td>
 			<td><pre lang="json">
-"stub_client_secret"
+""
 </pre>
 </td>
-			<td>Machine-to-machine secret.</td>
+			<td>Machine-to-machine secret (not used, see `secretRef` below)</td>
 		</tr>
 		<tr>
 			<td>managementApi.config.oauthAdapterM2mSecretFile</td>
@@ -769,16 +797,16 @@ true
 			<td>managementApi.config.oauthAdapterWellKnownUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://keycloak/realms/souvap/.well-known/openid-configuration"
+""
 </pre>
 </td>
-			<td>Identity Provider well known URL</td>
+			<td>Identity Provider well known URL Example: http://keycloak/realms/souvap/.well-known/openid-configuration</td>
 		</tr>
 		<tr>
 			<td>managementApi.config.secretRef</td>
 			<td>string</td>
 			<td><pre lang="json">
-"guardian-keycloak-client-secret"
+""
 </pre>
 </td>
 			<td>The reference to the secret containing `oauthAdapterM2mSecret` secret.</td>
@@ -823,7 +851,16 @@ false
 			<td>managementApi.resources</td>
 			<td>object</td>
 			<td><pre lang="json">
-{}
+{
+  "limits": {
+    "cpu": "4",
+    "memory": "4Gi"
+  },
+  "requests": {
+    "cpu": "250m",
+    "memory": "512Mi"
+  }
+}
 </pre>
 </td>
 			<td>Deployment resources for the listener container</td>
@@ -841,10 +878,10 @@ false
 			<td>managementUi.config.viteApiDataAdapterUri</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://localhost:8000/guardian/management"
+""
 </pre>
 </td>
-			<td>URL for the Guardian Management API from outside. Will be queried from the client.</td>
+			<td>URL for the Guardian Management API from outside. Will be queried from the client. Example: "https://porta.example.test/guardian/management"</td>
 		</tr>
 		<tr>
 			<td>managementUi.config.viteKeycloakAuthenticationAdapterClientId</td>
@@ -859,7 +896,7 @@ false
 			<td>managementUi.config.viteKeycloakAuthenticationAdapterRealm</td>
 			<td>string</td>
 			<td><pre lang="json">
-"ucs"
+""
 </pre>
 </td>
 			<td>Keycloak authentication realm.</td>
@@ -868,10 +905,10 @@ false
 			<td>managementUi.config.viteKeycloakAuthenticationAdapterSsoUri</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://localhost:8097"
+""
 </pre>
 </td>
-			<td>Base URI of the Keycloak server for authentication.</td>
+			<td>Base URI of the Keycloak server for authentication. Example: "https://id.example.test"</td>
 		</tr>
 		<tr>
 			<td>managementUi.config.viteManagementUiAdapterAuthenticationPort</td>
@@ -1219,7 +1256,16 @@ true
 			<td>managementUi.resources</td>
 			<td>object</td>
 			<td><pre lang="json">
-{}
+{
+  "limits": {
+    "cpu": "4",
+    "memory": "4Gi"
+  },
+  "requests": {
+    "cpu": "250m",
+    "memory": "512Mi"
+  }
+}
 </pre>
 </td>
 			<td>Deployment resources for the listener container</td>
@@ -1336,7 +1382,7 @@ false
 			<td>openPolicyAgent.config.opaGuardianManagementUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://guardian-management-api/guardian/management"
+""
 </pre>
 </td>
 			<td>Bundle server URL</td>
@@ -1669,7 +1715,16 @@ true
 			<td>openPolicyAgent.resources</td>
 			<td>object</td>
 			<td><pre lang="json">
-{}
+{
+  "limits": {
+    "cpu": "4",
+    "memory": "4Gi"
+  },
+  "requests": {
+    "cpu": "250m",
+    "memory": "512Mi"
+  }
+}
 </pre>
 </td>
 			<td>Deployment resources for the listener container</td>
@@ -1824,12 +1879,15 @@ false
 			<td><pre lang="json">
 {
   "auth": {
-    "database": "guardian",
-    "password": "guardian",
-    "postgresPassword": "guardian",
-    "username": "guardian"
+    "credentialSecret": {
+      "key": "password",
+      "name": ""
+    },
+    "database": "",
+    "password": "",
+    "username": ""
   },
-  "bundled": true,
+  "bundled": false,
   "connection": {
     "host": null,
     "port": null
@@ -1844,7 +1902,7 @@ false
 			<td>postgresql.bundled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-true
+false
 </pre>
 </td>
 			<td>Set to `true` if you want PostgreSQL to be installed as well.</td>
@@ -1869,14 +1927,23 @@ true
   "backoffLimit": 900,
   "config": {
     "keycloak": {
-      "admin": "kcadmin",
-      "fqdn": "id.uv-example.gaia.open-desk.cloud/",
-      "realm": "opendesk",
-      "url": "http://ums-keycloak:8080"
+      "admin": "",
+      "credentialSecret": {
+        "key": ""
+      },
+      "fqdn": "",
+      "password": "",
+      "realm": "",
+      "url": ""
     },
-    "nubusBaseUrl": "https://portal.uv-example.gaia.open-desk.cloud"
+    "managementApi": {
+      "clientSecret": "",
+      "credentialSecret": {
+        "key": ""
+      }
+    },
+    "nubusBaseUrl": ""
   },
-  "credentialSecretName": "guardian-keycloak-secret",
   "enabled": true,
   "image": {
     "imagePullSecrets": [],
@@ -1898,10 +1965,14 @@ true
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "admin": "kcadmin",
-  "fqdn": "id.uv-example.gaia.open-desk.cloud/",
-  "realm": "opendesk",
-  "url": "http://ums-keycloak:8080"
+  "admin": "",
+  "credentialSecret": {
+    "key": ""
+  },
+  "fqdn": "",
+  "password": "",
+  "realm": "",
+  "url": ""
 }
 </pre>
 </td>
@@ -1911,55 +1982,98 @@ true
 			<td>provisioning.config.keycloak.admin</td>
 			<td>string</td>
 			<td><pre lang="json">
-"kcadmin"
+""
 </pre>
 </td>
-			<td>Keycloak admin user for the master realm.</td>
+			<td>Keycloak admin user for the master realm. Example: "kcadmin"</td>
+		</tr>
+		<tr>
+			<td>provisioning.config.keycloak.credentialSecret.key</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>The key in which the Keycloak admin password is stored in the secret. Example: "adminPassword"</td>
 		</tr>
 		<tr>
 			<td>provisioning.config.keycloak.fqdn</td>
 			<td>string</td>
 			<td><pre lang="json">
-"id.uv-example.gaia.open-desk.cloud/"
+""
 </pre>
 </td>
-			<td>Fully qualified domain name for Keycloak.</td>
+			<td>Fully qualified domain name for Keycloak. Example: "id.uv-example.gaia.open-desk.cloud"</td>
+		</tr>
+		<tr>
+			<td>provisioning.config.keycloak.password</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Specify this only if you do not want to use a secret (see below).</td>
 		</tr>
 		<tr>
 			<td>provisioning.config.keycloak.realm</td>
 			<td>string</td>
 			<td><pre lang="json">
-"opendesk"
+""
 </pre>
 </td>
-			<td>Realm where the Guardian clients should be created.</td>
+			<td>Realm where the Guardian clients should be created. Example: "nubus"</td>
 		</tr>
 		<tr>
 			<td>provisioning.config.keycloak.url</td>
 			<td>string</td>
 			<td><pre lang="json">
-"http://ums-keycloak:8080"
+""
 </pre>
 </td>
-			<td>Internal URL to reach Keycloak for provisioning.</td>
+			<td>Internal URL to reach Keycloak for provisioning. Example: "http://keycloak:8080"</td>
+		</tr>
+		<tr>
+			<td>provisioning.config.managementApi</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "clientSecret": "",
+  "credentialSecret": {
+    "key": ""
+  }
+}
+</pre>
+</td>
+			<td>Management API settings for the provisioning job</td>
+		</tr>
+		<tr>
+			<td>provisioning.config.managementApi.clientSecret</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Specify this only if you do not want to use a secret (see below).</td>
+		</tr>
+		<tr>
+			<td>provisioning.config.managementApi.credentialSecret</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "key": ""
+}
+</pre>
+</td>
+			<td>The name of a secret that contains `managementApiClientSecret`. Example: "managementApiClientSecret"</td>
 		</tr>
 		<tr>
 			<td>provisioning.config.nubusBaseUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-"https://portal.uv-example.gaia.open-desk.cloud"
+""
 </pre>
 </td>
-			<td>Base URL for setting in Keycloak application URL without backslash.</td>
-		</tr>
-		<tr>
-			<td>provisioning.credentialSecretName</td>
-			<td>string</td>
-			<td><pre lang="json">
-"guardian-keycloak-secret"
-</pre>
-</td>
-			<td>The name of a secret that contains `KEYCLOAK_ADMIN_PASSWORD` and `GUARDIAN_MANAGEMENT_API_CLIENT_SECRET`.</td>
+			<td>Base URL for setting in Keycloak application URL without backslash. Example: "https://portal.uv-example.gaia.open-desk.cloud"</td>
 		</tr>
 		<tr>
 			<td>provisioning.enabled</td>

@@ -59,38 +59,59 @@ authorizationApi:
 
   config:
     # -- Directory that Guardian will use to save the bundles and configuration.
+    # Example: /guardian_service_dir
     home: "/guardian_service_dir"
     # -- Comma-separated list of hosts that are allowed to make cross-origin resource sharing (CORS) requests to the server.
+    # Example: "*"
     guardianAuthzCorsAllowedOrigins: "*"
     # -- Port and adapter to specify where to read the settings from. Defaults to `env` for environment.
+    # Example: "env"
     guardianAuthzAdapterSettingsPort: "env"
     # -- Port and adapter to specify where to store the application data.
+    # Example: "udm_data"
     guardianAuthzAdapterAppPersistencePort: "udm_data"
     # -- Port and adapter for policies. Defaults to `opa` for Open Policy Agent.
+    # Example: "opa"
     guardianAuthzAdapterPolicyPort: "opa"
     # -- Port and adapter for authentication. Use `fast_api_oauth` for integrated OIDC support.
+    # Example: "fast_api_oauth"
     guardianAuthzAdapterAuthenticationPort: "fast_api_oauth"
     isUniventionAppCenter: 0
     # -- The URL of the UDM REST API for data queries.
-    udmDataAdapterUrl: "http://udm-rest-api/univention/udm"
+    # Example: "http://udm-rest-api/univention/udm"
+    udmDataAdapterUrl: ''
     # -- Username for authenticating against the UDM REST API
-    udmDataAdapterUsername: "admin"
+    # Do not use, see `secretRef` below.
+    # Example: "cn=admin"
+    udmDataAdapterUsername: ""
     # -- File where the UDM username will be stored.
+    # Example: "/var/secrets/udmDataAdapterUsername"
     udmDataAdapterUsernameFile: "/var/secrets/udmDataAdapterUsername"
-    # -- Password for authenticating against the UDM REST API
+    # -- Password for authenticating against the UDM REST API.
+    # Do not use, see `secretRef` below.
+    # Example: "password"
     udmDataAdapterPassword: ""
     # -- File where the UDM password will be stored.
+    # Example: "/var/secrets/udmDataAdapterPassword"
     udmDataAdapterPasswordFile: "/var/secrets/udmDataAdapterPassword"
     # -- URL to Open Policy Agent.
-    opaAdapterUrl: "http://ums-guardian-open-policy-agent:8181/"
+    # Example: "http://ums-guardian-open-policy-agent:8181/"
+    opaAdapterUrl: ""
     # -- OIDC well-known url
-    oauthAdapterWellKnownUrl: "http://keycloak/realms/souvap/.well-known/openid-configuration"
+    # Example: "http://keycloak/realms/souvap/.well-known/openid-configuration"
+    oauthAdapterWellKnownUrl: ""
     # -- Sets the log level of the application.
-    guardianAuthzLoggingLevel: "DEBUG"
+    # Chart defaults to: "DEBUG"
+    guardianAuthzLoggingLevel: ""
     # -- If set to True, the logging output is structured as a JSON object.
+    # Example: true
     guardianAuthzLoggingStructured: true
     # -- Defines the format of the log output, if not structured. The possible options are described in https://loguru.readthedocs.io/en/stable/api/logger.html.
+    # Example: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
     guardianAuthzLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
+    # -- The reference to the secret containing `udmDataAdapterPassword` and `udmDataAdapterUsername` secret.
+    # Example: "guardian-udm-secret"
+    secretRef: ""
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
@@ -122,13 +143,13 @@ authorizationApi:
       enabled: false
       timeoutSeconds: 10800
 
-  resources: {}
-    # requests:
-    #   memory: "512Mi"
-    #   cpu: "250m"
-    # limits:
-    #   memory: "4Gi"
-    #   cpu: "4"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "4Gi"
+      cpu: "4"
 
   probes:
     liveness:
@@ -222,17 +243,19 @@ managementApi:
     # -- Port and adapter for authentication. Use `fast_api_oauth` for integrated OIDC support.
     guardianManagementAdapterAuthenticationPort: "fast_api_oauth"
     # -- URL to the Authorization API.
-    guardianManagementAdapterAuthorizationApiUrl: "http://guardian-management-api/guardian/authorization"
+    # Example: http://guardian-management-api/guardian/authorization
+    guardianManagementAdapterAuthorizationApiUrl: ""
     guardianManagementAdapterResourceAuthorizationPort: "guardian"
     isUniventionAppCenter: 0
     # -- Dialect of the database.
     sqlPersistenceAdapterDialect: "postgresql"
     # -- Identity Provider well known URL
-    oauthAdapterWellKnownUrl: "http://keycloak/realms/souvap/.well-known/openid-configuration"
+    # Example: http://keycloak/realms/souvap/.well-known/openid-configuration
+    oauthAdapterWellKnownUrl: ""
     # -- File where the machine-to-machine secret will be saved.
     oauthAdapterM2mSecretFile: "/var/secrets/oauthAdapterM2mSecret"
-    # -- Machine-to-machine secret.
-    oauthAdapterM2mSecret: "stub_client_secret"
+    # -- Machine-to-machine secret (not used, see `secretRef` below)
+    oauthAdapterM2mSecret: ""
     # -- Sets the log level of the application.
     guardianManagementLoggingLevel: "DEBUG"
     # -- If set to True, the logging output is structured as a JSON object.
@@ -240,9 +263,10 @@ managementApi:
     # -- Defines the format of the log output, if not structured. The possible options are described in https://loguru.readthedocs.io/en/stable/api/logger.html.
     guardianManagementLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
     # -- Defines the base URL of the API. If unset the url is generated from hostname and domainname.
-    guardianManagementBaseUrl: "http://guardian-management"
+    # Example: "http://example.test/guardian/management"
+    guardianManagementBaseUrl: ""
     # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.
-    secretRef: "guardian-keycloak-client-secret"
+    secretRef: ""
 
 
   ingress:
@@ -276,13 +300,13 @@ managementApi:
       timeoutSeconds: 10800
 
   # -- Deployment resources for the listener container
-  resources: {}
-    # requests:
-    #   memory: "512Mi"
-    #   cpu: "250m"
-    # limits:
-    #   memory: "4Gi"
-    #   cpu: "4"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "4Gi"
+      cpu: "4"
 
   ## Container deployment probes
   probes:
@@ -343,11 +367,13 @@ managementUi:
     # -- Port and adapter to use as data source for the UI. Defaults to `api` for Guardian's Management API.
     viteManagementUiAdapterDataPort: "api"
     # -- URL for the Guardian Management API from outside. Will be queried from the client.
-    viteApiDataAdapterUri: "http://localhost:8000/guardian/management"
+    # Example: "https://porta.example.test/guardian/management"
+    viteApiDataAdapterUri: ""
     # -- Base URI of the Keycloak server for authentication.
-    viteKeycloakAuthenticationAdapterSsoUri: "http://localhost:8097"
+    # Example: "https://id.example.test"
+    viteKeycloakAuthenticationAdapterSsoUri: ""
     # -- Keycloak authentication realm.
-    viteKeycloakAuthenticationAdapterRealm: "ucs"
+    viteKeycloakAuthenticationAdapterRealm: ""
     # -- Keycloak client ID. Must be provisioned either by the `provisioning` job in this chart or manually.
     viteKeycloakAuthenticationAdapterClientId: "guardian-ui"
 
@@ -382,13 +408,13 @@ managementUi:
       timeoutSeconds: 10800
 
   # -- Deployment resources for the listener container
-  resources: {}
-    # requests:
-    #   memory: "512Mi"
-    #   cpu: "250m"
-    # limits:
-    #   memory: "4Gi"
-    #   cpu: "4"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "4Gi"
+      cpu: "4"
 
   ## Container deployment probes
   probes:
@@ -465,7 +491,7 @@ openPolicyAgent:
     opaPollingMinDelay: 10
     opaPollingMaxDelay: 15
     # -- Bundle server URL
-    opaGuardianManagementUrl: "http://guardian-management-api/guardian/management"
+    opaGuardianManagementUrl: ""
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
@@ -493,13 +519,13 @@ openPolicyAgent:
       timeoutSeconds: 10800
 
   # -- Deployment resources for the listener container
-  resources: {}
-    # requests:
-    #   memory: "512Mi"
-    #   cpu: "250m"
-    # limits:
-    #   memory: "4Gi"
-    #   cpu: "4"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "4Gi"
+      cpu: "4"
 
   ## Container deployment probes
   probes:
@@ -547,19 +573,36 @@ provisioning:
 
   config:
     # -- Base URL for setting in Keycloak application URL without backslash.
-    nubusBaseUrl: "https://portal.uv-example.gaia.open-desk.cloud"
+    # Example: "https://portal.uv-example.gaia.open-desk.cloud"
+    nubusBaseUrl: ""
     # -- Keycloak specific settings.
     keycloak:
       # -- Internal URL to reach Keycloak for provisioning.
-      url: "http://ums-keycloak:8080"
+      # Example: "http://keycloak:8080"
+      url: ""
       # -- Fully qualified domain name for Keycloak.
-      fqdn: "id.uv-example.gaia.open-desk.cloud/"
+      # Example: "id.uv-example.gaia.open-desk.cloud"
+      fqdn: ""
       # -- Realm where the Guardian clients should be created.
-      realm: "opendesk"
+      # Example: "nubus"
+      realm: ""
       # -- Keycloak admin user for the master realm.
-      admin: "kcadmin"
-  # -- The name of a secret that contains `KEYCLOAK_ADMIN_PASSWORD` and `GUARDIAN_MANAGEMENT_API_CLIENT_SECRET`.
-  credentialSecretName: "guardian-keycloak-secret"
+      # Example: "kcadmin"
+      admin: ""
+      # -- Specify this only if you do not want to use a secret (see below).
+      password: ""
+      credentialSecret:
+        # -- The key in which the Keycloak admin password is stored in the secret.
+        # Example: "adminPassword"
+        key: ""
+    # -- Management API settings for the provisioning job
+    managementApi:
+      # -- Specify this only if you do not want to use a secret (see below).
+      clientSecret: ""
+      # -- The name of a secret that contains `managementApiClientSecret`.
+      # Example: "managementApiClientSecret"
+      credentialSecret:
+        key: ""
 
   tolerations: []
 
@@ -579,16 +622,18 @@ provisioning:
 postgresql:
   nameOverride: "guardian-postgresql"
   # -- Set to `true` if you want PostgreSQL to be installed as well.
-  bundled: true
+  bundled: false
   # -- Connection parameters. These are required if you use an external database.
   connection:
     host:
     port:
   auth:
-    username: "guardian"
-    database: "guardian"
-    password: "guardian"
-    postgresPassword: "guardian"
+    username: ""
+    database: ""
+    password: ""
+    credentialSecret:
+      name: ""
+      key: "password"
 
 
 #################
@@ -597,14 +642,20 @@ postgresql:
 
 # -- Optionally specify a secret to create (primarily intended to be used in development environments to provide custom certificates)
 extraSecrets: []
+
+  # - name: "guardian-udm-secret"
+  #   stringData:
+  #     udmDataAdapterUsername: "cn=admin"
+  #     udmDataAdapterPassword: "password"
+
   # - name: "guardian-keycloak-client-secret"
   #   stringData:
   #     oauthAdapterM2mSecret: "stub_client_secret"
 
-  # - name: "guardian-keycloak-secret"
+  # - name: "guardian-provisioning-secret"
   #   stringData:
-  #     KEYCLOAK_ADMIN_PASSWORD: "stub_password"
-  #     GUARDIAN_MANAGEMENT_API_CLIENT_SECRET: "stub_client_secret"
+  #     adminPassword: "stub_password"
+  #     managementApiClientSecret: "stub_client_secret"
 
 # -- Array with extra environment variables to add to containers.
 #
