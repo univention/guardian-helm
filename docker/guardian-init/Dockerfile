@@ -5,7 +5,7 @@ FROM ${UCS_BASE_IMAGE}:${UCS_BASE_IMAGE_TAG} as base
 
 # hadolint ignore=DL3008
 RUN \
-  apt-get install -y \
+  apt-get install -y --no-install-recommends \
     curl \
     jq \
     python3 \
