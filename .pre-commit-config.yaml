@@ -38,4 +38,14 @@ repos:
       - id: "conventional-pre-commit"
         stages: ["commit-msg"]
 
+  - repo: "https://git.knut.univention.de/univention/dist/pre-commit-hooks/addlicense"
+    rev: "v1.0.1"
+    hooks:
+      - id: "addlicense"
+        name: "Check or add license headers to files"
+        types_or:
+          - "dockerfile"
+          - "python"
+          - "yaml"
+
 ...
