@@ -3,7 +3,8 @@ ARG UCS_BASE_IMAGE=gitregistry.knut.univention.de/univention/components/ucs-base
 
 FROM ${UCS_BASE_IMAGE}:${UCS_BASE_IMAGE_TAG} as base
 
-RUN apt-get update --quiet && \
+# hadolint ignore=DL3008
+RUN \
   apt-get install -y \
     curl \
     jq \
