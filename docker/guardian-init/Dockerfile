@@ -1,7 +1,11 @@
-FROM gitregistry.knut.univention.de/univention/components/ucs-base-image/ucs-base-507 as base
+ARG UCS_BASE_IMAGE_TAG=0.12.0-build-2024-04-25
+ARG UCS_BASE_IMAGE=gitregistry.knut.univention.de/univention/components/ucs-base-image/ucs-base-507
 
-RUN apt-get update --quiet && \
-  apt-get install -y \
+FROM ${UCS_BASE_IMAGE}:${UCS_BASE_IMAGE_TAG} as base
+
+# hadolint ignore=DL3008
+RUN \
+  apt-get install -y --no-install-recommends \
     curl \
     jq \
     python3 \
