@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.3.0...v0.3.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* Drop call to "apt-get update" from guardian-init ([0ecc88d](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/0ecc88d6cc3180ab7a32622d87bfe57b11f437a8))
+* Use "--no-install-recommends" in call to "apt-get install" ([aef5423](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/aef5423ee33e36fb3c8c2793f7e151430f3633d0))
+* Use a date tagged base image in guardian-init ([03ae128](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/03ae1284f08dc712b5dee17403ea61307d948ff7))
+
 ## [0.3.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.2.1...v0.3.0) (2024-04-05)
 
 
