@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.3.1...v0.4.0) (2024-05-17)
+
+
+### Features
+
+* **helm:** reduce duplicated values ([c3f3c57](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/c3f3c57623d4303a88373947dafcf1ca9a74c9e6))
+
+
+### Bug Fixes
+
+* **helm:** ingress class and disabled by default ([f386211](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/f386211baa95540904875625b35cf5d47908f3cb))
+* **helm:** require host parameter if ingress is enabled ([6f9b113](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/6f9b1130d8c14520f2c77467f94b0f92c14068f9))
+
 ## [0.3.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.3.0...v0.3.1) (2024-05-15)
 
 
