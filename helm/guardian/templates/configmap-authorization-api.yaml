@@ -19,19 +19,19 @@ metadata:
 
 data:
   HOME: "{{ .Values.authorizationApi.config.home }}"
-  GUARDIAN__AUTHZ__CORS__ALLOWED_ORIGINS: "{{ .Values.authorizationApi.config.guardianAuthzCorsAllowedOrigins }}"
+  GUARDIAN__AUTHZ__CORS__ALLOWED_ORIGINS: "{{ include "guardian.authorizationApi.config.guardianAuthzCorsAllowedOrigins" . }}"
   GUARDIAN__AUTHZ__ADAPTER__SETTINGS_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterSettingsPort }}"
   GUARDIAN__AUTHZ__ADAPTER__PERSISTENCE_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterAppPersistencePort }}"
   GUARDIAN__AUTHZ__ADAPTER__POLICY_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterPolicyPort }}"
   GUARDIAN__AUTHZ__ADAPTER__AUTHENTICATION_PORT: "{{ .Values.authorizationApi.config.guardianAuthzAdapterAuthenticationPort }}"
   IS_UNIVENTION_APPCENTER: "{{ .Values.authorizationApi.config.isUniventionAppCenter }}"
-  UDM_DATA_ADAPTER__URL: "{{ .Values.authorizationApi.config.udmDataAdapterUrl }}"
+  UDM_DATA_ADAPTER__URL: "{{ include "guardian.authorizationApi.config.udmDataAdapterUrl" . }}"
   UDM_DATA_ADAPTER__USERNAME_FILE: "{{ .Values.authorizationApi.config.udmDataAdapterUsernameFile }}"
-  UDM_DATA_ADAPTER__PASSWORD_FILE: "{{ .Values.authorizationApi.config.udmDataAdapterPasswordFile  }}"
-  OPA_ADAPTER__URL: "{{ .Values.authorizationApi.config.opaAdapterUrl }}"
-  GUARDIAN__AUTHZ__LOGGING__LEVEL: "{{ .Values.authorizationApi.config.guardianAuthzLoggingLevel }}"
-  GUARDIAN__AUTHZ__LOGGING__STRUCTURED: "{{ .Values.authorizationApi.config.guardianAuthzLoggingStructured }}"
-  GUARDIAN__AUTHZ__LOGGING__FORMAT: "{{ .Values.authorizationApi.config.guardianAuthzLoggingFormat }}"
-  OAUTH_ADAPTER__WELL_KNOWN_URL: "{{ .Values.authorizationApi.config.oauthAdapterWellKnownUrl }}"
+  UDM_DATA_ADAPTER__PASSWORD_FILE: "{{ .Values.authorizationApi.config.udmDataAdapterPasswordFile }}"
+  OPA_ADAPTER__URL: "{{ include "guardian.authorizationApi.config.opaAdapterUrl" . }}"
+  GUARDIAN__AUTHZ__LOGGING__LEVEL: "{{ include "guardian.authorizationApi.config.guardianAuthzLoggingLevel" . }}"
+  GUARDIAN__AUTHZ__LOGGING__STRUCTURED: "{{ include "guardian.authorizationApi.config.guardianAuthzLoggingStructured" . }}"
+  GUARDIAN__AUTHZ__LOGGING__FORMAT: "{{ include "guardian.authorizationApi.config.guardianAuthzLoggingFormat" . }}"
+  OAUTH_ADAPTER__WELL_KNOWN_URL: "{{ include "guardian.authorizationApi.config.oauthAdapterWellKnownUrl" . }}"
 
 ...

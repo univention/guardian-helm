@@ -16,16 +16,16 @@ metadata:
   {{- end }}
 spec:
   {{- if .Values.authorizationApi.ingress.ingressClassName }}
-  ingressClassName: {{ .Values.authorizationApi.ingress.ingressClassName }}
+  ingressClassName: {{ coalesce .Values.authorizationApi.ingress.ingressClassName .Values.global.ingressClassName }}
   {{- end }}
   {{- if .Values.authorizationApi.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.authorizationApi.ingress.host | quote }}
+        - {{ required "The \"ingress host\" is required." .Values.authorizationApi.ingress.host | quote }}
       secretName: "{{ .Values.authorizationApi.ingress.tls.secretName }}"
   {{- end }}
   rules:
-    - host: {{ .Values.authorizationApi.ingress.host | quote }}
+    - host: {{ required "The \"ingress host\" is required." .Values.authorizationApi.ingress.host | quote }}
       http:
         paths:
           {{- range .Values.authorizationApi.ingress.paths }}

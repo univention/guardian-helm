@@ -106,7 +106,7 @@ spec:
           emptyDir: {}
         - name: "secrets"
           secret:
-            secretName: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
+            secretName: {{ include "guardian.authorizationApi.config.secretRef" . | quote }}
         {{- if .Values.authorizationApi.extraVolumes }}
           {{- include "common.tplvalues.render" (dict "value" .Values.authorizationApi.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}

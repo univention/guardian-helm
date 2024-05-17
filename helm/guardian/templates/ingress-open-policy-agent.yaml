@@ -16,16 +16,16 @@ metadata:
   {{- end }}
 spec:
   {{- if .Values.openPolicyAgent.ingress.ingressClassName }}
-  ingressClassName: {{ .Values.openPolicyAgent.ingress.ingressClassName }}
+  ingressClassName: {{ coalesce .Values.openPolicyAgent.ingress.ingressClassName .Values.global.ingressClassName }}
   {{- end }}
   {{- if .Values.openPolicyAgent.ingress.tls.enabled }}
   tls:
     - hosts:
-        - {{ .Values.openPolicyAgent.ingress.host | quote }}
+        - {{ required "The \"ingress host\" is required." .Values.openPolicyAgent.ingress.host | quote }}
       secretName: "{{ .Values.openPolicyAgent.ingress.tls.secretName }}"
   {{- end }}
   rules:
-    - host: {{ .Values.openPolicyAgent.ingress.host | quote }}
+    - host: {{ required "The \"ingress host\" is required." .Values.openPolicyAgent.ingress.host | quote }}
       http:
         paths:
           {{- range .Values.openPolicyAgent.ingress.paths }}

@@ -12,9 +12,6 @@ metadata:
     {{- if .Values.provisioning.extraLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.provisioning.extraLabels "context" . ) | nindent 4 }}
     {{- end }}
-  annotations:
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   ttlSecondsAfterFinished: {{ .Values.provisioning.ttlSecondsAfterFinished }}
   template:
@@ -40,10 +37,6 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
-        {{- if .Values.provisioning.credentialSecretName }}
-          - secretRef:
-              name: {{ .Values.provisioning.credentialSecretName | quote }}
-        {{- end }}
         {{- with .Values.provisioning.extraEnvVars }}
           {{- . | toYaml | nindent 10 }}
         {{- end }}
@@ -68,13 +61,14 @@ spec:
         envFrom:
           - configMapRef:
               name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
-        {{- if .Values.provisioning.credentialSecretName }}
-          - secretRef:
-              name: {{ .Values.provisioning.credentialSecretName | quote }}
-        {{- end }}
         {{- with .Values.provisioning.extraEnvVars }}
           {{- . | toYaml | nindent 10 }}
         {{- end }}
+        env:
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            {{- include "guardian.provisioning.config.keycloak.password" . | nindent 12 }}
+          - name: GUARDIAN_MANAGEMENT_API_CLIENT_SECRET
+            {{- include "guardian.provisioning.config.managementApi.clientSecret" . | nindent 12 }}
         command: ["/bin/bash", "/scripts/provision.sh"]
         {{- if .Values.provisioning.args }}
         args: {{ .Values.provisioning.args }}

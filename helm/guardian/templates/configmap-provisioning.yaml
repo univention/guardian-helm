@@ -19,11 +19,11 @@ metadata:
   {{- end }}
 
 data:
-  NUBUS_BASE_URL: {{ .Values.provisioning.config.nubusBaseUrl | quote }}
-  KEYCLOAK_URL: {{ .Values.provisioning.config.keycloak.url | quote }}
-  KEYCLOAK_FQDN: {{ .Values.provisioning.config.keycloak.fqdn | quote }}
-  KEYCLOAK_REALM: {{ .Values.provisioning.config.keycloak.realm | quote }}
-  KEYCLOAK_ADMIN: {{ .Values.provisioning.config.keycloak.admin | quote }}
+  NUBUS_BASE_URL: {{ include "guardian.provisioning.config.nubusBaseUrl" . | quote }}
+  KEYCLOAK_URL: {{ include "guardian.provisioning.config.keycloak.url" . | quote }}
+  KEYCLOAK_FQDN: {{ include "guardian.provisioning.config.keycloak.fqdn" . | quote }}
+  KEYCLOAK_REALM: {{ include "guardian.provisioning.config.keycloak.realm" . | quote }}
+  KEYCLOAK_ADMIN: {{ include "guardian.provisioning.config.keycloak.admin" . | quote }}
   wait-for-keycloak.py: |
     #!/usr/bin/python3
     import requests
@@ -59,7 +59,7 @@ data:
         --host-fqdn "$KEYCLOAK_FQDN" \
         --name guardian-ui \
         --app-url "$NUBUS_BASE_URL" \
-        --redirect-uri "$NUBUS_BASE_URL/univention/guardian/*" \
+        --redirect-uri "$NUBUS_BASE_URL/univention/guardian/management-ui/*" \
         --add-audience-mapper guardian-ui
     univention-keycloak "$@" \
         --keycloak-url "$KEYCLOAK_URL" \

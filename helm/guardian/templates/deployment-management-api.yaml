@@ -55,15 +55,21 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+          env:
+            - name: "SQL_PERSISTENCE_ADAPTER__PASSWORD"
+            {{- include "guardian.postgresql.auth.password" . | nindent 14 }}
       containers:
         - name: "management-api"
           securityContext:
-            {{- toYaml .Values.managementApi.securityContext | nindent 12 }}
+            {{- toYaml .Values.managementApi.securityContext | nindent 14 }}
           image: "{{ .Values.managementApi.image.registry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           imagePullPolicy: {{ .Values.managementApi.image.imagePullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+          env:
+            - name: "SQL_PERSISTENCE_ADAPTER__PASSWORD"
+            {{- include "guardian.postgresql.auth.password" . | nindent 14 }}
           ports:
             {{- range $key, $value := .Values.managementApi.service.ports }}
             - name: {{ $key }}
@@ -111,7 +117,7 @@ spec:
           emptyDir: {}
         - name: "secrets"
           secret:
-            secretName: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+            secretName: {{ include "guardian.managementApi.config.secretRef" .}}
         {{- if .Values.managementApi.extraVolumes }}
           {{- include "common.tplvalues.render" (dict "value" .Values.managementApi.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}

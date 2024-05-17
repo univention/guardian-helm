@@ -20,9 +20,9 @@ metadata:
 data:
   VITE__MANAGEMENT_UI__ADAPTER__AUTHENTICATION_PORT: "{{ .Values.managementUi.config.viteManagementUiAdapterAuthenticationPort }}"
   VITE__MANAGEMENT_UI__ADAPTER__DATA_PORT: "{{ .Values.managementUi.config.viteManagementUiAdapterDataPort }}"
-  VITE__API_DATA_ADAPTER__URI: "{{ .Values.managementUi.config.viteApiDataAdapterUri }}"
-  VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__SSO_URI: "{{ .Values.managementUi.config.viteKeycloakAuthenticationAdapterSsoUri }}"
-  VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__REALM: "{{ .Values.managementUi.config.viteKeycloakAuthenticationAdapterRealm }}"
+  VITE__API_DATA_ADAPTER__URI: "{{ include "guardian.managementUi.config.viteApiDataAdapterUri" . }}"
+  VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__SSO_URI: "{{ include "guardian.managementUi.config.viteKeycloakAuthenticationAdapterSsoUri" . }}"
+  VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__REALM: "{{ include "guardian.managementUi.config.viteKeycloakAuthenticationAdapterRealm" . }}"
   VITE__KEYCLOAK_AUTHENTICATION_ADAPTER__CLIENT_ID: "{{ .Values.managementUi.config.viteKeycloakAuthenticationAdapterClientId }}"
 
 ...

@@ -21,7 +21,7 @@ data:
   IS_UNIVENTION_APPCENTER: "{{ .Values.openPolicyAgent.config.isUniventionAppCenter }}"
   OPA_DATA_BUNDLE: "{{ .Values.openPolicyAgent.config.opaDataBundle }}"
   OPA_POLICY_BUNDLE: "{{ .Values.openPolicyAgent.config.opaPolicyBundle }}"
-  OPA_POLLING_MIN_DELAY: "{{ .Values.openPolicyAgent.config.opaPollingMinDelay }}"
-  OPA_POLLING_MAX_DELAY: "{{ .Values.openPolicyAgent.config.opaPollingMaxDelay }}"
-  OPA_GUARDIAN_MANAGEMENT_URL: "{{ .Values.openPolicyAgent.config.opaGuardianManagementUrl }}"
+  OPA_POLLING_MIN_DELAY: "{{ include "guardian.openPolicyAgent.config.opaPollingMinDelay" . }}"
+  OPA_POLLING_MAX_DELAY: "{{ include "guardian.openPolicyAgent.config.opaPollingMaxDelay" . }}"
+  OPA_GUARDIAN_MANAGEMENT_URL: "{{ include "guardian.openPolicyAgent.config.opaGuardianManagementUrl" . }}"
 ...
