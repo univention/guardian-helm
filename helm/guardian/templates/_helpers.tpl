@@ -59,7 +59,7 @@ AUTHORIZATION API
 {{- if .Values.authorizationApi.config.opaAdapterUrl -}}
 {{- .Values.authorizationApi.config.opaAdapterUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{ printf "http://%s-guardian-open-policy-agent:8181/" .Release.Name }}
+{{ printf "http://%s-guardian-open-policy-agent/" .Release.Name }}
 {{- else -}}
 http://guardian-open-policy-agent:8181/
 {{- end -}}
@@ -69,7 +69,7 @@ http://guardian-open-policy-agent:8181/
 {{- if .Values.authorizationApi.config.oauthAdapterWellKnownUrl -}}
 {{- .Values.authorizationApi.config.oauthAdapterWellKnownUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{ printf "http://%s-keycloak:8080/realms/%s/.well-known/openid-configuration" .Release.Name .Values.global.keycloak.realm }}
+{{ printf "http://%s-keycloak/realms/%s/.well-known/openid-configuration" .Release.Name .Values.global.keycloak.realm }}
 {{- else -}}
 http://keycloak/realms/nubus/.well-known/openid-configuration
 {{- end -}}
@@ -151,7 +151,7 @@ postgresql
 {{- if .Values.managementApi.config.oauthAdapterWellKnownUrl -}}
 {{ required ".Values.managementApi.config.oauthAdapterWellKnownUrl is required" .Values.managementApi.config.oauthAdapterWellKnownUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{ printf "http://%s-keycloak:8080/realms/%s/.well-known/openid-configuration" .Release.Name .Values.global.keycloak.realm }}
+{{ printf "http://%s-keycloak/realms/%s/.well-known/openid-configuration" .Release.Name .Values.global.keycloak.realm }}
 {{- else -}}
 {{- required "managementApi oAuth well known URL is required" .Values.managementApi.config.oauthAdapterWellKnownUrl -}}
 {{- end -}}
@@ -191,7 +191,7 @@ DEBUG
 {{- if .Values.managementApi.config.guardianManagementBaseUrl -}}
 {{- .Values.managementApi.config.guardianManagementBaseUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{ printf "https://%s.%s/guardian/management" .Values.global.subDomains.portal .Values.global.domain }}
+{{ printf "https://%s.%s" .Values.global.subDomains.portal .Values.global.domain }}
 {{- end -}}
 {{- end -}}
 
