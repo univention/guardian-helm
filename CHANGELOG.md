@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.1...v0.4.2) (2024-05-21)
+
+
+### Bug Fixes
+
+* default nubus values ([cf4b276](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/cf4b2766d21c8130a3e60a6ce128b502aab71329))
+
 ## [0.4.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.0...v0.4.1) (2024-05-21)
 
 
