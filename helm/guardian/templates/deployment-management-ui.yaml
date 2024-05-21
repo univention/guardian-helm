@@ -9,12 +9,17 @@ kind: Deployment
 metadata:
   name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
   labels:
-    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
+    {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-ui" (include "common.names.fullname" .)) }}
+    {{- $mergedLabels := merge $uiLabels $commonLabels}}
+    {{- toYaml $mergedLabels | nindent 4 }}
 spec:
   replicas: {{ .Values.managementUi.replicaCount }}
   selector:
     matchLabels:
-      {{- printf "%s-ui" (include "common.labels.matchLabels" .) | nindent 6 }}
+      {{- $commonLabels := include "common.labels.matchLabels" . | fromYaml }}
+      {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-ui" (include "common.names.fullname" .)) }}
+      {{- merge $uiLabels $commonLabels | toYaml | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -23,7 +28,10 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- printf "%s-ui" (include "common.labels.matchLabels" .) | nindent 8 }}
+        {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
+        {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-ui" (include "common.names.fullname" .)) }}
+        {{- $mergedLabels := merge $uiLabels $commonLabels}}
+        {{- toYaml $mergedLabels | nindent 8 }}
     spec:
       {{- with .Values.managementUi.affinity }}
       affinity:

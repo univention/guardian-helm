@@ -539,7 +539,7 @@ false
           "service": {
             "name": "guardian-management-api",
             "port": {
-              "number": 8000
+              "number": 80
             }
           }
         },
@@ -1509,6 +1509,24 @@ null
 			<td>string</td>
 			<td><pre lang="json">
 "nginx"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.ingress.paths[0].backend.service.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"guardian-open-policy-agent"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.ingress.paths[0].backend.service.port.number</td>
+			<td>int</td>
+			<td><pre lang="json">
+80
 </pre>
 </td>
 			<td></td>
