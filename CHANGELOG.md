@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.0...v0.4.1) (2024-05-21)
+
+
+### Bug Fixes
+
+* selectors and labels for services ([c7aecef](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/c7aecefccad0ea24d84b6aa2e8d5f4a1c1a0344e))
+
 ## [0.4.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.3.1...v0.4.0) (2024-05-17)
 
 
