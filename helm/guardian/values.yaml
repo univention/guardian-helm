@@ -281,7 +281,7 @@ managementApi:
           service:
             name: guardian-management-api
             port:
-              number: 8000
+              number: 80
     tls:
       enabled: true
       secretName: ""
@@ -501,6 +501,11 @@ openPolicyAgent:
     paths:
       - pathType: Prefix
         path: /guardian/opa
+        backend:
+          service:
+            name: guardian-open-policy-agent
+            port:
+              number: 80
     tls:
       enabled: true
       secretName: ""
