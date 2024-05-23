@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.3...v0.5.0) (2024-05-23)
+
+
+### Features
+
+* push to harbor ([d77d93b](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/d77d93b7c73541494596becb93501df1291d6493))
+* push to harbor ([8f293aa](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/8f293aa17a5ea973d0c93740c367b7c4934c8b74))
+
 ## [0.4.3](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.2...v0.4.3) (2024-05-23)
 
 
