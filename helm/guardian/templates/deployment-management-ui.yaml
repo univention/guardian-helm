@@ -59,8 +59,8 @@ spec:
         - name: "management-ui"
           securityContext:
             {{- toYaml .Values.managementUi.securityContext | nindent 12 }}
-          image: "{{ .Values.managementUi.image.registry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
-          imagePullPolicy: {{ .Values.managementUi.image.imagePullPolicy }}
+          image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
+          imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
