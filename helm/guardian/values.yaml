@@ -15,6 +15,7 @@ global:
   replicaCount: 1
   securityContext: {}
   tolerations: []
+  imageRegistry: "artifacts.software-univention.de"
 
 #####################
 # AUTHORIZATION API #
@@ -570,8 +571,8 @@ provisioning:
   image:
     imagePullSecrets: []
 
-    registry: "gitregistry.knut.univention.de"
-    repository: "univention/customers/dataport/upx/guardian-helm/guardian-init"
+    registry: ""
+    repository: "nubus-dev/images/guardian-init"
     tag: "0.3.0"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
