@@ -426,6 +426,15 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>global.imageRegistry</td>
+			<td>string</td>
+			<td><pre lang="json">
+"artifacts.software-univention.de"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>global.nameOverride</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -1965,8 +1974,8 @@ false
   "enabled": true,
   "image": {
     "imagePullSecrets": [],
-    "registry": "gitregistry.knut.univention.de",
-    "repository": "univention/customers/dataport/upx/guardian-helm/guardian-init",
+    "registry": "",
+    "repository": "nubus-dev/images/guardian-init",
     "sha256": null,
     "tag": "0.3.0"
   },
