@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.2...v0.4.3) (2024-05-23)
+
+
+### Bug Fixes
+
+* **helm:** keycloak ports ([2054f31](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/2054f3163aec206e8b392e9ab940a49b86dbd4ed))
+
 ## [0.4.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.1...v0.4.2) (2024-05-21)
 
 
