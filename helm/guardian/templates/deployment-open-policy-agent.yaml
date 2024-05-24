@@ -59,8 +59,8 @@ spec:
         - name: "open-policy-agent"
           securityContext:
             {{- toYaml .Values.openPolicyAgent.securityContext | nindent 12 }}
-          image: "{{ .Values.openPolicyAgent.image.registry }}/{{ .Values.openPolicyAgent.image.repository }}{{ if .Values.openPolicyAgent.image.sha256 }}@sha256:{{ .Values.openPolicyAgent.image.sha256 }}{{ else }}:{{ .Values.openPolicyAgent.image.tag }}{{ end }}"
-          imagePullPolicy: {{ .Values.openPolicyAgent.image.imagePullPolicy }}
+          image: "{{ coalesce .Values.openPolicyAgent.image.registry .Values.global.imageRegistry }}/{{ .Values.openPolicyAgent.image.repository }}{{ if .Values.openPolicyAgent.image.sha256 }}@sha256:{{ .Values.openPolicyAgent.image.sha256 }}{{ else }}:{{ .Values.openPolicyAgent.image.tag }}{{ end }}"
+          imagePullPolicy: {{ coalesce .Values.openPolicyAgent.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-open-policy-agent" (include "common.names.fullname" .) }}

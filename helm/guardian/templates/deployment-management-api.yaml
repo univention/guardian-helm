@@ -57,7 +57,7 @@ spec:
       {{- end }}
       initContainers:
         - name: "database-migrations"
-          image: "{{ .Values.managementApi.image.registry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
+          image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           command: ["alembic", "upgrade", "head"]
           imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
           envFrom:
@@ -70,8 +70,8 @@ spec:
         - name: "management-api"
           securityContext:
             {{- toYaml .Values.managementApi.securityContext | nindent 14 }}
-          image: "{{ .Values.managementApi.image.registry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
-          imagePullPolicy: {{ .Values.managementApi.image.imagePullPolicy }}
+          image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
+          imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
