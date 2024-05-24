@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.5.0...v0.5.1) (2024-05-24)
+
+
+### Bug Fixes
+
+* use global registry ([81fd416](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/81fd4168f025d0156256a569dfbe6cb3d5ee6a41))
+
 ## [0.5.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.4.3...v0.5.0) (2024-05-23)
 
 
