@@ -55,6 +55,27 @@ spec:
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
+      initContainers:
+        - name: "app-configuration"
+          {{- if .Values.managementUi.securityContext.enabled }}
+          securityContext:
+            {{- toYaml .Values.managementUi.securityContext | nindent 12 }}
+          {{- end }}
+          image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
+          imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+          command:
+            - sh
+            - -c
+            - 'cp -a /app/* /target/app/'
+          volumeMounts:
+            - name: "init-entrypoints"
+              mountPath: "/entrypoint.d"
+            # NOTE: using target approach
+            - name: "app-config"
+              mountPath: "/target/app"
       containers:
         - name: "management-ui"
           securityContext:
@@ -64,6 +85,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+          volumeMounts:
+            - name: "app-config"
+              mountPath: "/app/config"
           ports:
             {{- range $key, $value := .Values.managementUi.service.ports }}
             - name: {{ $key }}
@@ -94,5 +118,15 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.managementUi.resources | nindent 12 }}
+      volumes:
+        {{- if .Values.extraVolumes }}
+        {{ toYaml .Values.extraVolumes | nindent 8 }}
+        {{- end }}
+        - name: "app-config"
+          emptyDir: { }
+        - name: "init-entrypoints"
+          configMap:
+            name: {{ printf "%s-init-management-ui" (include "common.names.fullname" .) }}
+
 ...
 
