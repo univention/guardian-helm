@@ -629,6 +629,8 @@ postgresql:
   nameOverride: "guardian-postgresql"
   # -- Set to `true` if you want PostgreSQL to be installed as well.
   bundled: false
+  image:
+    registry: "docker.io"
   # -- Connection parameters. These are required if you use an external database.
   connection:
     host:

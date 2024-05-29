@@ -1919,6 +1919,9 @@ false
     "host": null,
     "port": null
   },
+  "image": {
+    "registry": "docker.io"
+  },
   "nameOverride": "guardian-postgresql"
 }
 </pre>
