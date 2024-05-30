@@ -1919,9 +1919,6 @@ false
     "host": null,
     "port": null
   },
-  "image": {
-    "registry": "docker.io"
-  },
   "nameOverride": "guardian-postgresql"
 }
 </pre>
@@ -1980,9 +1977,30 @@ false
     "registry": "",
     "repository": "nubus-dev/images/guardian-init",
     "sha256": null,
-    "tag": "0.3.0"
+    "tag": "latest"
+  },
+  "podSecurityContext": {
+    "fsGroup": 1000,
+    "fsGroupChangePolicy": "Always"
+  },
+  "provisioningImage": {
+    "imagePullSecrets": [],
+    "registry": "registry.opencode.de",
+    "repository": "bmi/opendesk/components/platform-development/images/opendesk-keycloak-bootstrap",
+    "tag": "1.0.5@sha256:76ccd9a74ae2c2dabb6beaa0192c15b9c06763abbd632cd0f8db68e5d8d5883c"
   },
   "restartPolicy": "OnFailure",
+  "securityContext": {
+    "allowPrivilegeEscalation": false,
+    "privileged": false,
+    "readOnlyRootFilesystem": false,
+    "runAsGroup": 1000,
+    "runAsNonRoot": true,
+    "runAsUser": 1000,
+    "seccompProfile": {
+      "type": "RuntimeDefault"
+    }
+  },
   "tolerations": [],
   "ttlSecondsAfterFinished": 300
 }
@@ -2122,6 +2140,15 @@ null
 </pre>
 </td>
 			<td>Define image sha256 as an alternative to `tag`</td>
+		</tr>
+		<tr>
+			<td>provisioning.podSecurityContext.fsGroupChangePolicy</td>
+			<td>string</td>
+			<td><pre lang="json">
+"Always"
+</pre>
+</td>
+			<td>Change ownership and permission of the volume before being exposed inside a Pod.</td>
 		</tr>
 		<tr>
 			<td>provisioning.ttlSecondsAfterFinished</td>

@@ -38,5 +38,4 @@ dependencies:
     repository: "https://charts.bitnami.com/bitnami"
     version: "~12.7.1"
     condition: "postgresql.bundled"
-
 ...

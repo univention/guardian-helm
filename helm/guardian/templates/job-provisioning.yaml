@@ -30,13 +30,17 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.provisioning.podSecurityContext }}
+      securityContext:
+        {{ toYaml . | nindent 8 | trim }}
+      {{- end }}
       initContainers:
       - name: "wait-for-keycloak"
         image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
         imagePullPolicy: {{ coalesce .Values.provisioning.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
         envFrom:
           - configMapRef:
-              name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+              name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
         {{- with .Values.provisioning.extraEnvVars }}
           {{- . | toYaml | nindent 10 }}
         {{- end }}
@@ -54,22 +58,27 @@ spec:
           {{- if .Values.provisioning.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumeMounts "context" .) | nindent 10 }}
           {{- end }}
+
       containers:
       - name: "keycloak-provisioning"
-        image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
-        imagePullPolicy: {{ coalesce .Values.provisioning.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
-        envFrom:
-          - configMapRef:
-              name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
-        {{- with .Values.provisioning.extraEnvVars }}
-          {{- . | toYaml | nindent 10 }}
-        {{- end }}
+        securityContext:
+          {{- toYaml .Values.provisioning.securityContext | nindent 10 }}
+        image: "{{ coalesce .Values.provisioning.provisioningImage.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.provisioningImage.repository }}{{ if .Values.provisioning.provisioningImage.sha256 }}@sha256:{{ .Values.provisioning.provisioningImage.sha256 }}{{ else }}:{{ .Values.provisioning.provisioningImage.tag }}{{ end }}"
+        imagePullPolicy: {{ coalesce .Values.provisioning.provisioningImage.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+        command:
+          - /bin/bash
+          - -c
+          - |
+            /app/configure.sh
+            /app/entrypoint.sh
         env:
           - name: KEYCLOAK_ADMIN_PASSWORD
             {{- include "guardian.provisioning.config.keycloak.password" . | nindent 12 }}
           - name: GUARDIAN_MANAGEMENT_API_CLIENT_SECRET
             {{- include "guardian.provisioning.config.managementApi.clientSecret" . | nindent 12 }}
-        command: ["/bin/bash", "/scripts/provision.sh"]
+        {{- with .Values.provisioning.extraEnvVars }}
+          {{- . | toYaml | nindent 10 }}
+        {{- end }}
         {{- if .Values.provisioning.args }}
         args: {{ .Values.provisioning.args }}
         {{- end }}
@@ -79,7 +88,10 @@ spec:
         {{- end }}
         volumeMounts:
           - name: "provisioning"
-            mountPath: "/scripts"
+            mountPath: "/app/configure.sh"
+            subPath: "configure.sh"
+          - name: "temp-dir"
+            mountPath: "/tmp"
           {{- if .Values.provisioning.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumeMounts "context" .) | nindent 10 }}
           {{- end }}
@@ -98,10 +110,17 @@ spec:
       volumes:
         - name: "wait-for-keycloak"
           configMap:
-            name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+            name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
         - name: "provisioning"
           configMap:
-            name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+            name: {{ printf "%s-provisioning-config" (include "common.names.fullname" .) }}
+            defaultMode: 0555
+        - name: "init"
+          configMap:
+            name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
+        - name: "temp-dir"
+          emptyDir:
+            sizeLimit: "20Mi"
         {{- if .Values.provisioning.extraVolumes }}
         {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}

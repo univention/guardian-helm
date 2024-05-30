@@ -13,9 +13,9 @@ If the value .Values.global.nubusDeployment equates to true, the defined templat
 {{- if .Values.authorizationApi.config.udmDataAdapterUrl -}}
 {{- .Values.authorizationApi.config.udmDataAdapterUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{- printf "http://%s-udm-rest-api/univention/udm/" .Release.Name -}}
+{{- printf "http://%s-udm-rest-api/udm/" .Release.Name -}}
 {{- else -}}
-{{- printf "http://udm-rest-api/univention/udm/" -}}
+{{- printf "http://udm-rest-api/udm/" -}}
 {{- end -}}
 {{- end -}}
 
@@ -318,6 +318,14 @@ kcadmin
 {{- end -}}
 {{- end -}}
 
+{{- define "guardian.provisioning.config.keycloak.credentialSecret.key" -}}
+{{- if .Values.provisioning.config.keycloak.credentialSecret.key -}}
+{{- .Values.provisioning.config.keycloak.credentialSecret.key -}}
+{{- else if .Values.global.nubusDeployment -}}
+adminPassword
+{{- end -}}
+{{- end -}}
+
 {{- define "guardian.provisioning.config.keycloak.password" -}}
 {{- if .Values.provisioning.config.keycloak.credentialSecret.name -}}
 valueFrom:
@@ -328,7 +336,7 @@ valueFrom:
 valueFrom:
   secretKeyRef:
     name: {{ include "guardian.provisioning.config.keycloak.credentialSecret.name" . | quote }}
-    key: {{ .Values.provisioning.config.keycloak.credentialSecret.key | quote }}
+    key: {{ include "guardian.provisioning.config.keycloak.credentialSecret.key" . | quote }}
 {{- else -}}
 value: {{ required ".Values.provisioning.config.keycloak.password is required." .Values.provisioning.config.keycloak.password | quote }}
 {{- end -}}
@@ -342,6 +350,14 @@ value: {{ required ".Values.provisioning.config.keycloak.password is required." 
 {{- end -}}
 {{- end -}}
 
+{{- define "guardian.provisioning.config.managementApi.credentialSecret.key" -}}
+{{- if .Values.provisioning.config.managementApi.credentialSecret.key -}}
+{{- .Values.provisioning.config.managementApi.credentialSecret.key -}}
+{{- else if .Values.global.nubusDeployment -}}
+managementApiClientSecret
+{{- end -}}
+{{- end -}}
+
 {{- define "guardian.provisioning.config.managementApi.clientSecret" -}}
 {{- if .Values.provisioning.config.managementApi.credentialSecret.name -}}
 valueFrom:
@@ -352,7 +368,7 @@ valueFrom:
 valueFrom:
   secretKeyRef:
     name: {{ include "guardian.provisioning.config.managementApi.credentialSecret.name" . | quote }}
-    key: {{ .Values.provisioning.config.managementApi.credentialSecret.key | quote }}
+    key: {{ include "guardian.provisioning.config.managementApi.credentialSecret.key" . | quote }}
 {{- else -}}
 value: {{ required ".Values.provisioning.config.managementApi.clientSecret is required." .Values.provisioning.config.managementApi.clientSecret | quote }}
 {{- end -}}
