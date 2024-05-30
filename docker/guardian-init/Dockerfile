@@ -8,7 +8,7 @@ FROM ${UCS_BASE_IMAGE}:${UCS_BASE_IMAGE_TAG} as base
 
 # hadolint ignore=DL3008
 RUN \
-  apt-get install -y --no-install-recommends \
+    apt-get install -y --no-install-recommends \
     curl \
     jq \
     python3 \
@@ -16,9 +16,6 @@ RUN \
     python3-defusedxml \
     python3-keycloak \
     python3-ldap && \
-  rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
-COPY univention-keycloak /app/univention-keycloak
-RUN ln -s /app/univention-keycloak /usr/bin/univention-keycloak
