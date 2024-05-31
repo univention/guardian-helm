@@ -568,12 +568,26 @@ provisioning:
   backoffLimit: 900
   # -- Time in seconds until the job gets deleted
   ttlSecondsAfterFinished: 300
+  podSecurityContext:
+    fsGroup: 1000
+    # -- Change ownership and permission of the volume before being exposed inside a Pod.
+    fsGroupChangePolicy: "Always"
+
+
+  provisioningImage:
+    imagePullSecrets: []
+
+    registry: "registry.opencode.de"
+    repository: "bmi/opendesk/components/platform-development/images/opendesk-keycloak-bootstrap"
+    tag: "1.0.5@sha256:76ccd9a74ae2c2dabb6beaa0192c15b9c06763abbd632cd0f8db68e5d8d5883c"
+
+
   image:
     imagePullSecrets: []
 
     registry: ""
     repository: "nubus-dev/images/guardian-init"
-    tag: "0.3.0"
+    tag: "latest"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -610,6 +624,15 @@ provisioning:
       credentialSecret:
         key: ""
 
+  securityContext:
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: false
+    runAsGroup: 1000
+    runAsNonRoot: true
+    runAsUser: 1000
+    seccompProfile:
+      type: RuntimeDefault
   tolerations: []
 
 #######################

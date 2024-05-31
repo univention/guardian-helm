@@ -65,6 +65,24 @@ openPolicyAgent:
     opaPollingMinDelay: 10
     opaPollingMaxDelay: 15
     opaGuardianManagementUrl: "http://guardian-management-api/guardian/management"
+
+provisioning:
+  config:
+    nubusBaseUrl: "https://portal.example.test"
+    keycloak:
+      url: "http://keycloak:8080"
+      fqdn: "id.example.test"
+      realm: "nubus"
+      admin: "kcadmin"
+      password: "stub_password"
+      credentialSecret:
+        key: "adminPassword"
+    managementApi:
+      clientSecret: "stub_secret"
+      credentialSecret:
+        key: "managementApiClientSecret"
+
+
 postgresql:
   # -- Set to `true` if you want PostgreSQL to be installed as well.
   bundled: true
