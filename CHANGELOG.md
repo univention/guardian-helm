@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.5.1...v0.6.0) (2024-05-31)
+
+
+### Features
+
+* **init:** drop univention-keycloak ([8e4a2c4](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/8e4a2c48bf167a6403f7dee077b50ef189bfc511))
+* **provisioning:** use openDesk provisioning ([90544e1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/90544e1d74aef100f077bd8468dcb772840e84a4))
+
+
+### Bug Fixes
+
+* **postgresql:** overwrite local postgresql registry to avoid global.imageRegistry ([eed6dbc](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/eed6dbcc82f675bdc2e68d4ce7fecc2018aa008c))
+
 ## [0.5.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.5.0...v0.5.1) (2024-05-24)
 
 
