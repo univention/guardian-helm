@@ -57,10 +57,6 @@ spec:
       {{- end }}
       initContainers:
         - name: "app-configuration"
-          {{- if .Values.managementUi.securityContext.enabled }}
-          securityContext:
-            {{- toYaml .Values.managementUi.securityContext | nindent 12 }}
-          {{- end }}
           image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
@@ -69,13 +65,15 @@ spec:
           command:
             - sh
             - -c
-            - 'cp -a /app/* /target/app/'
+            - 'cp -a /app/* /target/app/; cp -a /etc/nginx/sites-enabled/* /target/etc/nginx/sites-enabled/; cp /entrypoint.d/nginx.conf /target/etc/nginx/sites-enabled/default'
           volumeMounts:
             - name: "init-entrypoints"
               mountPath: "/entrypoint.d"
             # NOTE: using target approach
             - name: "app-config"
               mountPath: "/target/app"
+            - name: "sites-enabled"
+              mountPath: "/target/etc/nginx/sites-enabled"
       containers:
         - name: "management-ui"
           securityContext:
@@ -87,7 +85,15 @@ spec:
                 name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
           volumeMounts:
             - name: "app-config"
-              mountPath: "/app/config"
+              mountPath: "/app"
+            - name: "sites-enabled"
+              mountPath: "/etc/nginx/sites-enabled/"
+            - name: "entrypoint"
+              mountPath: "/entrypoint.d"
+            - name: "var-lib"
+              mountPath: "/var/lib/nginx"
+            - name: "var-run"
+              mountPath: "/var/run"
           ports:
             {{- range $key, $value := .Values.managementUi.service.ports }}
             - name: {{ $key }}
@@ -123,6 +129,15 @@ spec:
         {{ toYaml .Values.extraVolumes | nindent 8 }}
         {{- end }}
         - name: "app-config"
+          emptyDir: { }
+        - name: "sites-enabled"
+          emptyDir: { }
+          # NOTE: Workaround for removing the content of the entrypoint
+        - name: "entrypoint"
+          emptyDir: { }
+        - name: "var-lib"
+          emptyDir: { }
+        - name: "var-run"
           emptyDir: { }
         - name: "init-entrypoints"
           configMap:

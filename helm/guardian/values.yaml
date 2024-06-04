@@ -412,7 +412,7 @@ managementUi:
     type: "ClusterIP"
     ports:
       http:
-        containerPort: 80
+        containerPort: 8383
         port: 80
         protocol: "TCP"
 
