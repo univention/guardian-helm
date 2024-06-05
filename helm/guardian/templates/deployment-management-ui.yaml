@@ -65,15 +65,13 @@ spec:
           command:
             - sh
             - -c
-            - '/entrypoint.sh; cp -a /app/* /target/app/; cp -a /etc/nginx/sites-enabled/* /target/etc/nginx/sites-enabled/'
+            - '/entrypoint.sh; cp -a /app/* /target/app/'
           volumeMounts:
             - name: "init-entrypoints-config"
               mountPath: "/entrypoint.d/10-generate_config.sh"
             # NOTE: using target approach
             - name: "app-config"
               mountPath: "/target/app"
-            - name: "sites-enabled"
-              mountPath: "/target/etc/nginx/sites-enabled"
       containers:
         - name: "management-ui"
           securityContext:
@@ -88,7 +86,7 @@ spec:
               mountPath: "/app"
             - name: "nginx-conf"
               mountPath: "/etc/nginx/sites-enabled/default"
-              subPath: "default"
+              subPath: "nginx.conf"
             - name: "entrypoint"
               mountPath: "/entrypoint.d"
             - name: "var-lib"

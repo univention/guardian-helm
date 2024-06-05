@@ -49,6 +49,7 @@ metadata:
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.managementUi.additionalAnnotations "context" . ) | nindent 4 }}
   {{- end }}
 
+data:
   nginx.conf: |
     server {
      listen 8383;
