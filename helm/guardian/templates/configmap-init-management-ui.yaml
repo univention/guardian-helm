@@ -6,7 +6,7 @@
 apiVersion: "v1"
 kind: ConfigMap
 metadata:
-  name: {{ printf "%s-init-management-ui" (include "common.names.fullname" .) }}
+  name: {{ printf "%s-init-config-management-ui" (include "common.names.fullname" .) }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     {{- include "common.labels.standard" . | nindent 4 }}
@@ -21,6 +21,8 @@ data:
   10-generate_config.sh: |
     #!/bin/bash
 
+    set -eo pipefail
+
     env_variable_names=$(compgen -e)
     config='{}'
 
@@ -30,6 +32,22 @@ data:
         fi
     done
     echo "$config" > /app/config.json
+...
+---
+
+apiVersion: "v1"
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-nginx-conf" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.managementUi.additionalLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.managementUi.additionalLabels "context" . ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.managementUi.additionalAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.managementUi.additionalAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
 
   nginx.conf: |
     server {
