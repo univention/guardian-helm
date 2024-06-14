@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.6.0...v0.7.0) (2024-06-14)
+
+
+### Features
+
+* management-ui is BSI compliante ([799fbb6](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/799fbb6a55b419d1ac48f3e84f8a33ef5782c212))
+* move initial configuration to initContainer ([12143b9](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/12143b90f173c57c7567c8cd916c52a2024f1bf5))
+
+
+### Bug Fixes
+
+* removed unused volumes and fix configmap typo ([f002923](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/f00292383ef3156a9bb73d2534411656ca65496f))
+
 ## [0.6.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.5.1...v0.6.0) (2024-05-31)
 
 
