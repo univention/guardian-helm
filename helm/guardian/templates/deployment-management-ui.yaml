@@ -55,6 +55,23 @@ spec:
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
+      initContainers:
+        - name: "app-configuration"
+          image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
+          imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+          command:
+            - sh
+            - -c
+            - '/entrypoint.sh; cp -a /app/* /target/app/'
+          volumeMounts:
+            - name: "init-entrypoints-config"
+              mountPath: "/entrypoint.d/10-generate_config.sh"
+            # NOTE: using target approach
+            - name: "app-config"
+              mountPath: "/target/app"
       containers:
         - name: "management-ui"
           securityContext:
@@ -64,6 +81,18 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+          volumeMounts:
+            - name: "app-config"
+              mountPath: "/app"
+            - name: "nginx-conf"
+              mountPath: "/etc/nginx/sites-enabled/default"
+              subPath: "nginx.conf"
+            - name: "entrypoint"
+              mountPath: "/entrypoint.d"
+            - name: "var-lib"
+              mountPath: "/var/lib/nginx"
+            - name: "var-run"
+              mountPath: "/var/run"
           ports:
             {{- range $key, $value := .Values.managementUi.service.ports }}
             - name: {{ $key }}
@@ -94,5 +123,26 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.managementUi.resources | nindent 12 }}
+      volumes:
+        {{- if .Values.extraVolumes }}
+        {{ toYaml .Values.extraVolumes | nindent 8 }}
+        {{- end }}
+        - name: "app-config"
+          emptyDir: { }
+          # NOTE: Workaround for removing the content of the entrypoint
+        - name: "entrypoint"
+          emptyDir: { }
+        - name: "var-lib"
+          emptyDir: { }
+        - name: "var-run"
+          emptyDir: { }
+        - name: "init-entrypoints-config"
+          configMap:
+            name: {{ printf "%s-init-config-management-ui" (include "common.names.fullname" .) }}
+            defaultMode: 0555
+        - name: "nginx-conf"
+          configMap:
+            name: {{ printf "%s-nginx-conf" (include "common.names.fullname" .) }}
+
 ...
 
