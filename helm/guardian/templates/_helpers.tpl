@@ -379,18 +379,18 @@ POSGRESQL
 */}}
 
 {{- define "guardian.postgresql.connection.host" -}}
-{{- if .Values.postgresql.connection.host -}}
-{{- .Values.postgresql.connection.host -}}
+{{- if or .Values.postgresql.connection.host .Values.global.postgresql.connection.host -}}
+{{- tpl ( coalesce .Values.postgresql.connection.host .Values.global.postgresql.connection.host ) . -}}
 {{- else if .Values.global.nubusDeployment -}}
 {{- printf "%s-postgresql" .Release.Name -}}
 {{- else -}}
-{{ printf "guardian-postgresql" }}
+{{- required ".Values.postgresql.connection.host or .Values.global.postgresql.connection.host must be defined." (coalesce .Values.postgresql.connection.host .Values.global.postgresql.connection.host) -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "guardian.postgresql.connection.port" -}}
-{{- if .Values.postgresql.connection.port -}}
-{{- .Values.postgresql.connection.port -}}
+{{- if or .Values.postgresql.connection.port .Values.global.postgresql.connection.port -}}
+{{- tpl ( coalesce .Values.postgresql.connection.port .Values.global.postgresql.connection.port ) -}}
 {{- else -}}
 5432
 {{- end -}}
