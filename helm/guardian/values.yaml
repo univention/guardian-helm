@@ -16,6 +16,10 @@ global:
   securityContext: {}
   tolerations: []
   imageRegistry: "artifacts.software-univention.de"
+  postgresql:
+    connection:
+      host: ""
+      port: ""
 
 #########################
 # INGRESS CONFIGURATION #

@@ -480,6 +480,24 @@ true
 			<td></td>
 		</tr>
 		<tr>
+			<td>global.postgresql.connection.host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>global.postgresql.connection.port</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>global.replicaCount</td>
 			<td>int</td>
 			<td><pre lang="json">
