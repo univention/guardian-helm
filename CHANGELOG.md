@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.7.0...v0.8.0) (2024-07-04)
+
+
+### Features
+
+* support global postgres ([d872171](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/d8721719c7130832691aa445ce0bb619c54432fe))
+
 ## [0.7.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.6.0...v0.7.0) (2024-06-14)
 
 
