@@ -17,6 +17,95 @@ global:
   tolerations: []
   imageRegistry: "artifacts.software-univention.de"
 
+#########################
+# INGRESS CONFIGURATION #
+#########################
+
+# Define and create Kubernetes Ingress.
+#
+# Ref.: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  # -- Enable creation of Ingress.
+  enabled: true
+
+  # -- Define custom ingress annotations for all Ingresses.
+  annotations: {}
+
+  # -- Define the Fully Qualified Domain Name (FQDN) where application should be reachable. (This will be the default for all Ingresses)
+  host: ""
+
+  # -- The Ingress controller class name. (This will be the default for all Ingresses)
+  ingressClassName: ""
+
+  # -- Secure an Ingress by specifying a Secret that contains a TLS private key and certificate.
+  #
+  # Ref.: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+  tls:
+    # -- Enable TLS/SSL/HTTPS for Ingress.
+    enabled: true
+
+    # -- The name of the kubernetes secret which contains a TLS private key and certificate.
+    # Hint: This secret is not created by this chart and must be provided.
+    secretName: ""
+  items:
+    - name: management-ui
+      host: ""
+      # -- Define the Ingress paths.
+      paths:
+      - path: /univention/guardian/management-ui
+        pathType: Prefix
+      ingressClassName: ""
+      annotations: {}
+      tls:
+        # enabled: true
+        secretName: ""
+    - name: management-api
+      host: ""
+      paths:
+      - path: /guardian/management
+        pathType: Prefix
+      ingressClassName: ""
+      annotations: {}
+      tls:
+        # enabled: true
+        secretName: ""
+    - name: authorization-api
+      host: ""
+      paths:
+      - path: /guardian/authorization
+        pathType: Prefix
+      ingressClassName: ""
+      annotations: {}
+      tls:
+        # enabled: true
+        secretName: ""
+    - name: open-policy-agent
+      host: ""
+      paths:
+      - path: /guardian/(opa/)(.*)
+        pathType: ImplementationSpecific
+      ingressClassName: ""
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: "/$2$3"
+        nginx.ingress.kubernetes.io/use-regex: "true"
+      tls:
+        # enabled: true
+        secretName: ""
+
+# -- Extra ingress configuration
+extraIngresses: []
+# example:
+  # - name: custom
+  #   host: ""
+  #   paths:
+  #     - pathType: Exact
+  #       path: /custom
+  #   ingressClassName: ""
+  #   annotations: {}
+  #   tls:
+  #     enabled: true
+  #     secretName: ""
+
 #####################
 # AUTHORIZATION API #
 #####################
@@ -116,9 +205,9 @@ authorizationApi:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: false
-    ingressClassName: "nginx"
-    host: null
+    enabled: true
+    ingressClassName: ""
+    host: ""
     paths:
       - pathType: Prefix
         path: /guardian/authorization
@@ -272,9 +361,9 @@ managementApi:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: false
-    ingressClassName: "nginx"
-    host: null
+    enabled: true
+    ingressClassName: ""
+    host: ""
     paths:
       - pathType: Prefix
         path: /guardian/management
@@ -392,9 +481,9 @@ managementUi:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: false
-    ingressClassName: "nginx"
-    host: null
+    enabled: true
+    ingressClassName: ""
+    host: ""
     paths:
       - pathType: Prefix
         path: /univention/guardian/management-ui
@@ -508,9 +597,9 @@ openPolicyAgent:
 
   ingress:
     # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: false
-    ingressClassName: "nginx"
-    host: null
+    enabled: true
+    ingressClassName: ""
+    host: ""
     paths:
       - pathType: Prefix
         path: /guardian/opa

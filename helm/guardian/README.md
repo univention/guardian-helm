@@ -81,9 +81,9 @@ This chart does install the Guardian Authorization API.
     "tag": "2.0.0"
   },
   "ingress": {
-    "enabled": false,
-    "host": null,
-    "ingressClassName": "nginx",
+    "enabled": true,
+    "host": "",
+    "ingressClassName": "",
     "paths": [
       {
         "backend": {
@@ -348,7 +348,7 @@ null
 			<td>authorizationApi.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -370,6 +370,15 @@ false
 </pre>
 </td>
 			<td>Array with extra environment variables to add to containers.  extraEnvVars:   - name: FOO     value: "bar"</td>
+		</tr>
+		<tr>
+			<td>extraIngresses</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Extra ingress configuration</td>
 		</tr>
 		<tr>
 			<td>extraSecrets</td>
@@ -498,6 +507,329 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>ingress.annotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td>Define custom ingress annotations for all Ingresses.</td>
+		</tr>
+		<tr>
+			<td>ingress.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Enable creation of Ingress.</td>
+		</tr>
+		<tr>
+			<td>ingress.host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Define the Fully Qualified Domain Name (FQDN) where application should be reachable. (This will be the default for all Ingresses)</td>
+		</tr>
+		<tr>
+			<td>ingress.ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>The Ingress controller class name. (This will be the default for all Ingresses)</td>
+		</tr>
+		<tr>
+			<td>ingress.items[0].annotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[0].host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[0].ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[0].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"management-ui"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[0].paths</td>
+			<td>list</td>
+			<td><pre lang="json">
+[
+  {
+    "path": "/univention/guardian/management-ui",
+    "pathType": "Prefix"
+  }
+]
+</pre>
+</td>
+			<td>Define the Ingress paths.</td>
+		</tr>
+		<tr>
+			<td>ingress.items[0].tls.secretName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].annotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"management-api"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].paths[0].path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/guardian/management"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].paths[0].pathType</td>
+			<td>string</td>
+			<td><pre lang="json">
+"Prefix"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].tls.secretName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].annotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"authorization-api"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].paths[0].path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/guardian/authorization"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].paths[0].pathType</td>
+			<td>string</td>
+			<td><pre lang="json">
+"Prefix"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].tls.secretName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].annotations."nginx.ingress.kubernetes.io/rewrite-target"</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/$2$3"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].annotations."nginx.ingress.kubernetes.io/use-regex"</td>
+			<td>string</td>
+			<td><pre lang="json">
+"true"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].ingressClassName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"open-policy-agent"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].paths[0].path</td>
+			<td>string</td>
+			<td><pre lang="json">
+"/guardian/(opa/)(.*)"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].paths[0].pathType</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ImplementationSpecific"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[3].tls.secretName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.tls</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "enabled": true,
+  "secretName": ""
+}
+</pre>
+</td>
+			<td>Secure an Ingress by specifying a Secret that contains a TLS private key and certificate.  Ref.: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls</td>
+		</tr>
+		<tr>
+			<td>ingress.tls.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td>Enable TLS/SSL/HTTPS for Ingress.</td>
+		</tr>
+		<tr>
+			<td>ingress.tls.secretName</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>The name of the kubernetes secret which contains a TLS private key and certificate. Hint: This secret is not created by this chart and must be provided.</td>
+		</tr>
+		<tr>
 			<td>managementApi</td>
 			<td>object</td>
 			<td><pre lang="json">
@@ -539,9 +871,9 @@ false
     "tag": "2.0.0"
   },
   "ingress": {
-    "enabled": false,
-    "host": null,
-    "ingressClassName": "nginx",
+    "enabled": true,
+    "host": "",
+    "ingressClassName": "",
     "paths": [
       {
         "backend": {
@@ -842,7 +1174,7 @@ null
 			<td>managementApi.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -1013,7 +1345,7 @@ null
 			<td>managementUi.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -1022,7 +1354,7 @@ false
 			<td>managementUi.ingress.host</td>
 			<td>string</td>
 			<td><pre lang="json">
-null
+""
 </pre>
 </td>
 			<td></td>
@@ -1031,7 +1363,7 @@ null
 			<td>managementUi.ingress.ingressClassName</td>
 			<td>string</td>
 			<td><pre lang="json">
-"nginx"
+""
 </pre>
 </td>
 			<td></td>
@@ -1571,7 +1903,7 @@ null
 			<td>openPolicyAgent.ingress.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
-false
+true
 </pre>
 </td>
 			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
@@ -1580,7 +1912,7 @@ false
 			<td>openPolicyAgent.ingress.host</td>
 			<td>string</td>
 			<td><pre lang="json">
-null
+""
 </pre>
 </td>
 			<td></td>
@@ -1589,7 +1921,7 @@ null
 			<td>openPolicyAgent.ingress.ingressClassName</td>
 			<td>string</td>
 			<td><pre lang="json">
-"nginx"
+""
 </pre>
 </td>
 			<td></td>

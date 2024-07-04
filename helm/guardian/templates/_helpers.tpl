@@ -439,3 +439,13 @@ guardian
 {{- required ".Values.postgresql.auth.database must be defined." .Values.postgresql.auth.database -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "guardian.ingress.tls.secretName" -}}
+{{- if .Values.ingress.tls.secretName -}}
+{{- tpl .Values.ingress.tls.secretName . -}}
+{{- else if .Values.global.nubusDeployment -}}
+{{- printf "%s-guardian-tls" .Release.Name -}}
+{{- else -}}
+{{- required ".Values.ingress.tls.secretName must be defined" .Values.ingress.tls.secretName -}}
+{{- end -}}
+{{- end -}}
