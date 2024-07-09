@@ -390,7 +390,7 @@ POSGRESQL
 
 {{- define "guardian.postgresql.connection.port" -}}
 {{- if or .Values.postgresql.connection.port .Values.global.postgresql.connection.port -}}
-{{- tpl ( coalesce .Values.postgresql.connection.port .Values.global.postgresql.connection.port ) -}}
+{{- tpl ( coalesce .Values.postgresql.connection.port .Values.global.postgresql.connection.port ) . -}}
 {{- else -}}
 5432
 {{- end -}}
