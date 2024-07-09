@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.9.0...v0.9.1) (2024-07-09)
+
+
+### Bug Fixes
+
+* missing dot ([3565509](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/3565509b48cc28948be784e8668f4c8de12bf090))
+
 ## [0.9.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.8.0...v0.9.0) (2024-07-09)
 
 
