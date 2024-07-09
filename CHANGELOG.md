@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.8.0...v0.9.0) (2024-07-09)
+
+
+### Features
+
+* adjust ingress configuration to support Nubus deployment without stack-gateway or centralized ingress configuration ([4f60c96](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/4f60c9631d3814f6c737fd3587a65119fbe50f6a))
+
+
+### Bug Fixes
+
+* missing global postgresql conf ([5f6e767](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/5f6e767a62978d9b415864c78957e4bdaab5ce37))
+
 ## [0.8.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.7.0...v0.8.0) (2024-07-04)
 
 
