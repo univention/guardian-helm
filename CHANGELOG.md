@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.9.1...v0.9.2) (2024-07-18)
+
+
+### Bug Fixes
+
+* missing backend for ingresses ([33fe408](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/33fe40812f52400f9e8e36487d9a6f385cd76adf))
+
 ## [0.9.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.9.0...v0.9.1) (2024-07-09)
 
 
