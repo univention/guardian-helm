@@ -80,29 +80,6 @@ This chart does install the Guardian Authorization API.
     "sha256": null,
     "tag": "2.0.0"
   },
-  "ingress": {
-    "enabled": true,
-    "host": "",
-    "ingressClassName": "",
-    "paths": [
-      {
-        "backend": {
-          "service": {
-            "name": "guardian-authorization-api",
-            "port": {
-              "number": 80
-            }
-          }
-        },
-        "path": "/guardian/authorization",
-        "pathType": "Prefix"
-      }
-    ],
-    "tls": {
-      "enabled": true,
-      "secretName": ""
-    }
-  },
   "nameOverride": "",
   "nodeSelector": {},
   "persistence": {
@@ -343,15 +320,6 @@ null
 </pre>
 </td>
 			<td>Define image sha256 as an alternative to `tag`</td>
-		</tr>
-		<tr>
-			<td>authorizationApi.ingress.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.podSecurityContext.fsGroupChangePolicy</td>
@@ -602,6 +570,14 @@ true
 			<td><pre lang="json">
 [
   {
+    "backend": {
+      "service": {
+        "name": "guardian-management-ui",
+        "port": {
+          "number": 80
+        }
+      }
+    },
     "path": "/univention/guardian/management-ui",
     "pathType": "Prefix"
   }
@@ -651,6 +627,24 @@ true
 			<td>string</td>
 			<td><pre lang="json">
 "management-api"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].paths[0].backend.service.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"guardian-management-api"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[1].paths[0].backend.service.port.number</td>
+			<td>int</td>
+			<td><pre lang="json">
+80
 </pre>
 </td>
 			<td></td>
@@ -719,6 +713,24 @@ true
 			<td></td>
 		</tr>
 		<tr>
+			<td>ingress.items[2].paths[0].backend.service.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+"guardian-authorization-api"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>ingress.items[2].paths[0].backend.service.port.number</td>
+			<td>int</td>
+			<td><pre lang="json">
+80
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>ingress.items[2].paths[0].path</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -738,78 +750,6 @@ true
 		</tr>
 		<tr>
 			<td>ingress.items[2].tls.secretName</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].annotations."nginx.ingress.kubernetes.io/rewrite-target"</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/$2$3"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].annotations."nginx.ingress.kubernetes.io/use-regex"</td>
-			<td>string</td>
-			<td><pre lang="json">
-"true"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].host</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].ingressClassName</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].name</td>
-			<td>string</td>
-			<td><pre lang="json">
-"open-policy-agent"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].paths[0].path</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/guardian/(opa/)(.*)"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].paths[0].pathType</td>
-			<td>string</td>
-			<td><pre lang="json">
-"ImplementationSpecific"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>ingress.items[3].tls.secretName</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""
@@ -887,29 +827,6 @@ true
     "repository": "guardian-management-api-management-api",
     "sha256": null,
     "tag": "2.0.0"
-  },
-  "ingress": {
-    "enabled": true,
-    "host": "",
-    "ingressClassName": "",
-    "paths": [
-      {
-        "backend": {
-          "service": {
-            "name": "guardian-management-api",
-            "port": {
-              "number": 80
-            }
-          }
-        },
-        "path": "/guardian/management",
-        "pathType": "Prefix"
-      }
-    ],
-    "tls": {
-      "enabled": true,
-      "secretName": ""
-    }
   },
   "nameOverride": "",
   "nodeSelector": {},
@@ -1189,15 +1106,6 @@ null
 			<td>Define image sha256 as an alternative to `tag`</td>
 		</tr>
 		<tr>
-			<td>managementApi.ingress.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
-		</tr>
-		<tr>
 			<td>managementApi.podSecurityContext.fsGroupChangePolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -1355,87 +1263,6 @@ null
 			<td>string</td>
 			<td><pre lang="json">
 "2.0.0"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.host</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.ingressClassName</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.paths[0].backend.service.name</td>
-			<td>string</td>
-			<td><pre lang="json">
-"guardian-management-ui"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.paths[0].backend.service.port.number</td>
-			<td>int</td>
-			<td><pre lang="json">
-80
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.paths[0].path</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/univention/guardian/management-ui"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.paths[0].pathType</td>
-			<td>string</td>
-			<td><pre lang="json">
-"Prefix"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.tls.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.ingress.tls.secretName</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
 </pre>
 </td>
 			<td></td>
@@ -1913,87 +1740,6 @@ null
 			<td>string</td>
 			<td><pre lang="json">
 "2.0.0"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td>Set this to `true` in order to enable the installation on Ingress related objects.</td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.host</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.ingressClassName</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.paths[0].backend.service.name</td>
-			<td>string</td>
-			<td><pre lang="json">
-"guardian-open-policy-agent"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.paths[0].backend.service.port.number</td>
-			<td>int</td>
-			<td><pre lang="json">
-80
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.paths[0].path</td>
-			<td>string</td>
-			<td><pre lang="json">
-"/guardian/opa"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.paths[0].pathType</td>
-			<td>string</td>
-			<td><pre lang="json">
-"Prefix"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.tls.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.ingress.tls.secretName</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
 </pre>
 </td>
 			<td></td>

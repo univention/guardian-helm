@@ -56,8 +56,13 @@ ingress:
       host: ""
       # -- Define the Ingress paths.
       paths:
-      - path: /univention/guardian/management-ui
-        pathType: Prefix
+        - path: /univention/guardian/management-ui
+          pathType: Prefix
+          backend:
+            service:
+              name: guardian-management-ui
+              port:
+                number: 80
       ingressClassName: ""
       annotations: {}
       tls:
@@ -66,8 +71,13 @@ ingress:
     - name: management-api
       host: ""
       paths:
-      - path: /guardian/management
-        pathType: Prefix
+        - path: /guardian/management
+          pathType: Prefix
+          backend:
+            service:
+              name: guardian-management-api
+              port:
+                number: 80
       ingressClassName: ""
       annotations: {}
       tls:
@@ -76,22 +86,15 @@ ingress:
     - name: authorization-api
       host: ""
       paths:
-      - path: /guardian/authorization
-        pathType: Prefix
+        - path: /guardian/authorization
+          pathType: Prefix
+          backend:
+            service:
+              name: guardian-authorization-api
+              port:
+                number: 80
       ingressClassName: ""
       annotations: {}
-      tls:
-        # enabled: true
-        secretName: ""
-    - name: open-policy-agent
-      host: ""
-      paths:
-      - path: /guardian/(opa/)(.*)
-        pathType: ImplementationSpecific
-      ingressClassName: ""
-      annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: "/$2$3"
-        nginx.ingress.kubernetes.io/use-regex: "true"
       tls:
         # enabled: true
         secretName: ""
@@ -206,23 +209,6 @@ authorizationApi:
     # -- The reference to the secret containing `udmDataAdapterPassword` and `udmDataAdapterUsername` secret.
     # Example: "guardian-udm-secret"
     secretRef: ""
-
-  ingress:
-    # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
-    ingressClassName: ""
-    host: ""
-    paths:
-      - pathType: Prefix
-        path: /guardian/authorization
-        backend:
-          service:
-            name: guardian-authorization-api
-            port:
-              number: 80
-    tls:
-      enabled: true
-      secretName: ""
 
   service:
     enabled: true
@@ -362,24 +348,6 @@ managementApi:
     # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.
     secretRef: ""
 
-
-  ingress:
-    # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
-    ingressClassName: ""
-    host: ""
-    paths:
-      - pathType: Prefix
-        path: /guardian/management
-        backend:
-          service:
-            name: guardian-management-api
-            port:
-              number: 80
-    tls:
-      enabled: true
-      secretName: ""
-
   service:
     enabled: true
     type: "ClusterIP"
@@ -483,23 +451,6 @@ managementUi:
     # -- Keycloak client ID. Must be provisioned either by the `provisioning` job in this chart or manually.
     viteKeycloakAuthenticationAdapterClientId: "guardian-ui"
 
-  ingress:
-    # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
-    ingressClassName: ""
-    host: ""
-    paths:
-      - pathType: Prefix
-        path: /univention/guardian/management-ui
-        backend:
-          service:
-            name: guardian-management-ui
-            port:
-              number: 80
-    tls:
-      enabled: true
-      secretName: ""
-
   service:
     enabled: true
     type: "ClusterIP"
@@ -598,23 +549,6 @@ openPolicyAgent:
     opaPollingMaxDelay: 15
     # -- Bundle server URL
     opaGuardianManagementUrl: ""
-
-  ingress:
-    # -- Set this to `true` in order to enable the installation on Ingress related objects.
-    enabled: true
-    ingressClassName: ""
-    host: ""
-    paths:
-      - pathType: Prefix
-        path: /guardian/opa
-        backend:
-          service:
-            name: guardian-open-policy-agent
-            port:
-              number: 80
-    tls:
-      enabled: true
-      secretName: ""
 
   service:
     enabled: true

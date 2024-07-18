@@ -3,6 +3,12 @@
 
 ---
 
+ingress:
+  ingressClassName: "nginx"
+  host: "guardian.example.test"
+  tls:
+    secretName: "guardian-tls"
+
 authorizationApi:
   config:
     home: "/guardian_service_dir"
@@ -20,6 +26,7 @@ authorizationApi:
     guardianAuthzLoggingLevel: "DEBUG"
     guardianAuthzLoggingStructured: "0"
     guardianAuthzLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
+    secretRef: "guardian-udm-secret"
 
 managementApi:
   config:
@@ -47,6 +54,7 @@ managementApi:
     guardianManagementLoggingStructured: "0"
     guardianManagementLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
     guardianManagementBaseUrl: "http://guardian-management"
+    secretRef: "guardian-keycloak-client-secret"
 
 managementUi:
   config:
@@ -95,5 +103,20 @@ postgresql:
     database: "postgres"
     password: "postgres"
     postgresPassword: "postgres"
+
+extraSecrets:
+  - name: "guardian-keycloak-client-secret"
+    stringData:
+      oauthAdapterM2mSecret: "stub_client_secret"
+
+  - name: "guardian-udm-secret"
+    stringData:
+      udmDataAdapterUsername: "cn=admin"
+      udmDataAdapterPassword: "password"
+
+  - name: "guardian-provisioning-secret"
+    stringData:
+      adminPassword: "stub_password"
+      managementApiClientSecret: "stub_client_secret"
 
 ...
