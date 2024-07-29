@@ -21,6 +21,12 @@ global:
       host: ""
       port: ""
 
+  domain: ""
+  subDomains:
+    keycloak: ""
+    portal: "portal"
+
+
 #########################
 # INGRESS CONFIGURATION #
 #########################
@@ -612,23 +618,22 @@ provisioning:
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
 
-
   provisioningImage:
     imagePullSecrets: []
 
-    registry: "registry.opencode.de"
-    repository: "bmi/opendesk/components/platform-development/images/opendesk-keycloak-bootstrap"
-    tag: "1.0.5@sha256:76ccd9a74ae2c2dabb6beaa0192c15b9c06763abbd632cd0f8db68e5d8d5883c"
-
+    registry: "artifacts.software-univention.de"
+    repository: "nubus/images/keycloak-bootstrap"
+    tag: "0.1.2"
+    imagePullPolicy: "IfNotPresent"
 
   image:
     imagePullSecrets: []
 
-    registry: ""
+    registry: "artifacts.software-univention.de"
     repository: "nubus-dev/images/guardian-init"
     tag: "latest"
     # -- Define image sha256 as an alternative to `tag`
-    sha256: null
+    # sha256: null
 
   config:
     # -- Base URL for setting in Keycloak application URL without backslash.
@@ -636,24 +641,29 @@ provisioning:
     nubusBaseUrl: ""
     # -- Keycloak specific settings.
     keycloak:
-      # -- Internal URL to reach Keycloak for provisioning.
-      # Example: "http://keycloak:8080"
-      url: ""
-      # -- Fully qualified domain name for Keycloak.
-      # Example: "id.uv-example.gaia.open-desk.cloud"
-      fqdn: ""
-      # -- Realm where the Guardian clients should be created.
-      # Example: "nubus"
-      realm: ""
-      # -- Keycloak admin user for the master realm.
-      # Example: "kcadmin"
-      admin: ""
-      # -- Specify this only if you do not want to use a secret (see below).
+      # -- Keycloak user.
+      username: ""
+      # -- Keycloak password.
       password: ""
+      # -- Keycloak realm.
+      realm: ""
+      # -- Keycloak password secret reference.
       credentialSecret:
-        # -- The key in which the Keycloak admin password is stored in the secret.
-        # Example: "adminPassword"
-        key: ""
+        name: ""
+        key: "password"
+      # -- Connection parameters.
+      connection:
+        # -- Keycloak host.
+        host: ""
+        # -- Keycloak port.
+        port: ""
+
+    # Debugging related settings
+    debug:
+      # -- Enable debug output of included Ansible scripts
+      enabled: false
+      # -- Seconds for the job to pause before starting the actual bootstrapping.
+      pauseBeforeScriptStart: 0
     # -- Management API settings for the provisioning job
     managementApi:
       # -- Specify this only if you do not want to use a secret (see below).

@@ -35,7 +35,7 @@ spec:
         {{ toYaml . | nindent 8 | trim }}
       {{- end }}
       initContainers:
-      - name: "wait-for-keycloak"
+      - name: "wait-for-keycloak-container"
         image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
         imagePullPolicy: {{ coalesce .Values.provisioning.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
         envFrom:
@@ -58,7 +58,6 @@ spec:
           {{- if .Values.provisioning.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumeMounts "context" .) | nindent 10 }}
           {{- end }}
-
       containers:
       - name: "keycloak-provisioning"
         securityContext:
@@ -69,10 +68,67 @@ spec:
           - /bin/bash
           - -c
           - |
-            /app/configure.sh
-            /app/entrypoint.sh
+            univention-keycloak \
+            --keycloak-url $KEYCLOAK_URL \
+            --realm $KEYCLOAK_REALM \
+            --binduser $KEYCLOAK_USERNAME \
+            --bindpwdfile /credentials/keycloak.secret \
+            oidc/rp create \
+            guardian-ui \
+            --app-url $KEYCLOAK_APP_BASE_URL \
+            --redirect-uri $KEYCLOAK_APP_BASE_URL/univention/guardian/* \
+            --add-guardian-audience-mapper \
+            --add-dn-mapper \
+            --add-audience-mapper \
+            --audience-to-map guardian \
+            --admin-url $KEYCLOAK_APP_BASE_URL \
+            --pkce-code-challenge-method "" \
+            --host-fqdn $KEYCLOAK_HOST \
+            --public-client \
+            --web-origins $KEYCLOAK_APP_BASE_URL \
+            && \
+            univention-keycloak \
+            --keycloak-url $KEYCLOAK_URL \
+            --realm $KEYCLOAK_REALM \
+            --binduser $KEYCLOAK_USERNAME \
+            --bindpwdfile /credentials/keycloak.secret \
+            oidc/rp create \
+            guardian-management-api \
+            --service-accounts-enabled \
+            --client-secret $GUARDIAN_MANAGEMENT_API_CLIENT_SECRET \
+            --app-url $KEYCLOAK_APP_BASE_URL \
+            --redirect-uri $KEYCLOAK_APP_BASE_URL/guardian/* \
+            --add-guardian-management-mappers \
+            --admin-url $KEYCLOAK_APP_BASE_URL \
+            --pkce-code-challenge-method "" \
+            --host-fqdn $KEYCLOAK_HOST \
+            --web-origins $KEYCLOAK_APP_BASE_URL \
+            && \
+            univention-keycloak \
+            --keycloak-url $KEYCLOAK_URL \
+            --realm $KEYCLOAK_REALM \
+            --binduser $KEYCLOAK_USERNAME \
+            --bindpwdfile /credentials/keycloak.secret \
+            oidc/rp create \
+            guardian-scripts \
+            --direct-access-grants \
+            --app-url $KEYCLOAK_APP_BASE_URL \
+            --redirect-uri $KEYCLOAK_APP_BASE_URL/guardian/* \
+            --redirect-uri $KEYCLOAK_APP_BASE_URL/univention/guardian/* \
+            --add-guardian-audience-mapper \
+            --add-dn-mapper \
+            --add-audience-mapper \
+            --audience-to-map guardian-scripts \
+            --admin-url $KEYCLOAK_APP_BASE_URL \
+            --pkce-code-challenge-method "" \
+            --host-fqdn $KEYCLOAK_HOST \
+            --public-client \
+            --web-origins $KEYCLOAK_APP_BASE_URL
+        envFrom:
+          - configMapRef:
+              name: {{ printf "%s-provisioning-env" (include "common.names.fullname" .) }}
         env:
-          - name: KEYCLOAK_ADMIN_PASSWORD
+          - name: KEYCLOAK_PASSWORD
             {{- include "guardian.provisioning.config.keycloak.password" . | nindent 12 }}
           - name: GUARDIAN_MANAGEMENT_API_CLIENT_SECRET
             {{- include "guardian.provisioning.config.managementApi.clientSecret" . | nindent 12 }}
@@ -87,9 +143,9 @@ spec:
         {{ toYaml . | indent 10 }}
         {{- end }}
         volumeMounts:
-          - name: "provisioning"
-            mountPath: "/app/configure.sh"
-            subPath: "configure.sh"
+          - mountPath: "/credentials/keycloak.secret"
+            name: "keycloak-credentials-volume"
+            subPath: {{ .Values.provisioning.config.keycloak.credentialSecret.key | quote }}
           - name: "temp-dir"
             mountPath: "/tmp"
           {{- if .Values.provisioning.extraVolumeMounts }}
@@ -111,13 +167,9 @@ spec:
         - name: "wait-for-keycloak"
           configMap:
             name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
-        - name: "provisioning"
-          configMap:
-            name: {{ printf "%s-provisioning-config" (include "common.names.fullname" .) }}
-            defaultMode: 0555
-        - name: "init"
-          configMap:
-            name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
+        - name: "keycloak-credentials-volume"
+          secret:
+            secretName: {{ (include "guardian.provisioning.config.keycloak.credentialSecret.name" . ) | quote }}
         - name: "temp-dir"
           emptyDir:
             sizeLimit: "20Mi"

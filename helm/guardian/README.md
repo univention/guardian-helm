@@ -385,6 +385,15 @@ null
 			<td></td>
 		</tr>
 		<tr>
+			<td>global.domain</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>global.environment</td>
 			<td>object</td>
 			<td><pre lang="json">
@@ -479,6 +488,24 @@ null
 			<td>object</td>
 			<td><pre lang="json">
 {}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>global.subDomains.keycloak</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>global.subDomains.portal</td>
+			<td>string</td>
+			<td><pre lang="json">
+"portal"
 </pre>
 </td>
 			<td></td>
@@ -2121,15 +2148,22 @@ false
 {
   "backoffLimit": 900,
   "config": {
+    "debug": {
+      "enabled": false,
+      "pauseBeforeScriptStart": 0
+    },
     "keycloak": {
-      "admin": "",
-      "credentialSecret": {
-        "key": ""
+      "connection": {
+        "host": "",
+        "port": ""
       },
-      "fqdn": "",
+      "credentialSecret": {
+        "key": "password",
+        "name": ""
+      },
       "password": "",
       "realm": "",
-      "url": ""
+      "username": ""
     },
     "managementApi": {
       "clientSecret": "",
@@ -2142,9 +2176,8 @@ false
   "enabled": true,
   "image": {
     "imagePullSecrets": [],
-    "registry": "",
+    "registry": "artifacts.software-univention.de",
     "repository": "nubus-dev/images/guardian-init",
-    "sha256": null,
     "tag": "latest"
   },
   "podSecurityContext": {
@@ -2152,10 +2185,11 @@ false
     "fsGroupChangePolicy": "Always"
   },
   "provisioningImage": {
+    "imagePullPolicy": "IfNotPresent",
     "imagePullSecrets": [],
-    "registry": "registry.opencode.de",
-    "repository": "bmi/opendesk/components/platform-development/images/opendesk-keycloak-bootstrap",
-    "tag": "1.0.5@sha256:76ccd9a74ae2c2dabb6beaa0192c15b9c06763abbd632cd0f8db68e5d8d5883c"
+    "registry": "artifacts.software-univention.de",
+    "repository": "nubus/images/keycloak-bootstrap",
+    "tag": "0.1.2"
   },
   "restartPolicy": "OnFailure",
   "securityContext": {
@@ -2177,49 +2211,85 @@ false
 			<td>The Guardian Keycloak provisioning job</td>
 		</tr>
 		<tr>
+			<td>provisioning.config.debug.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td>Enable debug output of included Ansible scripts</td>
+		</tr>
+		<tr>
+			<td>provisioning.config.debug.pauseBeforeScriptStart</td>
+			<td>int</td>
+			<td><pre lang="json">
+0
+</pre>
+</td>
+			<td>Seconds for the job to pause before starting the actual bootstrapping.</td>
+		</tr>
+		<tr>
 			<td>provisioning.config.keycloak</td>
 			<td>object</td>
 			<td><pre lang="json">
 {
-  "admin": "",
-  "credentialSecret": {
-    "key": ""
+  "connection": {
+    "host": "",
+    "port": ""
   },
-  "fqdn": "",
+  "credentialSecret": {
+    "key": "password",
+    "name": ""
+  },
   "password": "",
   "realm": "",
-  "url": ""
+  "username": ""
 }
 </pre>
 </td>
 			<td>Keycloak specific settings.</td>
 		</tr>
 		<tr>
-			<td>provisioning.config.keycloak.admin</td>
-			<td>string</td>
+			<td>provisioning.config.keycloak.connection</td>
+			<td>object</td>
 			<td><pre lang="json">
-""
+{
+  "host": "",
+  "port": ""
+}
 </pre>
 </td>
-			<td>Keycloak admin user for the master realm. Example: "kcadmin"</td>
+			<td>Connection parameters.</td>
 		</tr>
 		<tr>
-			<td>provisioning.config.keycloak.credentialSecret.key</td>
+			<td>provisioning.config.keycloak.connection.host</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""
 </pre>
 </td>
-			<td>The key in which the Keycloak admin password is stored in the secret. Example: "adminPassword"</td>
+			<td>Keycloak host.</td>
 		</tr>
 		<tr>
-			<td>provisioning.config.keycloak.fqdn</td>
+			<td>provisioning.config.keycloak.connection.port</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""
 </pre>
 </td>
-			<td>Fully qualified domain name for Keycloak. Example: "id.uv-example.gaia.open-desk.cloud"</td>
+			<td>Keycloak port.</td>
+		</tr>
+		<tr>
+			<td>provisioning.config.keycloak.credentialSecret</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "key": "password",
+  "name": ""
+}
+</pre>
+</td>
+			<td>Keycloak password secret reference.</td>
 		</tr>
 		<tr>
 			<td>provisioning.config.keycloak.password</td>
@@ -2228,7 +2298,7 @@ false
 ""
 </pre>
 </td>
-			<td>Specify this only if you do not want to use a secret (see below).</td>
+			<td>Keycloak password.</td>
 		</tr>
 		<tr>
 			<td>provisioning.config.keycloak.realm</td>
@@ -2237,16 +2307,16 @@ false
 ""
 </pre>
 </td>
-			<td>Realm where the Guardian clients should be created. Example: "nubus"</td>
+			<td>Keycloak realm.</td>
 		</tr>
 		<tr>
-			<td>provisioning.config.keycloak.url</td>
+			<td>provisioning.config.keycloak.username</td>
 			<td>string</td>
 			<td><pre lang="json">
 ""
 </pre>
 </td>
-			<td>Internal URL to reach Keycloak for provisioning. Example: "http://keycloak:8080"</td>
+			<td>Keycloak user.</td>
 		</tr>
 		<tr>
 			<td>provisioning.config.managementApi</td>
@@ -2299,15 +2369,6 @@ true
 </pre>
 </td>
 			<td>Whether to run the provisioning job to create the Guardian clients in Keycloak or not.</td>
-		</tr>
-		<tr>
-			<td>provisioning.image.sha256</td>
-			<td>string</td>
-			<td><pre lang="json">
-null
-</pre>
-</td>
-			<td>Define image sha256 as an alternative to `tag`</td>
 		</tr>
 		<tr>
 			<td>provisioning.podSecurityContext.fsGroupChangePolicy</td>
