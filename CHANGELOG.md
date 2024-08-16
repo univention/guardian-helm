@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.9.2...v0.10.0) (2024-08-16)
+
+
+### Features
+
+* switch from opendesk-keycloak-boostrap to nubus keycloak-boostrap ([b713c69](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/b713c69020979f42e0f223e2f25dc07ad74a0e16))
+
 ## [0.9.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.9.1...v0.9.2) (2024-07-18)
 
 
