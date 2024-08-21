@@ -278,7 +278,7 @@ PROVISIONING Keycloak
 {{- if .Values.provisioning.config.keycloak.url -}}
 {{ .Values.provisioning.config.keycloak.url -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{ printf "http://%s-keycloak:8080" .Release.Name }}
+{{ printf "http://%s-keycloak:9000" .Release.Name }}
 {{- else -}}
 {{ required ".Values.provisioning.config.keycloak.url is required" .Values.provisioning.config.keycloak.url -}}
 {{- end -}}
