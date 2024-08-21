@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.11.0...v0.12.0) (2024-08-21)
+
+
+### Features
+
+* update default keycloak url ([309a89a](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/309a89a78e3c26abdc267267b10ae9b848f7e26c))
+
 ## [0.11.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.10.0...v0.11.0) (2024-08-21)
 
 
