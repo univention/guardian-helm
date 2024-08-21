@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.10.0...v0.11.0) (2024-08-21)
+
+
+### Features
+
+* **guardian:** Add certManager template for ingress ([244e9d7](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/244e9d7e9772ebac6379a95e9f61c10d7e9ed4c2))
+
 ## [0.10.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.9.2...v0.10.0) (2024-08-16)
 
 
