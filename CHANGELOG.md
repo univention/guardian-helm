@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.12.0...v0.13.0) (2024-08-29)
+
+
+### Features
+
+* wait-for-keycloak now waits for the realm to exists ([ca71b60](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/ca71b60f0de6071b1b8887b0253bec3d31a2ab0a))
+
 ## [0.12.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.11.0...v0.12.0) (2024-08-21)
 
 
