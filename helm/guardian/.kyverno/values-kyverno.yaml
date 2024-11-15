@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024 Univention GmbH
+---
+
+imagePullSecrets:
+  - "kyverno-test"
+replicaCount: 42
+
+global:
+  imageRegistry: "my_private_registry.domain.tld"
+  imagePullSecrets:
+    - "kyverno-test"
+  imagePullPolicy: "kyverno"
+
+provisioning:
+  config:
+    nubusBaseUrl: "kyverno"
+    keycloak:
+      username: "kyverno"
+      password: "kyverno"
+      realm: "kyvernos"
+      credentialSecret:
+        name: ""
+        key: "password"
+      connection:
+        baseUrl: "kyverno"
+        host: "kyverno"
+        port: 123
+
+...
