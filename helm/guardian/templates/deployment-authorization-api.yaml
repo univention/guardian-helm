@@ -33,6 +33,9 @@ spec:
         {{- $mergedLabels := merge $uiLabels $commonLabels}}
         {{- toYaml $mergedLabels | nindent 8 }}
     spec:
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "common.names.fullname" . }}
+      {{- end }}
       {{- with .Values.authorizationApi.affinity }}
       affinity:
         {{ toYaml . | nindent 8 | trim }}

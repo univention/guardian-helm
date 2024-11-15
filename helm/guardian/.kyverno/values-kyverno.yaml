@@ -4,13 +4,21 @@
 
 imagePullSecrets:
   - "kyverno-test"
-replicaCount: 42
 
 global:
   imageRegistry: "my_private_registry.domain.tld"
   imagePullSecrets:
     - "kyverno-test"
   imagePullPolicy: "kyverno"
+
+authorizationApi:
+  replicaCount: 42
+managementApi:
+  replicaCount: 42
+managementUi:
+  replicaCount: 42
+openPolicyAgent:
+  replicaCount: 42
 
 provisioning:
   config:

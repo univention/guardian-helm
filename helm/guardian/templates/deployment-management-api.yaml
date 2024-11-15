@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
-
 ---
-
 apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
@@ -33,6 +31,9 @@ spec:
         {{- $mergedLabels := merge $uiLabels $commonLabels}}
         {{- toYaml $mergedLabels | nindent 8 }}
     spec:
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "common.names.fullname" . }}
+      {{- end }}
       {{- with .Values.managementApi.affinity }}
       affinity:
         {{ toYaml . | nindent 8 | trim }}
@@ -60,6 +61,8 @@ spec:
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           command: ["alembic", "upgrade", "head"]
           imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
+          securityContext:
+            {{- toYaml .Values.managementApi.securityContext | nindent 14 }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
@@ -131,4 +134,3 @@ spec:
         {{- end }}
 
 ...
-
