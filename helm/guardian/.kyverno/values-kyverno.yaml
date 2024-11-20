@@ -20,19 +20,4 @@ managementUi:
 openPolicyAgent:
   replicaCount: 42
 
-provisioning:
-  config:
-    nubusBaseUrl: "kyverno"
-    keycloak:
-      username: "kyverno"
-      password: "kyverno"
-      realm: "kyvernos"
-      credentialSecret:
-        name: ""
-        key: "password"
-      connection:
-        baseUrl: "kyverno"
-        host: "kyverno"
-        port: 123
-
 ...

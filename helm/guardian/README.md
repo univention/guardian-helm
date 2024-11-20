@@ -1529,15 +1529,6 @@ false
 			<td></td>
 		</tr>
 		<tr>
-			<td>managementUi.securityContext.enabled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
 			<td>managementUi.securityContext.privileged</td>
 			<td>bool</td>
 			<td><pre lang="json">

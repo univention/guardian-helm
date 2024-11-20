@@ -62,7 +62,7 @@ spec:
           command: ["alembic", "upgrade", "head"]
           imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
           securityContext:
-            {{- toYaml .Values.managementApi.securityContext | nindent 14 }}
+            {{- toYaml .Values.managementApi.securityContext | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
@@ -72,7 +72,7 @@ spec:
       containers:
         - name: "management-api"
           securityContext:
-            {{- toYaml .Values.managementApi.securityContext | nindent 14 }}
+            {{- toYaml .Values.managementApi.securityContext | nindent 12 }}
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}
           envFrom:

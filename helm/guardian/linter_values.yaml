@@ -82,9 +82,14 @@ provisioning:
       fqdn: "id.example.test"
       realm: "nubus"
       admin: "kcadmin"
+      username: "stub_username"
       password: "stub_password"
       credentialSecret:
         key: "adminPassword"
+      connection:
+        baseUrl: "keycloak"
+        host: "keycloak"
+        port: 123
     managementApi:
       clientSecret: "stub_secret"
       credentialSecret:
