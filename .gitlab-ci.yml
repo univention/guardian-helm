@@ -19,6 +19,10 @@ include:
   - IMAGE_NAME:
       - "guardian-init"
 
+.publish-matrix: &publish-matrix
+  - IMAGE_NAME:
+      - "guardian-init"
+
 lint-pre-commit:
   before_script:
     # Compose lint would fail without the referenced env files
@@ -27,6 +31,10 @@ lint-pre-commit:
 container-build:
   parallel:
     matrix: *build-matrix
+
+container-malware-scan:
+  parallel:
+    matrix: *publish-matrix
 
 container-sign-external:
   parallel:
