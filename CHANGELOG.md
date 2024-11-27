@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.14.0...v0.14.1) (2024-11-27)
+
+
+### Bug Fixes
+
+* kyverno lint errors ([136e72f](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/136e72fb7fc56154867404b2ede089bbee39ce8b))
+* lint errors ([dd77ca5](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/dd77ca52c63bea696b27ea7d542f871fdb58c4ca))
+
 ## [0.14.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.13.0...v0.14.0) (2024-09-09)
 
 
