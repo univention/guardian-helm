@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.14.1...v0.15.0) (2024-12-20)
+
+
+### Features
+
+* upgrade UCS base image to 2024-12-12 ([1798815](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/17988156ccdeafb5fb99840ce12ae5a9a9aebe2d))
+
 ## [0.14.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.14.0...v0.14.1) (2024-11-27)
 
 
