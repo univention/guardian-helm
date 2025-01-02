@@ -85,6 +85,7 @@ spec:
             --pkce-code-challenge-method "" \
             --host-fqdn $KEYCLOAK_HOST \
             --public-client \
+            --default-scopes "basic" \
             --web-origins $KEYCLOAK_APP_BASE_URL \
             && \
             univention-keycloak \

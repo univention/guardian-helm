@@ -168,7 +168,7 @@ authorizationApi:
 
     registry: "docker.software-univention.de"
     repository: "guardian-authorization-api-authorization-api"
-    tag: "2.0.0"
+    tag: "3.0.0"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -313,7 +313,7 @@ managementApi:
 
     registry: "docker.software-univention.de"
     repository: "guardian-management-api-management-api"
-    tag: "2.0.0"
+    tag: "3.0.0"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -448,11 +448,15 @@ managementUi:
 
     registry: "docker.software-univention.de"
     repository: "guardian-management-ui-management-ui"
-    tag: "2.0.0"
+    tag: "3.0.0"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
   config:
+    # -- Configuration for the Nginx server serving the guardian management ui built files.
+    nginx:
+      # -- Disable IPv6 support.
+      disableIPv6: false
     # -- Port and adapter for authentication. Defaults to `keycloak`.
     viteManagementUiAdapterAuthenticationPort: "keycloak"
     # -- Port and adapter to use as data source for the UI. Defaults to `api` for Guardian's Management API.
@@ -473,7 +477,7 @@ managementUi:
     type: "ClusterIP"
     ports:
       http:
-        containerPort: 8383
+        containerPort: 8080
         port: 80
         protocol: "TCP"
 
@@ -554,7 +558,7 @@ openPolicyAgent:
 
     registry: "docker.software-univention.de"
     repository: "guardian-authorization-api-opa"
-    tag: "2.0.0"
+    tag: "3.0.0"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -634,7 +638,7 @@ provisioning:
 
     registry: "artifacts.software-univention.de"
     repository: "nubus/images/keycloak-bootstrap"
-    tag: "0.1.2"
+    tag: "0.8.0"
     imagePullPolicy: "IfNotPresent"
 
   image:

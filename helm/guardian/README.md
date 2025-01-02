@@ -78,7 +78,7 @@ This chart does install the Guardian Authorization API.
     "registry": "docker.software-univention.de",
     "repository": "guardian-authorization-api-authorization-api",
     "sha256": null,
-    "tag": "2.0.0"
+    "tag": "3.0.0"
   },
   "nameOverride": "",
   "nodeSelector": {},
@@ -880,7 +880,7 @@ true
     "registry": "docker.software-univention.de",
     "repository": "guardian-management-api-management-api",
     "sha256": null,
-    "tag": "2.0.0"
+    "tag": "3.0.0"
   },
   "nameOverride": "",
   "nodeSelector": {},
@@ -1196,6 +1196,26 @@ null
 			<td></td>
 		</tr>
 		<tr>
+			<td>managementUi.config.nginx</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "disableIPv6": false
+}
+</pre>
+</td>
+			<td>Configuration for the Nginx server serving the guardian management ui built files.</td>
+		</tr>
+		<tr>
+			<td>managementUi.config.nginx.disableIPv6</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td>Disable IPv6 support.</td>
+		</tr>
+		<tr>
 			<td>managementUi.config.viteApiDataAdapterUri</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -1316,7 +1336,7 @@ null
 			<td>managementUi.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"2.0.0"
+"3.0.0"
 </pre>
 </td>
 			<td></td>
@@ -1595,7 +1615,7 @@ true
 			<td>managementUi.service.ports.http.containerPort</td>
 			<td>int</td>
 			<td><pre lang="json">
-8383
+8080
 </pre>
 </td>
 			<td></td>
@@ -1784,7 +1804,7 @@ null
 			<td>openPolicyAgent.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"2.0.0"
+"3.0.0"
 </pre>
 </td>
 			<td></td>
@@ -2207,7 +2227,7 @@ false
     "imagePullSecrets": [],
     "registry": "artifacts.software-univention.de",
     "repository": "nubus/images/keycloak-bootstrap",
-    "tag": "0.1.2"
+    "tag": "0.8.0"
   },
   "restartPolicy": "OnFailure",
   "securityContext": {

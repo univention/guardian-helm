@@ -13,9 +13,9 @@ If the value .Values.global.nubusDeployment equates to true, the defined templat
 {{- if .Values.authorizationApi.config.udmDataAdapterUrl -}}
 {{- .Values.authorizationApi.config.udmDataAdapterUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{- printf "http://%s-udm-rest-api/udm/" .Release.Name -}}
+{{- printf "http://%s-udm-rest-api:9979/udm/" .Release.Name -}}
 {{- else -}}
-{{- printf "http://udm-rest-api/udm/" -}}
+{{- printf "http://udm-rest-api:9979/udm/" -}}
 {{- end -}}
 {{- end -}}
 
