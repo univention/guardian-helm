@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.15.0...v0.16.0) (2025-01-08)
+
+
+### Features
+
+* upgrade to guardian 3.0.0 ([0fa233d](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/0fa233df5bb9459d4058193fa9371eb2da40498a))
+
 ## [0.15.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.14.1...v0.15.0) (2024-12-20)
 
 
