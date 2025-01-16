@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.0...v0.16.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* remove wrong helm template ([077f801](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/077f80154b7d522127bef271f376ab29a1e32992))
+
 ## [0.16.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.15.0...v0.16.0) (2025-01-08)
 
 
