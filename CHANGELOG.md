@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.1...v0.16.2) (2025-02-10)
+
+
+### Bug Fixes
+
+* add .kyverno to helmignore ([bf6822a](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/bf6822ac359945c16ca03c5dc8f263ce95c6d9c6))
+
 ## [0.16.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.0...v0.16.1) (2025-01-16)
 
 
