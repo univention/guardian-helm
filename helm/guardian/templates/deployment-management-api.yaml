@@ -63,6 +63,8 @@ spec:
           imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
           securityContext:
             {{- toYaml .Values.managementApi.securityContext | nindent 12 }}
+          resources:
+            {{- toYaml .Values.managementApi.resources | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}

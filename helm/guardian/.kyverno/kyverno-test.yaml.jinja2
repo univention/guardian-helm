@@ -99,6 +99,12 @@ results:
     rule: "template-replicas"
     result: "pass"
   - resources:
+      - "release-name-guardian-authorization-api"
+    policy: "require-requests-limits"
+    kind: "Deployment"
+    rule: "validate-resources"
+    result: "pass"
+  - resources:
       - "release-name-guardian-management-api"
     policy: "disallow-default-serviceaccount"
     kind: "Deployment"
@@ -171,6 +177,12 @@ results:
     rule: "template-replicas"
     result: "pass"
   - resources:
+      - "release-name-guardian-management-api"
+    policy: "require-requests-limits"
+    kind: "Deployment"
+    rule: "validate-resources"
+    result: "pass"
+  - resources:
       - "release-name-guardian-management-ui"
     policy: "disallow-default-serviceaccount"
     kind: "Deployment"
@@ -243,6 +255,12 @@ results:
     rule: "template-replicas"
     result: "pass"
   - resources:
+      - "release-name-guardian-management-ui"
+    policy: "require-requests-limits"
+    kind: "Deployment"
+    rule: "validate-resources"
+    result: "pass"
+  - resources:
       - "release-name-guardian-open-policy-agent"
     policy: "disallow-default-serviceaccount"
     kind: "Deployment"
@@ -313,4 +331,10 @@ results:
     policy: "template-replicas"
     kind: "Deployment"
     rule: "template-replicas"
+    result: "pass"
+  - resources:
+      - "release-name-guardian-open-policy-agent"
+    policy: "require-requests-limits"
+    kind: "Deployment"
+    rule: "validate-resources"
     result: "pass"

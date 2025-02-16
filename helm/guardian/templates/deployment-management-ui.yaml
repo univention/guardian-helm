@@ -64,6 +64,8 @@ spec:
             {{- toYaml .Values.managementUi.securityContext | nindent 12 }}
           image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          resources:
+            {{- toYaml .Values.managementUi.resources | nindent 12 }}
           env:
             - name: "SKIP_CONFIG_GENERATION"
               value: "TRUE"
