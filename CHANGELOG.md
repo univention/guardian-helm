@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.3](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.2...v0.16.3) (2025-02-17)
+
+
+### Bug Fixes
+
+* Template resources in all init containers and add kyverno test for it ([3c74898](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/3c748984a2e1cfac936eac00646c107a912baa7f))
+
 ## [0.16.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.1...v0.16.2) (2025-02-10)
 
 
