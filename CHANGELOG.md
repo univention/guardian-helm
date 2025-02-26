@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.3...v0.17.0) (2025-02-26)
+
+
+### Features
+
+* Bump ucs-base-image to use released apt sources ([93a84b8](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/93a84b8f004ec87daf6f340dbc0c55c4ddd51e12))
+
 ## [0.16.3](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.2...v0.16.3) (2025-02-17)
 
 
