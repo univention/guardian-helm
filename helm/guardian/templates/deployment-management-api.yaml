@@ -6,11 +6,9 @@ apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
   name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
-    {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-api" (include "common.names.fullname" .)) }}
-    {{- $mergedLabels := merge $uiLabels $commonLabels}}
-    {{- toYaml $mergedLabels | nindent 4 }}
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
 spec:
   replicas: {{ .Values.managementApi.replicaCount }}
   selector:
@@ -46,9 +44,9 @@ spec:
       nodeSelector:
         {{ toYaml . | nindent 8 | trim }}
       {{- end }}
-      {{- with .Values.managementApi.podSecurityContext }}
+      {{- if .Values.managementApi.securityContext.enabled }}
       securityContext:
-        {{ toYaml . | nindent 8 | trim }}
+        {{- omit .Values.managementApi.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       {{- if .Values.managementApi.imagePullSecrets }}
       imagePullSecrets:
@@ -61,8 +59,10 @@ spec:
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           command: ["alembic", "upgrade", "head"]
           imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
+          {{- if .Values.managementApi.securityContext.enabled }}
           securityContext:
-            {{- toYaml .Values.managementApi.securityContext | nindent 12 }}
+            {{- omit .Values.managementApi.securityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.managementApi.resources | nindent 12 }}
           envFrom:
@@ -70,11 +70,16 @@ spec:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
           env:
             - name: "SQL_PERSISTENCE_ADAPTER__PASSWORD"
-            {{- include "guardian.postgresql.auth.password" . | nindent 14 }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) | quote }}
+                  key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password") }}
       containers:
         - name: "management-api"
+          {{- if .Values.managementApi.securityContext.enabled }}
           securityContext:
-            {{- toYaml .Values.managementApi.securityContext | nindent 12 }}
+            {{- omit .Values.managementApi.securityContext "enabled" | toYaml  | nindent 12 }}
+          {{- end }}
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}
           envFrom:
@@ -82,7 +87,10 @@ spec:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
           env:
             - name: "SQL_PERSISTENCE_ADAPTER__PASSWORD"
-            {{- include "guardian.postgresql.auth.password" . | nindent 14 }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) | quote }}
+                  key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password") }}
           ports:
             {{- range $key, $value := .Values.managementApi.service.ports }}
             - name: {{ $key }}
@@ -130,7 +138,10 @@ spec:
           emptyDir: {}
         - name: "secrets"
           secret:
-            secretName: {{ include "guardian.managementApi.config.secretRef" .}}
+            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "defaultNameSuffix" "keycloak-client-secret" "context" .) | quote }}
+            items:
+              - key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret") }}
+                path: oauthAdapterM2mSecret
         {{- if .Values.managementApi.extraVolumes }}
           {{- include "common.tplvalues.render" (dict "value" .Values.managementApi.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}

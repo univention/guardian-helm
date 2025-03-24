@@ -7,11 +7,9 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "common.labels.standard" . | nindent 4 }}
-    {{- if .Values.provisioning.extraLabels }}
-    {{- include "common.tplvalues.render" ( dict "value" .Values.provisioning.extraLabels "context" . ) | nindent 4 }}
-    {{- end }}
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
 spec:
   ttlSecondsAfterFinished: {{ .Values.provisioning.ttlSecondsAfterFinished }}
   template:
@@ -30,14 +28,18 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.provisioning.podSecurityContext }}
+      {{- if .Values.provisioning.securityContext.enabled }}
       securityContext:
-        {{ toYaml . | nindent 8 | trim }}
+        {{- omit .Values.provisioning.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       initContainers:
       - name: "wait-for-keycloak-container"
         image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
         imagePullPolicy: {{ coalesce .Values.provisioning.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+        {{- if .Values.provisioning.securityContext.enabled }}
+        securityContext:
+          {{- omit .Values.provisioning.securityContext "enabled" | toYaml | nindent 10 }}
+        {{- end }}
         envFrom:
           - configMapRef:
               name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
@@ -60,8 +62,10 @@ spec:
           {{- end }}
       containers:
       - name: "keycloak-provisioning"
+        {{- if .Values.provisioning.securityContext.enabled }}
         securityContext:
-          {{- toYaml .Values.provisioning.securityContext | nindent 10 }}
+          {{- omit .Values.provisioning.securityContext "enabled" | toYaml | nindent 10 }}
+        {{- end }}
         image: "{{ coalesce .Values.provisioning.provisioningImage.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.provisioningImage.repository }}{{ if .Values.provisioning.provisioningImage.sha256 }}@sha256:{{ .Values.provisioning.provisioningImage.sha256 }}{{ else }}:{{ .Values.provisioning.provisioningImage.tag }}{{ end }}"
         imagePullPolicy: {{ coalesce .Values.provisioning.provisioningImage.imagePullPolicy .Values.global.imagePullPolicy | quote }}
         command:
@@ -130,9 +134,15 @@ spec:
               name: {{ printf "%s-provisioning-env" (include "common.names.fullname" .) }}
         env:
           - name: KEYCLOAK_PASSWORD
-            {{- include "guardian.provisioning.config.keycloak.password" . | nindent 12 }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "provisioning-secret" "context" .) | quote }}
+                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "password") }}
           - name: GUARDIAN_MANAGEMENT_API_CLIENT_SECRET
-            {{- include "guardian.provisioning.config.managementApi.clientSecret" . | nindent 12 }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "defaultNameSuffix" "keycloak-client-secret" "context" .) | quote }}
+                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret") }}
         {{- with .Values.provisioning.extraEnvVars }}
           {{- . | toYaml | nindent 10 }}
         {{- end }}
@@ -146,7 +156,7 @@ spec:
         volumeMounts:
           - mountPath: "/credentials/keycloak.secret"
             name: "keycloak-credentials-volume"
-            subPath: {{ .Values.provisioning.config.keycloak.credentialSecret.key | quote }}
+            subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "password") }}
           - name: "temp-dir"
             mountPath: "/tmp"
           {{- if .Values.provisioning.extraVolumeMounts }}
@@ -170,7 +180,7 @@ spec:
             name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
         - name: "keycloak-credentials-volume"
           secret:
-            secretName: {{ (include "guardian.provisioning.config.keycloak.credentialSecret.name" . ) | quote }}
+            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "provisioning-secret" "context" .) | quote }}
         - name: "temp-dir"
           emptyDir:
             sizeLimit: "20Mi"

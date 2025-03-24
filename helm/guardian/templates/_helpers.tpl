@@ -105,15 +105,6 @@ DEBUG
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.authorizationApi.config.secretRef" -}}
-{{- if .Values.authorizationApi.config.secretRef -}}
-{{- .Values.authorizationApi.config.secretRef -}}
-{{- else if .Values.global.nubusDeployment -}}
-{{ printf "%s-guardian-udm-secret" .Release.Name }}
-{{- else -}}
-{{- required "A authorizationApi.config.secretRef containing `udmDataAdapterPassword` and `udmDataAdapterUsername` is needed." .Values.authorizationApi.config.secretRef -}}
-{{- end -}}
-{{- end -}}
 
 {{- /*
 MANAGEMENT API
@@ -195,16 +186,6 @@ DEBUG
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.managementApi.config.secretRef" -}}
-{{- if .Values.managementApi.config.secretRef -}}
-{{- .Values.managementApi.config.secretRef -}}
-{{- else if .Values.global.nubusDeployment -}}
-{{ printf "%s-guardian-keycloak-client-secret" .Release.Name }}
-{{- else -}}
-{{- required "A managementApi.config.secretRef containing `OAUTH_ADAPTER__M2M_SECRET` is needed." .Values.managementApi.config.secretRef -}}
-{{- end -}}
-{{- end -}}
-
 
 {{- /*
 MANAGEMENT UI
@@ -274,140 +255,62 @@ PROVISIONING
 PROVISIONING Keycloak
 */}}
 
-{{- define "guardian.provisioning.config.keycloak.url" -}}
-{{- if .Values.provisioning.config.keycloak.url -}}
-{{ .Values.provisioning.config.keycloak.url -}}
+{{- define "guardian.provisioning.keycloak.url" -}}
+{{- if .Values.provisioning.keycloak.url -}}
+{{ .Values.provisioning.keycloak.url -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{ printf "http://%s-keycloak:8080/realms/%s" .Release.Name  (include "guardian.provisioning.config.keycloak.realm" .) }}
+{{ printf "http://%s-keycloak:8080/realms/%s" .Release.Name  (include "guardian.provisioning.keycloak.realm" .) }}
 {{- else -}}
-{{ required ".Values.provisioning.config.keycloak.url is required" .Values.provisioning.config.keycloak.url -}}
+{{ required ".Values.provisioning.keycloak.url is required" .Values.provisioning.keycloak.url -}}
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.provisioning.config.keycloak.realm" -}}
-{{- if .Values.provisioning.config.keycloak.realm -}}
-{{- .Values.provisioning.config.keycloak.realm -}}
+{{- define "guardian.provisioning.keycloak.realm" -}}
+{{- if .Values.provisioning.keycloak.realm -}}
+{{- .Values.provisioning.keycloak.realm -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{- coalesce .Values.provisioning.config.keycloak.realm .Values.global.keycloak.realm "nubus" -}}
+{{- coalesce .Values.provisioning.keycloak.realm .Values.global.keycloak.realm "nubus" -}}
 {{- else -}}
-{{- required ".Values.provisioning.config.keycloak.realm must be defined." .Values.provisioning.config.keycloak.realm -}}
+{{- required ".Values.provisioning.keycloak.realm must be defined." .Values.provisioning.keycloak.realm -}}
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.provisioning.config.keycloak.username" -}}
-{{- if .Values.provisioning.config.keycloak.username -}}
-{{- .Values.provisioning.config.keycloak.username -}}
-{{- else if .Values.global.nubusDeployment -}}
-kcadmin
-{{- else -}}
-{{- required ".Values.provisioning.config.keycloak.username must be defined." .Values.provisioning.config.keycloak.username -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.provisioning.config.keycloak.credentialSecret.name" -}}
-{{- if .Values.provisioning.config.keycloak.credentialSecret.name -}}
-{{- .Values.provisioning.config.keycloak.credentialSecret.name -}}
-{{- else if .Values.provisioning.config.keycloak.password -}}
-{{ printf "%s-keycloak-credentials" (include "common.names.fullname" .) }}
-{{- else if .Values.global.nubusDeployment -}}
-{{- printf "%s-guardian-provisioning-secret" .Release.Name -}}
-{{- else -}}
-{{ required ".Values.provisioning.config.keycloak.password must be defined." .Values.provisioning.config.keycloak.password}}
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.provisioning.config.keycloak.credentialSecret.key" -}}
-{{- if .Values.provisioning.config.keycloak.credentialSecret.key -}}
-{{- .Values.provisioning.config.keycloak.credentialSecret.key -}}
-{{- else if .Values.global.nubusDeployment -}}
-adminPassword
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.provisioning.config.keycloak.password" -}}
-{{- if .Values.provisioning.config.keycloak.credentialSecret.name -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ .Values.provisioning.config.keycloak.credentialSecret.name | quote }}
-    key: {{ .Values.provisioning.config.keycloak.credentialSecret.key | quote }}
-{{- else if .Values.global.nubusDeployment -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ include "guardian.provisioning.config.keycloak.credentialSecret.name" . | quote }}
-    key: {{ .Values.provisioning.config.keycloak.credentialSecret.key | quote }}
-{{- else -}}
-value: {{ required ".Values.provisioning.config.keycloak.password is required." .Values.provisioning.config.keycloak.password | quote }}
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.provisioning.config.keycloak.connection.protocol" -}}
-{{- if .Values.provisioning.config.keycloak.connection.protocol -}}
-{{- .Values.provisioning.config.keycloak.connection.protocol -}}
+{{- define "guardian.provisioning.keycloak.connection.protocol" -}}
+{{- if .Values.provisioning.keycloak.connection.protocol -}}
+{{- .Values.provisioning.keycloak.connection.protocol -}}
 {{- else -}}
 http
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.provisioning.config.keycloak.connection.host" -}}
-{{- if .Values.provisioning.config.keycloak.connection.host -}}
-{{- .Values.provisioning.config.keycloak.connection.host -}}
+{{- define "guardian.provisioning.keycloak.connection.host" -}}
+{{- if .Values.provisioning.keycloak.connection.host -}}
+{{- .Values.provisioning.keycloak.connection.host -}}
 {{- else if .Values.global.nubusDeployment -}}
 {{- printf "%s-keycloak" .Release.Name -}}
-{{- else if not .Values.provisioning.config.keycloak.connection.baseUrl -}}
-{{- required ".Values.provisioning.config.keycloak.connection.host must be defined." .Values.provisioning.config.keycloak.connection.host -}}
+{{- else if not .Values.provisioning.keycloak.connection.baseUrl -}}
+{{- required ".Values.provisioning.keycloak.connection.host must be defined." .Values.provisioning.keycloak.connection.host -}}
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.provisioning.config.keycloak.connection.port" -}}
-{{- if .Values.provisioning.config.keycloak.connection.port -}}
-{{- .Values.provisioning.config.keycloak.connection.port -}}
+{{- define "guardian.provisioning.keycloak.connection.port" -}}
+{{- if .Values.provisioning.keycloak.connection.port -}}
+{{- .Values.provisioning.keycloak.connection.port -}}
 {{- else -}}
 8080
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.provisioning.config.keycloak.connection.baseUrl" -}}
-{{- if .Values.provisioning.config.keycloak.connection.baseUrl -}}
-{{- .Values.provisioning.config.keycloak.connection.baseUrl -}}
+{{- define "guardian.provisioning.keycloak.connection.baseUrl" -}}
+{{- if .Values.provisioning.keycloak.connection.baseUrl -}}
+{{- .Values.provisioning.keycloak.connection.baseUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{- $protocol := include "guardian.provisioning.config.keycloak.connection.protocol" . -}}
-{{- $host := include "guardian.provisioning.config.keycloak.connection.host" . -}}
-{{- $port := include "guardian.provisioning.config.keycloak.connection.port" . -}}
+{{- $protocol := include "guardian.provisioning.keycloak.connection.protocol" . -}}
+{{- $host := include "guardian.provisioning.keycloak.connection.host" . -}}
+{{- $port := include "guardian.provisioning.keycloak.connection.port" . -}}
 {{- printf "%s://%s:%s" $protocol $host $port -}}
 {{- else -}}
-{{- required ".Values.provisioning.config.keycloak.connection.baseUrl must be defined." .Values.provisioning.config.keycloak.connection.baseUrl -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.provisioning.config.managementApi.credentialSecret.name" -}}
-{{- if .Values.provisioning.config.managementApi.credentialSecret.name -}}
-{{- .Values.provisioning.config.managementApi.credentialSecret.name -}}
-{{- else if .Values.global.nubusDeployment -}}
-{{- printf "%s-guardian-provisioning-secret" .Release.Name -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.provisioning.config.managementApi.credentialSecret.key" -}}
-{{- if .Values.provisioning.config.managementApi.credentialSecret.key -}}
-{{- .Values.provisioning.config.managementApi.credentialSecret.key -}}
-{{- else if .Values.global.nubusDeployment -}}
-managementApiClientSecret
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.provisioning.config.managementApi.clientSecret" -}}
-{{- if .Values.provisioning.config.managementApi.credentialSecret.name -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ .Values.provisioning.config.managementApi.credentialSecret.name | quote }}
-    key: {{ .Values.provisioning.config.managementApi.credentialSecret.key | quote }}
-{{- else if .Values.global.nubusDeployment -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ include "guardian.provisioning.config.managementApi.credentialSecret.name" . | quote }}
-    key: {{ include "guardian.provisioning.config.managementApi.credentialSecret.key" . | quote }}
-{{- else -}}
-value: {{ required ".Values.provisioning.config.managementApi.clientSecret is required." .Values.provisioning.config.managementApi.clientSecret | quote }}
+{{- required ".Values.provisioning.keycloak.connection.baseUrl must be defined." .Values.provisioning.keycloak.connection.baseUrl -}}
 {{- end -}}
 {{- end -}}
 
@@ -430,40 +333,6 @@ POSGRESQL
 {{- tpl ( coalesce .Values.postgresql.connection.port .Values.global.postgresql.connection.port ) . -}}
 {{- else -}}
 5432
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.postgresql.auth.username" -}}
-{{- if .Values.postgresql.auth.username -}}
-{{- .Values.postgresql.auth.username -}}
-{{- else if .Values.global.nubusDeployment -}}
-guardian
-{{- else -}}
-{{- required ".Values.postgresql.auth.username must be defined." .Values.postgresql.auth.username -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.postgresql.auth.credentialSecret.name" -}}
-{{- if .Values.postgresql.auth.credentialSecret.name -}}
-{{- .Values.postgresql.auth.credentialSecret.name -}}
-{{- else if .Values.global.nubusDeployment -}}
-{{- printf "%s-guardian-management-api-postgresql-credentials" .Release.Name -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "guardian.postgresql.auth.password" -}}
-{{- if .Values.postgresql.auth.credentialSecret.name -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ .Values.postgresql.auth.credentialSecret.name | quote }}
-    key: {{ .Values.postgresql.auth.credentialSecret.key | quote }}
-{{- else if .Values.global.nubusDeployment -}}
-valueFrom:
-  secretKeyRef:
-    name: {{ include "guardian.postgresql.auth.credentialSecret.name" . | quote }}
-    key: {{ .Values.postgresql.auth.credentialSecret.key | quote }}
-{{- else -}}
-value: {{ required ".Values.postgresql.auth.password is required." .Values.postgresql.auth.password | quote }}
 {{- end -}}
 {{- end -}}
 

@@ -144,11 +144,13 @@ authorizationApi:
   nodeSelector: {}
   podAnnotations: {}
   podSecurityContext:
+    enabled: true
     fsGroup: 1000
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
   replicaCount: 1
   securityContext:
+    enabled: true
     allowPrivilegeEscalation: false
     capabilities:
       drop:
@@ -195,20 +197,12 @@ authorizationApi:
     # -- The URL of the UDM REST API for data queries.
     # Example: "http://udm-rest-api/univention/udm"
     udmDataAdapterUrl: ''
-    # -- Username for authenticating against the UDM REST API
-    # Do not use, see `secretRef` below.
-    # Example: "cn=admin"
-    udmDataAdapterUsername: ""
     # -- File where the UDM username will be stored.
     # Example: "/var/secrets/udmDataAdapterUsername"
-    udmDataAdapterUsernameFile: "/var/secrets/udmDataAdapterUsername"
-    # -- Password for authenticating against the UDM REST API.
-    # Do not use, see `secretRef` below.
-    # Example: "password"
-    udmDataAdapterPassword: ""
+    udmDataAdapterUsernameFile: "/var/guardian/udm-data-adapter-username"
     # -- File where the UDM password will be stored.
     # Example: "/var/secrets/udmDataAdapterPassword"
-    udmDataAdapterPasswordFile: "/var/secrets/udmDataAdapterPassword"
+    udmDataAdapterPasswordFile: "/var/secrets/udm-data-adapter-password"
     # -- URL to Open Policy Agent.
     # Example: "http://ums-guardian-open-policy-agent:8181/"
     opaAdapterUrl: ""
@@ -224,9 +218,21 @@ authorizationApi:
     # -- Defines the format of the log output, if not structured. The possible options are described in https://loguru.readthedocs.io/en/stable/api/logger.html.
     # Example: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
     guardianAuthzLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
-    # -- The reference to the secret containing `udmDataAdapterPassword` and `udmDataAdapterUsername` secret.
-    # Example: "guardian-udm-secret"
-    secretRef: ""
+
+  udm:
+    auth:
+      # -- The reference to the secret containing `udmDataAdapterPassword` and `udmDataAdapterUsername` secret.
+      # Example: "guardian-udm-secret"
+      # -- Username for authenticating against the UDM REST API
+      # Example: "cn=admin"
+      username: null
+      # -- Password for authenticating against the UDM REST API.
+      # Not supported at the moment.
+      # password: null
+      existingSecret:
+        name: null
+        keyMapping:
+          password: null
 
   service:
     enabled: true
@@ -289,11 +295,13 @@ managementApi:
   nodeSelector: {}
   podAnnotations: {}
   podSecurityContext:
+    enabled: true
     fsGroup: 1000
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
   replicaCount: 1
   securityContext:
+    enabled: true
     allowPrivilegeEscalation: false
     capabilities:
       drop:
@@ -352,8 +360,6 @@ managementApi:
     oauthAdapterWellKnownUrl: ""
     # -- File where the machine-to-machine secret will be saved.
     oauthAdapterM2mSecretFile: "/var/secrets/oauthAdapterM2mSecret"
-    # -- Machine-to-machine secret (not used, see `secretRef` below)
-    oauthAdapterM2mSecret: ""
     # -- Sets the log level of the application.
     guardianManagementLoggingLevel: "DEBUG"
     # -- If set to True, the logging output is structured as a JSON object.
@@ -363,8 +369,16 @@ managementApi:
     # -- Defines the base URL of the API. If unset the url is generated from hostname and domainname.
     # Example: "http://example.test/guardian/management"
     guardianManagementBaseUrl: ""
-    # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.
-    secretRef: ""
+  oauth:
+    auth:
+      # -- Machine-to-machine secret
+      # The specification of the secret value directly is not supported currently
+      #clientSecret: null
+      existingSecret:
+        # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.
+        name: null
+        keyMapping:
+          clientSecret: null
 
   service:
     enabled: true
@@ -629,6 +643,7 @@ provisioning:
   # -- Time in seconds until the job gets deleted
   ttlSecondsAfterFinished: 300
   podSecurityContext:
+    enabled: true
     fsGroup: 1000
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
@@ -650,45 +665,40 @@ provisioning:
     # -- Define image sha256 as an alternative to `tag`
     # sha256: null
 
-  config:
-    # -- Base URL for setting in Keycloak application URL without backslash.
-    # Example: "https://portal.uv-example.gaia.open-desk.cloud"
-    nubusBaseUrl: ""
-    # -- Keycloak specific settings.
-    keycloak:
+  # -- Keycloak specific settings.
+  keycloak:
+    # -- Keycloak realm.
+    realm: ""
+    auth:
       # -- Keycloak user.
       username: ""
       # -- Keycloak password.
       password: ""
-      # -- Keycloak realm.
-      realm: ""
       # -- Keycloak password secret reference.
-      credentialSecret:
-        name: ""
-        key: "password"
-      # -- Connection parameters.
-      connection:
-        # -- Keycloak host.
-        host: ""
-        # -- Keycloak port.
-        port: ""
+      existingSecret:
+        name: null
+        keyMapping:
+          password: null
+    # -- Connection parameters.
+    connection:
+      # -- Keycloak host.
+      host: ""
+      # -- Keycloak port.
+      port: ""
 
+  config:
+    # -- Base URL for setting in Keycloak application URL without backslash.
+    # Example: "https://portal.uv-example.gaia.open-desk.cloud"
+    nubusBaseUrl: ""
     # Debugging related settings
     debug:
       # -- Enable debug output of included Ansible scripts
       enabled: false
       # -- Seconds for the job to pause before starting the actual bootstrapping.
       pauseBeforeScriptStart: 0
-    # -- Management API settings for the provisioning job
-    managementApi:
-      # -- Specify this only if you do not want to use a secret (see below).
-      clientSecret: ""
-      # -- The name of a secret that contains `managementApiClientSecret`.
-      # Example: "managementApiClientSecret"
-      credentialSecret:
-        key: ""
 
   securityContext:
+    enabled: true
     allowPrivilegeEscalation: false
     privileged: false
     readOnlyRootFilesystem: false
@@ -710,12 +720,8 @@ provisioning:
 
 # -- PostgreSQL settings.
 #
-# The bitnami helm chart does contain all details of what can be configured:
-# https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+# Configuration of the postgresql connection
 postgresql:
-  nameOverride: "guardian-postgresql"
-  # -- Set to `true` if you want PostgreSQL to be installed as well.
-  bundled: false
   # -- Connection parameters. These are required if you use an external database.
   connection:
     host:
@@ -724,10 +730,10 @@ postgresql:
     username: ""
     database: ""
     password: ""
-    credentialSecret:
-      name: ""
-      key: "password"
-
+    existingSecret:
+      name: null
+      keyMapping:
+        password: null
 
 #################
 # EXTRA SECRETS #

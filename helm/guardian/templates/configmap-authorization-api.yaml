@@ -34,4 +34,20 @@ data:
   GUARDIAN__AUTHZ__LOGGING__FORMAT: "{{ include "guardian.authorizationApi.config.guardianAuthzLoggingFormat" . }}"
   OAUTH_ADAPTER__WELL_KNOWN_URL: "{{ include "guardian.authorizationApi.config.oauthAdapterWellKnownUrl" . }}"
 
+
+{{- if .Values.authorizationApi.udm.auth.username }}
+---
+kind: "ConfigMap"
+apiVersion: "v1"
+metadata:
+  name: {{ printf "%s-udm-adapter-user" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
+  {{- if .Values.authorizationApi.extraAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.authorizationApi.extraAnnotations "context" . ) | nindent 4 }}
+  {{- end }}
+data:
+  {{ base .Values.authorizationApi.config.udmDataAdapterUsernameFile }}: "{{ .Values.authorizationApi.udm.auth.username }}"
+{{- end }}
 ...

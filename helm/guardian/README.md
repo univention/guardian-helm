@@ -31,8 +31,7 @@ This chart does install the Guardian Authorization API.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | common | ^2.x.x |
-| https://charts.bitnami.com/bitnami | postgresql | ~12.7.1 |
+| oci://artifacts.software-univention.de/nubus/charts | nubus-common | ^0.8.x |
 
 ## Values
 
@@ -63,12 +62,9 @@ This chart does install the Guardian Authorization API.
     "isUniventionAppCenter": 0,
     "oauthAdapterWellKnownUrl": "",
     "opaAdapterUrl": "",
-    "secretRef": "",
-    "udmDataAdapterPassword": "",
-    "udmDataAdapterPasswordFile": "/var/secrets/udmDataAdapterPassword",
+    "udmDataAdapterPasswordFile": "/var/secrets/udm-data-adapter-password",
     "udmDataAdapterUrl": "",
-    "udmDataAdapterUsername": "",
-    "udmDataAdapterUsernameFile": "/var/secrets/udmDataAdapterUsername"
+    "udmDataAdapterUsernameFile": "/var/guardian/udm-data-adapter-username"
   },
   "environment": {},
   "fullnameOverride": "",
@@ -90,6 +86,7 @@ This chart does install the Guardian Authorization API.
   },
   "podAnnotations": {},
   "podSecurityContext": {
+    "enabled": true,
     "fsGroup": 1000,
     "fsGroupChangePolicy": "Always"
   },
@@ -129,6 +126,7 @@ This chart does install the Guardian Authorization API.
         "ALL"
       ]
     },
+    "enabled": true,
     "privileged": false,
     "readOnlyRootFilesystem": true,
     "runAsGroup": 1000,
@@ -153,7 +151,18 @@ This chart does install the Guardian Authorization API.
     },
     "type": "ClusterIP"
   },
-  "tolerations": []
+  "tolerations": [],
+  "udm": {
+    "auth": {
+      "existingSecret": {
+        "keyMapping": {
+          "password": null
+        },
+        "name": null
+      },
+      "username": null
+    }
+  }
 }
 </pre>
 </td>
@@ -259,28 +268,10 @@ true
 			<td>URL to Open Policy Agent. Example: "http://ums-guardian-open-policy-agent:8181/"</td>
 		</tr>
 		<tr>
-			<td>authorizationApi.config.secretRef</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>The reference to the secret containing `udmDataAdapterPassword` and `udmDataAdapterUsername` secret. Example: "guardian-udm-secret"</td>
-		</tr>
-		<tr>
-			<td>authorizationApi.config.udmDataAdapterPassword</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Password for authenticating against the UDM REST API. Do not use, see `secretRef` below. Example: "password"</td>
-		</tr>
-		<tr>
 			<td>authorizationApi.config.udmDataAdapterPasswordFile</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/var/secrets/udmDataAdapterPassword"
+"/var/secrets/udm-data-adapter-password"
 </pre>
 </td>
 			<td>File where the UDM password will be stored. Example: "/var/secrets/udmDataAdapterPassword"</td>
@@ -295,19 +286,10 @@ true
 			<td>The URL of the UDM REST API for data queries. Example: "http://udm-rest-api/univention/udm"</td>
 		</tr>
 		<tr>
-			<td>authorizationApi.config.udmDataAdapterUsername</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Username for authenticating against the UDM REST API Do not use, see `secretRef` below. Example: "cn=admin"</td>
-		</tr>
-		<tr>
 			<td>authorizationApi.config.udmDataAdapterUsernameFile</td>
 			<td>string</td>
 			<td><pre lang="json">
-"/var/secrets/udmDataAdapterUsername"
+"/var/guardian/udm-data-adapter-username"
 </pre>
 </td>
 			<td>File where the UDM username will be stored. Example: "/var/secrets/udmDataAdapterUsername"</td>
@@ -329,6 +311,29 @@ null
 </pre>
 </td>
 			<td>Change ownership and permission of the volume before being exposed inside a Pod.</td>
+		</tr>
+		<tr>
+			<td>authorizationApi.udm.auth.existingSecret</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "keyMapping": {
+    "password": null
+  },
+  "name": null
+}
+</pre>
+</td>
+			<td>Password for authenticating against the UDM REST API. Not supported at the moment. password: null</td>
+		</tr>
+		<tr>
+			<td>authorizationApi.udm.auth.username</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>Username for authenticating against the UDM REST API Example: "cn=admin"</td>
 		</tr>
 		<tr>
 			<td>extraEnvVars</td>
@@ -866,10 +871,8 @@ true
     "guardianManagementLoggingStructured": true,
     "home": "/guardian_service_dir",
     "isUniventionAppCenter": 0,
-    "oauthAdapterM2mSecret": "",
     "oauthAdapterM2mSecretFile": "/var/secrets/oauthAdapterM2mSecret",
     "oauthAdapterWellKnownUrl": "",
-    "secretRef": "",
     "sqlPersistenceAdapterDialect": "postgresql"
   },
   "environment": {},
@@ -884,6 +887,16 @@ true
   },
   "nameOverride": "",
   "nodeSelector": {},
+  "oauth": {
+    "auth": {
+      "existingSecret": {
+        "keyMapping": {
+          "clientSecret": null
+        },
+        "name": null
+      }
+    }
+  },
   "persistence": {
     "data": {
       "size": "1Gi",
@@ -892,6 +905,7 @@ true
   },
   "podAnnotations": {},
   "podSecurityContext": {
+    "enabled": true,
     "fsGroup": 1000,
     "fsGroupChangePolicy": "Always"
   },
@@ -931,6 +945,7 @@ true
         "ALL"
       ]
     },
+    "enabled": true,
     "privileged": false,
     "readOnlyRootFilesystem": true,
     "runAsGroup": 1000,
@@ -1106,15 +1121,6 @@ true
 			<td>Directory that Guardian will use to save the bundles and configuration.</td>
 		</tr>
 		<tr>
-			<td>managementApi.config.oauthAdapterM2mSecret</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Machine-to-machine secret (not used, see `secretRef` below)</td>
-		</tr>
-		<tr>
 			<td>managementApi.config.oauthAdapterM2mSecretFile</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -1133,15 +1139,6 @@ true
 			<td>Identity Provider well known URL Example: http://keycloak/realms/souvap/.well-known/openid-configuration</td>
 		</tr>
 		<tr>
-			<td>managementApi.config.secretRef</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>The reference to the secret containing `oauthAdapterM2mSecret` secret.</td>
-		</tr>
-		<tr>
 			<td>managementApi.config.sqlPersistenceAdapterDialect</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -1158,6 +1155,29 @@ null
 </pre>
 </td>
 			<td>Define image sha256 as an alternative to `tag`</td>
+		</tr>
+		<tr>
+			<td>managementApi.oauth.auth.existingSecret</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "keyMapping": {
+    "clientSecret": null
+  },
+  "name": null
+}
+</pre>
+</td>
+			<td>Machine-to-machine secret The specification of the secret value directly is not supported currently clientSecret: null</td>
+		</tr>
+		<tr>
+			<td>managementApi.oauth.auth.existingSecret.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>The reference to the secret containing `oauthAdapterM2mSecret` secret.</td>
 		</tr>
 		<tr>
 			<td>managementApi.podSecurityContext.fsGroupChangePolicy</td>
@@ -2139,33 +2159,24 @@ false
 			<td><pre lang="json">
 {
   "auth": {
-    "credentialSecret": {
-      "key": "password",
-      "name": ""
-    },
     "database": "",
+    "existingSecret": {
+      "keyMapping": {
+        "password": null
+      },
+      "name": null
+    },
     "password": "",
     "username": ""
   },
-  "bundled": false,
   "connection": {
     "host": null,
     "port": null
-  },
-  "nameOverride": "guardian-postgresql"
+  }
 }
 </pre>
 </td>
-			<td>PostgreSQL settings.  The bitnami helm chart does contain all details of what can be configured: https://github.com/bitnami/charts/tree/main/bitnami/postgresql</td>
-		</tr>
-		<tr>
-			<td>postgresql.bundled</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td>Set to `true` if you want PostgreSQL to be installed as well.</td>
+			<td>PostgreSQL settings.  Configuration of the postgresql connection</td>
 		</tr>
 		<tr>
 			<td>postgresql.connection</td>
@@ -2190,25 +2201,6 @@ false
       "enabled": false,
       "pauseBeforeScriptStart": 0
     },
-    "keycloak": {
-      "connection": {
-        "host": "",
-        "port": ""
-      },
-      "credentialSecret": {
-        "key": "password",
-        "name": ""
-      },
-      "password": "",
-      "realm": "",
-      "username": ""
-    },
-    "managementApi": {
-      "clientSecret": "",
-      "credentialSecret": {
-        "key": ""
-      }
-    },
     "nubusBaseUrl": ""
   },
   "enabled": true,
@@ -2218,7 +2210,25 @@ false
     "repository": "nubus-dev/images/guardian-init",
     "tag": "latest"
   },
+  "keycloak": {
+    "auth": {
+      "existingSecret": {
+        "keyMapping": {
+          "password": null
+        },
+        "name": null
+      },
+      "password": "",
+      "username": ""
+    },
+    "connection": {
+      "host": "",
+      "port": ""
+    },
+    "realm": ""
+  },
   "podSecurityContext": {
+    "enabled": true,
     "fsGroup": 1000,
     "fsGroupChangePolicy": "Always"
   },
@@ -2232,6 +2242,7 @@ false
   "restartPolicy": "OnFailure",
   "securityContext": {
     "allowPrivilegeEscalation": false,
+    "enabled": true,
     "privileged": false,
     "readOnlyRootFilesystem": false,
     "runAsGroup": 1000,
@@ -2267,130 +2278,6 @@ false
 			<td>Seconds for the job to pause before starting the actual bootstrapping.</td>
 		</tr>
 		<tr>
-			<td>provisioning.config.keycloak</td>
-			<td>object</td>
-			<td><pre lang="json">
-{
-  "connection": {
-    "host": "",
-    "port": ""
-  },
-  "credentialSecret": {
-    "key": "password",
-    "name": ""
-  },
-  "password": "",
-  "realm": "",
-  "username": ""
-}
-</pre>
-</td>
-			<td>Keycloak specific settings.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.keycloak.connection</td>
-			<td>object</td>
-			<td><pre lang="json">
-{
-  "host": "",
-  "port": ""
-}
-</pre>
-</td>
-			<td>Connection parameters.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.keycloak.connection.host</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Keycloak host.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.keycloak.connection.port</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Keycloak port.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.keycloak.credentialSecret</td>
-			<td>object</td>
-			<td><pre lang="json">
-{
-  "key": "password",
-  "name": ""
-}
-</pre>
-</td>
-			<td>Keycloak password secret reference.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.keycloak.password</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Keycloak password.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.keycloak.realm</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Keycloak realm.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.keycloak.username</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Keycloak user.</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.managementApi</td>
-			<td>object</td>
-			<td><pre lang="json">
-{
-  "clientSecret": "",
-  "credentialSecret": {
-    "key": ""
-  }
-}
-</pre>
-</td>
-			<td>Management API settings for the provisioning job</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.managementApi.clientSecret</td>
-			<td>string</td>
-			<td><pre lang="json">
-""
-</pre>
-</td>
-			<td>Specify this only if you do not want to use a secret (see below).</td>
-		</tr>
-		<tr>
-			<td>provisioning.config.managementApi.credentialSecret</td>
-			<td>object</td>
-			<td><pre lang="json">
-{
-  "key": ""
-}
-</pre>
-</td>
-			<td>The name of a secret that contains `managementApiClientSecret`. Example: "managementApiClientSecret"</td>
-		</tr>
-		<tr>
 			<td>provisioning.config.nubusBaseUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -2407,6 +2294,102 @@ true
 </pre>
 </td>
 			<td>Whether to run the provisioning job to create the Guardian clients in Keycloak or not.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "auth": {
+    "existingSecret": {
+      "keyMapping": {
+        "password": null
+      },
+      "name": null
+    },
+    "password": "",
+    "username": ""
+  },
+  "connection": {
+    "host": "",
+    "port": ""
+  },
+  "realm": ""
+}
+</pre>
+</td>
+			<td>Keycloak specific settings.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak.auth.existingSecret</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "keyMapping": {
+    "password": null
+  },
+  "name": null
+}
+</pre>
+</td>
+			<td>Keycloak password secret reference.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak.auth.password</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Keycloak password.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak.auth.username</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Keycloak user.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak.connection</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "host": "",
+  "port": ""
+}
+</pre>
+</td>
+			<td>Connection parameters.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak.connection.host</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Keycloak host.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak.connection.port</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Keycloak port.</td>
+		</tr>
+		<tr>
+			<td>provisioning.keycloak.realm</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Keycloak realm.</td>
 		</tr>
 		<tr>
 			<td>provisioning.podSecurityContext.fsGroupChangePolicy</td>

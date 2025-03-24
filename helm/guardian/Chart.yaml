@@ -31,11 +31,7 @@ version: "0.1.0"
 appVersion: "2.0.0"
 
 dependencies:
-  - name: "common"
-    repository: "https://charts.bitnami.com/bitnami"
-    version: "^2.x.x"
-  - name: "postgresql"
-    repository: "https://charts.bitnami.com/bitnami"
-    version: "~12.7.1"
-    condition: "postgresql.bundled"
+  - name: "nubus-common"
+    version: "^0.8.x"
+    repository: "oci://artifacts.software-univention.de/nubus/charts"
 ...

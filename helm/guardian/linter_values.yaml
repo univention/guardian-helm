@@ -19,14 +19,19 @@ authorizationApi:
     guardianAuthzAdapterAuthenticationPort: "fast_api_oauth"
     isUniventionAppCenter: 0
     udmDataAdapterUrl: "http://udm-rest-api/univention/udm"
-    udmDataAdapterUsername: "admin"
-    udmDataAdapterPassword: "stub_password"
     opaAdapterUrl: "http://guardian-authorization-opa:8181/"
     oauthAdapterWellKnownUrl: "http://keycloak/realms/souvap/.well-known/openid-configuration"
     guardianAuthzLoggingLevel: "DEBUG"
     guardianAuthzLoggingStructured: "0"
     guardianAuthzLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
-    secretRef: "guardian-udm-secret"
+  udm:
+    auth:
+      username: "cn=admin"
+      password: "stub_password"
+      existingSecret:
+        name: "guardian-udm-secret"
+        keyMapping:
+          password: "udmDataAdapterPassword"
 
 managementApi:
   config:
@@ -49,12 +54,15 @@ managementApi:
     sqlPersistenceAdapterDialect: "postgresql"
     sqlPersistenceAdapterDbName: "/guardian_service_dir/database/management.db"
     oauthAdapterWellKnownUrl: "http://keycloak/realms/souvap/.well-known/openid-configuration"
-    oauthAdapterM2mSecret: "stub_secret"
     guardianManagementLoggingLevel: "DEBUG"
     guardianManagementLoggingStructured: "0"
     guardianManagementLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
     guardianManagementBaseUrl: "http://guardian-management"
-    secretRef: "guardian-keycloak-client-secret"
+  oauth:
+    auth:
+      clientSecret: "stub_secret"
+      existingSecret:
+        name: "guardian-keycloak-client-secret"
 
 managementUi:
   config:
@@ -77,51 +85,46 @@ openPolicyAgent:
 provisioning:
   config:
     nubusBaseUrl: "https://portal.example.test"
-    keycloak:
-      url: "http://keycloak:8080"
-      fqdn: "id.example.test"
-      realm: "nubus"
-      admin: "kcadmin"
+  keycloak:
+    url: "http://keycloak:8080"
+    fqdn: "id.example.test"
+    realm: "nubus"
+    admin: "kcadmin"
+    auth:
       username: "stub_username"
-      password: "stub_password"
-      credentialSecret:
-        key: "adminPassword"
-      connection:
-        baseUrl: "keycloak"
-        host: "keycloak"
-        port: 123
-    managementApi:
-      clientSecret: "stub_secret"
-      credentialSecret:
-        key: "managementApiClientSecret"
-
+      existingSecret:
+        name: "guardian-provisioning-secret"
+    connection:
+      baseUrl: "keycloak"
+      host: "keycloak"
+      port: 123
 
 postgresql:
-  # -- Set to `true` if you want PostgreSQL to be installed as well.
-  bundled: true
   # -- Connection parameters. These are required if you use an external database.
   connection:
-    host:
-    port:
+    host: "postgresql"
+    port: "1234"
   auth:
     username: "postgres"
     database: "postgres"
-    password: "postgres"
-    postgresPassword: "postgres"
+    existingSecret:
+      name: "postgresql-secret"
 
 extraSecrets:
   - name: "guardian-keycloak-client-secret"
     stringData:
-      oauthAdapterM2mSecret: "stub_client_secret"
+      clientSecret: "stub_client_secret"
 
   - name: "guardian-udm-secret"
     stringData:
-      udmDataAdapterUsername: "cn=admin"
       udmDataAdapterPassword: "password"
 
   - name: "guardian-provisioning-secret"
     stringData:
-      adminPassword: "stub_password"
-      managementApiClientSecret: "stub_client_secret"
+      password: "stub_password"
+
+  - name: "postgresql-secret"
+    stringData:
+      password: "password"
 
 ...

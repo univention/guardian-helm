@@ -8,11 +8,9 @@ apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
   name: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
-    {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-authorization-api" (include "common.names.fullname" .)) }}
-    {{- $mergedLabels := merge $uiLabels $commonLabels}}
-    {{- toYaml $mergedLabels | nindent 4 }}
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
 spec:
   replicas: {{ .Values.authorizationApi.replicaCount }}
   selector:
@@ -48,9 +46,9 @@ spec:
       nodeSelector:
         {{ toYaml . | nindent 8 | trim }}
       {{- end }}
-      {{- with .Values.authorizationApi.podSecurityContext }}
+      {{- if .Values.authorizationApi.podSecurityContext.enabled }}
       securityContext:
-        {{ toYaml . | nindent 8 | trim }}
+        {{- omit .Values.authorizationApi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       {{- if .Values.authorizationApi.imagePullSecrets }}
       imagePullSecrets:
@@ -61,7 +59,7 @@ spec:
       containers:
         - name: "authorization-api"
           securityContext:
-            {{- toYaml .Values.authorizationApi.securityContext | nindent 12 }}
+            {{- omit .Values.authorizationApi.securityContext "enabled" | toYaml | nindent 12 }}
           image: "{{ coalesce .Values.authorizationApi.image.registry .Values.global.imageRegistry }}/{{ .Values.authorizationApi.image.repository }}{{ if .Values.authorizationApi.image.sha256 }}@sha256:{{ .Values.authorizationApi.image.sha256 }}{{ else }}:{{ .Values.authorizationApi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.authorizationApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
@@ -107,6 +105,8 @@ spec:
           volumeMounts:
             - name: "secrets"
               mountPath: "/var/secrets"
+            - name: "udm-adapter-user"
+              mountPath: "/var/guardian"
             - name: "tmp"
               mountPath: "/tmp"
             {{- if .Values.authorizationApi.extraVolumeMounts }}
@@ -115,9 +115,15 @@ spec:
       volumes:
         - name: "tmp"
           emptyDir: {}
+        - name: "udm-adapter-user"
+          configMap:
+            name: {{ printf "%s-udm-adapter-user" (include "common.names.fullname" .) }}
         - name: "secrets"
           secret:
-            secretName: {{ include "guardian.authorizationApi.config.secretRef" . | quote }}
+            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.authorizationApi.udm.auth.existingSecret "defaultNameSuffix" "udm-secret" "context" .) | quote }}
+            items:
+              - key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.authorizationApi.udm.auth.existingSecret "key" "password") }}
+                path: udm-data-adapter-password
         {{- if .Values.authorizationApi.extraVolumes }}
           {{- include "common.tplvalues.render" (dict "value" .Values.authorizationApi.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}

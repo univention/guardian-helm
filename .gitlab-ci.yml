@@ -23,6 +23,13 @@ include:
   - IMAGE_NAME:
       - "guardian-init"
 
+test-chart-unit:
+  stage: test
+  image: "gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.12.1"
+  script:
+    - helm dep build helm/guardian
+    - pytest tests/helm_unit
+
 lint-pre-commit:
   before_script:
     # Compose lint would fail without the referenced env files

@@ -1,9 +1,6 @@
 dependencies:
-- name: common
-  repository: https://charts.bitnami.com/bitnami
-  version: 2.20.5
-- name: postgresql
-  repository: https://charts.bitnami.com/bitnami
-  version: 12.7.3
-digest: sha256:e96a34ab9cfbffb14366c37b70cb2b7e5c25dc2e9ef8adb0c0d867a40e8766ba
-generated: "2024-07-18T18:47:32.142945588+02:00"
+- name: nubus-common
+  repository: oci://artifacts.software-univention.de/nubus/charts
+  version: 0.8.0
+digest: sha256:a3fba2568362ef1cabc3fcb11c2ab6c48d38c3b4d11f44a9ee370213118d9c00
+generated: "2025-04-01T01:21:21.024824542+02:00"

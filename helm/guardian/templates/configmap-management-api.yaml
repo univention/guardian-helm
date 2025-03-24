@@ -42,13 +42,9 @@ data:
   GUARDIAN__MANAGEMENT__BASE_URL: "{{ include "guardian.managementApi.config.guardianManagementBaseUrl" . }}"
   SQL_PERSISTENCE_ADAPTER__DIALECT: "{{ include "guardian.managementApi.config.sqlPersistenceAdapterDialect" . }}"
 
-  {{- if .Values.postgresql.bundled }}
-  SQL_PERSISTENCE_ADAPTER__HOST: "{{ printf "%s-postgresql" (include "common.names.fullname" .) }}"
-  {{- else }}
   SQL_PERSISTENCE_ADAPTER__HOST: "{{ include "guardian.postgresql.connection.host" . }}"
-  {{- end }}
   SQL_PERSISTENCE_ADAPTER__PORT: "{{ include "guardian.postgresql.connection.port" . }}"
-  SQL_PERSISTENCE_ADAPTER__USERNAME: "{{ include "guardian.postgresql.auth.username" . }}"
+  SQL_PERSISTENCE_ADAPTER__USERNAME: "{{ tpl .Values.postgresql.auth.username . }}"
   SQL_PERSISTENCE_ADAPTER__DB_NAME: "{{ include "guardian.postgresql.auth.database" . }}"
 
 ...
