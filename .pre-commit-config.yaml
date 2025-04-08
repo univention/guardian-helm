@@ -20,6 +20,12 @@ repos:
           # Allow custom tags like Gitlab's "!reference" tag.
           - "--unsafe"
         exclude: "^helm/.+/templates/"
+      - id: "end-of-file-fixer"
+        exclude: "^helm/.+/(README.md|.*.svg)"
+      # "fix python encoding pragma"
+      - id: "fix-encoding-pragma"
+        args:
+          - "--remove"
       # "Trim Trailing Whitespace"
       - id: "trailing-whitespace"
 

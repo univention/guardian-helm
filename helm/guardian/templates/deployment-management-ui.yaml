@@ -145,4 +145,3 @@ spec:
             name: {{ printf "%s-nginx-conf" (include "common.names.fullname" .) }}
 
 ...
-

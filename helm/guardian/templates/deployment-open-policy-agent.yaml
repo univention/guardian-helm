@@ -99,4 +99,3 @@ spec:
             {{- toYaml .Values.openPolicyAgent.resources | nindent 12 }}
 
 ...
-
