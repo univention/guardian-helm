@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.17.0...v0.18.0) (2025-04-08)
+
+
+### Features
+
+* secret refactor ([3c1b19f](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/3c1b19fba01c15e5edabf033544c0e1981539b59)), closes [univention/dev/internal/team-nubus#943](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/943)
+
 ## [0.17.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.16.3...v0.17.0) (2025-02-26)
 
 
