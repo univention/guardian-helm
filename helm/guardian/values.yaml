@@ -221,17 +221,19 @@ authorizationApi:
 
   udm:
     auth:
-      # -- The reference to the secret containing `udmDataAdapterPassword` and `udmDataAdapterUsername` secret.
-      # Example: "guardian-udm-secret"
       # -- Username for authenticating against the UDM REST API
       # Example: "cn=admin"
       username: null
-      # -- Password for authenticating against the UDM REST API.
+      # -- Password for authenticating against the UDM REST API. Either this value
+      # or an existing Secret has to be specified.
       # Not supported at the moment.
       # password: null
       existingSecret:
+        # -- The name of an existing Secret to use for retrieving the password
         name: null
         keyMapping:
+          # -- The key to retrieve the password from. Setting this value allows
+          # to use a key with a different name than the default "password".
           password: null
 
   service:
@@ -371,12 +373,14 @@ managementApi:
     guardianManagementBaseUrl: ""
   oauth:
     auth:
-      # -- Machine-to-machine secret
+      # -- Machine-to-machine secret. Either this value or an existing Secret has to be specified.
       # The specification of the secret value directly is not supported currently
       #clientSecret: null
       existingSecret:
         # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.
         name: null
+        # -- The key to retrieve the secret from. Setting this value allows
+        # to use a key with a different name than the default "clientSecret".
         keyMapping:
           clientSecret: null
 
@@ -729,10 +733,15 @@ postgresql:
   auth:
     username: ""
     database: ""
+    # -- Password for authenticating against the PostgreSQL database. Either this value
+    # or an existing Secret has to be specified.
     password: ""
     existingSecret:
+      # -- The name of an existing Secret to use for retrieving the password
       name: null
       keyMapping:
+        # -- The key to retrieve the password from. Setting this value allows
+        # to use a key with a different name than the default "password".
         password: null
 
 #################

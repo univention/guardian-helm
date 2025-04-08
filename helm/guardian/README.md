@@ -324,7 +324,25 @@ null
 }
 </pre>
 </td>
-			<td>Password for authenticating against the UDM REST API. Not supported at the moment. password: null</td>
+			<td>Password for authenticating against the UDM REST API. Either this value or an existing Secret has to be specified. Not supported at the moment. password: null</td>
+		</tr>
+		<tr>
+			<td>authorizationApi.udm.auth.existingSecret.keyMapping.password</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>The key to retrieve the password from. Setting this value allows to use a key with a different name than the default "password".</td>
+		</tr>
+		<tr>
+			<td>authorizationApi.udm.auth.existingSecret.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>The name of an existing Secret to use for retrieving the password</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.udm.auth.username</td>
@@ -1168,7 +1186,18 @@ null
 }
 </pre>
 </td>
-			<td>Machine-to-machine secret The specification of the secret value directly is not supported currently clientSecret: null</td>
+			<td>Machine-to-machine secret. Either this value or an existing Secret has to be specified. The specification of the secret value directly is not supported currently clientSecret: null</td>
+		</tr>
+		<tr>
+			<td>managementApi.oauth.auth.existingSecret.keyMapping</td>
+			<td>object</td>
+			<td><pre lang="json">
+{
+  "clientSecret": null
+}
+</pre>
+</td>
+			<td>The key to retrieve the secret from. Setting this value allows to use a key with a different name than the default "clientSecret".</td>
 		</tr>
 		<tr>
 			<td>managementApi.oauth.auth.existingSecret.name</td>
@@ -2177,6 +2206,33 @@ false
 </pre>
 </td>
 			<td>PostgreSQL settings.  Configuration of the postgresql connection</td>
+		</tr>
+		<tr>
+			<td>postgresql.auth.existingSecret.keyMapping.password</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>The key to retrieve the password from. Setting this value allows to use a key with a different name than the default "password".</td>
+		</tr>
+		<tr>
+			<td>postgresql.auth.existingSecret.name</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>The name of an existing Secret to use for retrieving the password</td>
+		</tr>
+		<tr>
+			<td>postgresql.auth.password</td>
+			<td>string</td>
+			<td><pre lang="json">
+""
+</pre>
+</td>
+			<td>Password for authenticating against the PostgreSQL database. Either this value or an existing Secret has to be specified.</td>
 		</tr>
 		<tr>
 			<td>postgresql.connection</td>
