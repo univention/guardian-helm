@@ -2292,8 +2292,8 @@ null
     "imagePullPolicy": "IfNotPresent",
     "imagePullSecrets": [],
     "registry": "artifacts.software-univention.de",
-    "repository": "nubus/images/keycloak-bootstrap",
-    "tag": "0.8.0"
+    "repository": "nubus-dev/images/keycloak-bootstrap",
+    "tag": "0.11.0-pre-jtorres-521-upgrade"
   },
   "restartPolicy": "OnFailure",
   "securityContext": {
