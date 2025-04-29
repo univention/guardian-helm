@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.19.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.18.0...v0.19.0) (2025-04-29)
+
+
+### Features
+
+* Bump ucs-base-image version ([fdecfd1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/fdecfd17d377d89d2685751a83c57ce3d247593b)), closes [univention/dev/internal/team-nubus#1155](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1155)
+
+
+### Bug Fixes
+
+* final version of keycloak-bootstrap ([1548ce7](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/1548ce7ac5fb4365c8419cd46e26f6174e6d08ac)), closes [univention/dev/internal/team-nubus#1155](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1155)
+
 ## [0.18.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.17.0...v0.18.0) (2025-04-08)
 
 
