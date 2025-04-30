@@ -359,7 +359,7 @@ managementApi:
     sqlPersistenceAdapterDialect: "postgresql"
     # -- Identity Provider well known URL
     # Example: http://keycloak/realms/souvap/.well-known/openid-configuration
-    oauthAdapterWellKnownUrl: ""
+    oauthAdapterWellKnownUrl: "https://{{ .Values.global.subDomains.keycloak }}.{{ .Values.global.domain }}/realms/{{ .Values.global.keycloak.realm }}/.well-known/openid-configuration"
     # -- File where the machine-to-machine secret will be saved.
     oauthAdapterM2mSecretFile: "/var/secrets/oauthAdapterM2mSecret"
     # -- Sets the log level of the application.

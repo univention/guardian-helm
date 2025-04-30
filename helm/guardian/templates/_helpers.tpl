@@ -138,16 +138,6 @@ postgresql
 {{- end -}}
 {{- end -}}
 
-{{- define "guardian.managementApi.config.oauthAdapterWellKnownUrl" -}}
-{{- if .Values.managementApi.config.oauthAdapterWellKnownUrl -}}
-{{ required ".Values.managementApi.config.oauthAdapterWellKnownUrl is required" .Values.managementApi.config.oauthAdapterWellKnownUrl -}}
-{{- else if .Values.global.nubusDeployment -}}
-{{ printf "http://%s-keycloak:8080/realms/%s/.well-known/openid-configuration" .Release.Name .Values.global.keycloak.realm }}
-{{- else -}}
-{{- required "managementApi oAuth well known URL is required" .Values.managementApi.config.oauthAdapterWellKnownUrl -}}
-{{- end -}}
-{{- end -}}
-
 {{- define "guardian.managementApi.config.guardianManagementLoggingLevel" -}}
 {{- if .Values.managementApi.config.guardianManagementLoggingLevel -}}
 {{- .Values.managementApi.config.guardianManagementLoggingLevel -}}

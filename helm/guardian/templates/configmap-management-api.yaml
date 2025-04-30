@@ -34,7 +34,7 @@ data:
   # NOTE: Seems to be only used during stopping the containers for univention-app command
   # We can probably drop it, since it is used on some bash termiation script
   IS_UNIVENTION_APPCENTER: "{{ .Values.managementApi.config.isUniventionAppCenter }}"
-  OAUTH_ADAPTER__WELL_KNOWN_URL: "{{ include "guardian.managementApi.config.oauthAdapterWellKnownUrl" . }}"
+  OAUTH_ADAPTER__WELL_KNOWN_URL: "{{ tpl .Values.managementApi.config.oauthAdapterWellKnownUrl . }}"
   OAUTH_ADAPTER__M2M_SECRET_FILE: "{{ .Values.managementApi.config.oauthAdapterM2mSecretFile }}"
   GUARDIAN__MANAGEMENT__LOGGING__LEVEL: "{{ include "guardian.managementApi.config.guardianManagementLoggingLevel" . }}"
   GUARDIAN__MANAGEMENT__LOGGING__STRUCTURED: "{{ include "guardian.managementApi.config.guardianManagementLoggingStructured" . }}"

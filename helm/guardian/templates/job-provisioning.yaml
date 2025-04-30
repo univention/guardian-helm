@@ -80,6 +80,7 @@ spec:
             oidc/rp create \
             guardian-ui \
             --app-url $KEYCLOAK_APP_BASE_URL \
+            --redirect-uri $KEYCLOAK_APP_BASE_URL/guardian/* \
             --redirect-uri $KEYCLOAK_APP_BASE_URL/univention/guardian/* \
             --add-guardian-audience-mapper \
             --add-dn-mapper \
@@ -127,6 +128,7 @@ spec:
             --admin-url $KEYCLOAK_APP_BASE_URL \
             --pkce-code-challenge-method "" \
             --host-fqdn $KEYCLOAK_HOST \
+            --default-scopes "basic" \
             --public-client \
             --web-origins $KEYCLOAK_APP_BASE_URL
         envFrom:

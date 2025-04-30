@@ -890,7 +890,7 @@ true
     "home": "/guardian_service_dir",
     "isUniventionAppCenter": 0,
     "oauthAdapterM2mSecretFile": "/var/secrets/oauthAdapterM2mSecret",
-    "oauthAdapterWellKnownUrl": "",
+    "oauthAdapterWellKnownUrl": "https://{{ .Values.global.subDomains.keycloak }}.{{ .Values.global.domain }}/realms/{{ .Values.global.keycloak.realm }}/.well-known/openid-configuration",
     "sqlPersistenceAdapterDialect": "postgresql"
   },
   "containerSecurityContext": {
@@ -1151,7 +1151,7 @@ true
 			<td>managementApi.config.oauthAdapterWellKnownUrl</td>
 			<td>string</td>
 			<td><pre lang="json">
-""
+"https://{{ .Values.global.subDomains.keycloak }}.{{ .Values.global.domain }}/realms/{{ .Values.global.keycloak.realm }}/.well-known/openid-configuration"
 </pre>
 </td>
 			<td>Identity Provider well known URL Example: http://keycloak/realms/souvap/.well-known/openid-configuration</td>
