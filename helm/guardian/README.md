@@ -66,6 +66,23 @@ This chart does install the Guardian Authorization API.
     "udmDataAdapterUrl": "",
     "udmDataAdapterUsernameFile": "/var/guardian/udm-data-adapter-username"
   },
+  "containerSecurityContext": {
+    "allowPrivilegeEscalation": false,
+    "capabilities": {
+      "drop": [
+        "ALL"
+      ]
+    },
+    "enabled": true,
+    "privileged": false,
+    "readOnlyRootFilesystem": true,
+    "runAsGroup": 1000,
+    "runAsNonRoot": true,
+    "runAsUser": 1000,
+    "seccompProfile": {
+      "type": "RuntimeDefault"
+    }
+  },
   "environment": {},
   "fullnameOverride": "",
   "image": {
@@ -117,23 +134,6 @@ This chart does install the Guardian Authorization API.
     "requests": {
       "cpu": "250m",
       "memory": "512Mi"
-    }
-  },
-  "securityContext": {
-    "allowPrivilegeEscalation": false,
-    "capabilities": {
-      "drop": [
-        "ALL"
-      ]
-    },
-    "enabled": true,
-    "privileged": false,
-    "readOnlyRootFilesystem": true,
-    "runAsGroup": 1000,
-    "runAsNonRoot": true,
-    "runAsUser": 1000,
-    "seccompProfile": {
-      "type": "RuntimeDefault"
     }
   },
   "service": {
@@ -893,6 +893,23 @@ true
     "oauthAdapterWellKnownUrl": "",
     "sqlPersistenceAdapterDialect": "postgresql"
   },
+  "containerSecurityContext": {
+    "allowPrivilegeEscalation": false,
+    "capabilities": {
+      "drop": [
+        "ALL"
+      ]
+    },
+    "enabled": true,
+    "privileged": false,
+    "readOnlyRootFilesystem": true,
+    "runAsGroup": 1000,
+    "runAsNonRoot": true,
+    "runAsUser": 1000,
+    "seccompProfile": {
+      "type": "RuntimeDefault"
+    }
+  },
   "environment": {},
   "fullnameOverride": "",
   "image": {
@@ -954,23 +971,6 @@ true
     "requests": {
       "cpu": "250m",
       "memory": "512Mi"
-    }
-  },
-  "securityContext": {
-    "allowPrivilegeEscalation": false,
-    "capabilities": {
-      "drop": [
-        "ALL"
-      ]
-    },
-    "enabled": true,
-    "privileged": false,
-    "readOnlyRootFilesystem": true,
-    "runAsGroup": 1000,
-    "runAsNonRoot": true,
-    "runAsUser": 1000,
-    "seccompProfile": {
-      "type": "RuntimeDefault"
     }
   },
   "service": {
@@ -1319,6 +1319,87 @@ false
 			<td>Port and adapter to use as data source for the UI. Defaults to `api` for Guardian's Management API.</td>
 		</tr>
 		<tr>
+			<td>managementUi.containerSecurityContext.allowPrivilegeEscalation</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.capabilities.drop[0]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ALL"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.privileged</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.readOnlyRootFilesystem</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.runAsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.runAsNonRoot</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.runAsUser</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.containerSecurityContext.seccompProfile.type</td>
+			<td>string</td>
+			<td><pre lang="json">
+"RuntimeDefault"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>managementUi.environment</td>
 			<td>object</td>
 			<td><pre lang="json">
@@ -1436,10 +1517,37 @@ null
 			<td></td>
 		</tr>
 		<tr>
-			<td>managementUi.podSecurityContext</td>
-			<td>object</td>
+			<td>managementUi.podSecurityContext.enabled</td>
+			<td>bool</td>
 			<td><pre lang="json">
-{}
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.podSecurityContext.fsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.podSecurityContext.runAsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.podSecurityContext.runAsUser</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
 </pre>
 </td>
 			<td></td>
@@ -1580,78 +1688,6 @@ true
 			<td>Deployment resources for the listener container</td>
 		</tr>
 		<tr>
-			<td>managementUi.securityContext.allowPrivilegeEscalation</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.securityContext.capabilities.drop[0]</td>
-			<td>string</td>
-			<td><pre lang="json">
-"ALL"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.securityContext.privileged</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.securityContext.readOnlyRootFilesystem</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.securityContext.runAsGroup</td>
-			<td>int</td>
-			<td><pre lang="json">
-1000
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.securityContext.runAsNonRoot</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.securityContext.runAsUser</td>
-			<td>int</td>
-			<td><pre lang="json">
-1000
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.securityContext.seccompProfile.type</td>
-			<td>string</td>
-			<td><pre lang="json">
-"RuntimeDefault"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
 			<td>managementUi.service.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
@@ -1787,6 +1823,87 @@ false
 			<td></td>
 		</tr>
 		<tr>
+			<td>openPolicyAgent.containerSecurityContext.allowPrivilegeEscalation</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.capabilities.drop[0]</td>
+			<td>string</td>
+			<td><pre lang="json">
+"ALL"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.privileged</td>
+			<td>bool</td>
+			<td><pre lang="json">
+false
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.readOnlyRootFilesystem</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.runAsGroup</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.runAsNonRoot</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.runAsUser</td>
+			<td>int</td>
+			<td><pre lang="json">
+1000
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.containerSecurityContext.seccompProfile.type</td>
+			<td>string</td>
+			<td><pre lang="json">
+"RuntimeDefault"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
 			<td>openPolicyAgent.environment</td>
 			<td>object</td>
 			<td><pre lang="json">
@@ -1881,6 +1998,15 @@ null
 			<td>object</td>
 			<td><pre lang="json">
 {}
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>openPolicyAgent.podSecurityContext.enabled</td>
+			<td>bool</td>
+			<td><pre lang="json">
+true
 </pre>
 </td>
 			<td></td>
@@ -2039,78 +2165,6 @@ true
 			<td>Deployment resources for the listener container</td>
 		</tr>
 		<tr>
-			<td>openPolicyAgent.securityContext.allowPrivilegeEscalation</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.securityContext.capabilities.drop[0]</td>
-			<td>string</td>
-			<td><pre lang="json">
-"ALL"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.securityContext.privileged</td>
-			<td>bool</td>
-			<td><pre lang="json">
-false
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.securityContext.readOnlyRootFilesystem</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.securityContext.runAsGroup</td>
-			<td>int</td>
-			<td><pre lang="json">
-1000
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.securityContext.runAsNonRoot</td>
-			<td>bool</td>
-			<td><pre lang="json">
-true
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.securityContext.runAsUser</td>
-			<td>int</td>
-			<td><pre lang="json">
-1000
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.securityContext.seccompProfile.type</td>
-			<td>string</td>
-			<td><pre lang="json">
-"RuntimeDefault"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
 			<td>openPolicyAgent.service.enabled</td>
 			<td>bool</td>
 			<td><pre lang="json">
@@ -2259,6 +2313,18 @@ null
     },
     "nubusBaseUrl": ""
   },
+  "containerSecurityContext": {
+    "allowPrivilegeEscalation": false,
+    "enabled": true,
+    "privileged": false,
+    "readOnlyRootFilesystem": false,
+    "runAsGroup": 1000,
+    "runAsNonRoot": true,
+    "runAsUser": 1000,
+    "seccompProfile": {
+      "type": "RuntimeDefault"
+    }
+  },
   "enabled": true,
   "image": {
     "imagePullSecrets": [],
@@ -2296,18 +2362,6 @@ null
     "tag": "0.11.0@sha256:55ad741e01dd91bb9b0332fd602a6262d3618abdf97a86c13f1e6148b36bd242"
   },
   "restartPolicy": "OnFailure",
-  "securityContext": {
-    "allowPrivilegeEscalation": false,
-    "enabled": true,
-    "privileged": false,
-    "readOnlyRootFilesystem": false,
-    "runAsGroup": 1000,
-    "runAsNonRoot": true,
-    "runAsUser": 1000,
-    "seccompProfile": {
-      "type": "RuntimeDefault"
-    }
-  },
   "tolerations": [],
   "ttlSecondsAfterFinished": 300
 }

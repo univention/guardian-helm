@@ -48,9 +48,9 @@ spec:
       nodeSelector:
         {{ toYaml . | nindent 8 | trim }}
       {{- end }}
-      {{- with .Values.openPolicyAgent.podSecurityContext }}
+      {{- if .Values.openPolicyAgent.podSecurityContext.enabled }}
       securityContext:
-        {{ toYaml . | nindent 8 | trim }}
+        {{- omit .Values.openPolicyAgent.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       {{- if .Values.openPolicyAgent.imagePullSecrets }}
       imagePullSecrets:
@@ -60,8 +60,10 @@ spec:
       {{- end }}
       containers:
         - name: "open-policy-agent"
+          {{- if .Values.openPolicyAgent.containerSecurityContext.enabled }}
           securityContext:
-            {{- toYaml .Values.openPolicyAgent.securityContext | nindent 12 }}
+            {{- omit .Values.openPolicyAgent.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           image: "{{ coalesce .Values.openPolicyAgent.image.registry .Values.global.imageRegistry }}/{{ .Values.openPolicyAgent.image.repository }}{{ if .Values.openPolicyAgent.image.sha256 }}@sha256:{{ .Values.openPolicyAgent.image.sha256 }}{{ else }}:{{ .Values.openPolicyAgent.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.openPolicyAgent.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}
           envFrom:

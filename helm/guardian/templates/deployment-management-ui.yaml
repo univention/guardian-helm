@@ -48,9 +48,9 @@ spec:
       nodeSelector:
         {{ toYaml . | nindent 8 | trim }}
       {{- end }}
-      {{- with .Values.managementUi.podSecurityContext }}
+      {{- if .Values.managementUi.podSecurityContext.enabled }}
       securityContext:
-        {{ toYaml . | nindent 8 | trim }}
+        {{- omit .Values.managementUi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       {{- if .Values.managementUi.imagePullSecrets }}
       imagePullSecrets:
@@ -60,8 +60,10 @@ spec:
       {{- end }}
       initContainers:
         - name: "app-configuration"
+          {{- if .Values.managementUi.containerSecurityContext.enabled }}
           securityContext:
-            {{- toYaml .Values.managementUi.securityContext | nindent 12 }}
+            {{- omit .Values.managementUi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           resources:
@@ -82,8 +84,10 @@ spec:
               mountPath: "/target/app"
       containers:
         - name: "management-ui"
+          {{- if .Values.managementUi.containerSecurityContext.enabled }}
           securityContext:
-            {{- toYaml .Values.managementUi.securityContext | nindent 12 }}
+            {{- omit .Values.managementUi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:

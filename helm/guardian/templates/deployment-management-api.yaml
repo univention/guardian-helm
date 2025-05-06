@@ -44,9 +44,9 @@ spec:
       nodeSelector:
         {{ toYaml . | nindent 8 | trim }}
       {{- end }}
-      {{- if .Values.managementApi.securityContext.enabled }}
+      {{- if .Values.managementApi.podSecurityContext.enabled }}
       securityContext:
-        {{- omit .Values.managementApi.securityContext "enabled" | toYaml | nindent 8 }}
+        {{- omit .Values.managementApi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       {{- if .Values.managementApi.imagePullSecrets }}
       imagePullSecrets:
@@ -59,9 +59,9 @@ spec:
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           command: ["alembic", "upgrade", "head"]
           imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
-          {{- if .Values.managementApi.securityContext.enabled }}
+          {{- if .Values.managementApi.containerSecurityContext.enabled }}
           securityContext:
-            {{- omit .Values.managementApi.securityContext "enabled" | toYaml | nindent 12 }}
+            {{- omit .Values.managementApi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           resources:
             {{- toYaml .Values.managementApi.resources | nindent 12 }}
@@ -76,9 +76,9 @@ spec:
                   key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password") }}
       containers:
         - name: "management-api"
-          {{- if .Values.managementApi.securityContext.enabled }}
+          {{- if .Values.managementApi.containerSecurityContext.enabled }}
           securityContext:
-            {{- omit .Values.managementApi.securityContext "enabled" | toYaml  | nindent 12 }}
+            {{- omit .Values.managementApi.containerSecurityContext "enabled" | toYaml  | nindent 12 }}
           {{- end }}
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}

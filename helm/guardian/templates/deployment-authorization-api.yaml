@@ -58,8 +58,10 @@ spec:
       {{- end }}
       containers:
         - name: "authorization-api"
+          {{- if .Values.authorizationApi.containerSecurityContext.enabled }}
           securityContext:
-            {{- omit .Values.authorizationApi.securityContext "enabled" | toYaml | nindent 12 }}
+            {{- omit .Values.authorizationApi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
           image: "{{ coalesce .Values.authorizationApi.image.registry .Values.global.imageRegistry }}/{{ .Values.authorizationApi.image.repository }}{{ if .Values.authorizationApi.image.sha256 }}@sha256:{{ .Values.authorizationApi.image.sha256 }}{{ else }}:{{ .Values.authorizationApi.image.tag }}{{ end }}"
           imagePullPolicy: {{ coalesce .Values.authorizationApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:

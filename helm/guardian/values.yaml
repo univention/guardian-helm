@@ -149,12 +149,12 @@ authorizationApi:
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
   replicaCount: 1
-  securityContext:
+  containerSecurityContext:
     enabled: true
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     privileged: false
     readOnlyRootFilesystem: true
     runAsGroup: 1000
@@ -302,12 +302,12 @@ managementApi:
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
   replicaCount: 1
-  securityContext:
+  containerSecurityContext:
     enabled: true
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     privileged: false
     readOnlyRootFilesystem: true
     runAsGroup: 1000
@@ -444,9 +444,14 @@ managementUi:
   nameOverride: ""
   nodeSelector: {}
   podAnnotations: {}
-  podSecurityContext: {}
+  podSecurityContext:
+    enabled: true
+    fsGroup: 1000
+    runAsGroup: 1000
+    runAsUser: 1000
   replicaCount: 1
-  securityContext:
+  containerSecurityContext:
+    enabled: true
     allowPrivilegeEscalation: false
     capabilities:
       drop:
@@ -552,11 +557,13 @@ openPolicyAgent:
   nodeSelector: {}
   podAnnotations: {}
   podSecurityContext:
+    enabled: true
     fsGroup: 1000
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
   replicaCount: 1
-  securityContext:
+  containerSecurityContext:
+    enabled: true
     allowPrivilegeEscalation: false
     capabilities:
       drop:
@@ -701,7 +708,7 @@ provisioning:
       # -- Seconds for the job to pause before starting the actual bootstrapping.
       pauseBeforeScriptStart: 0
 
-  securityContext:
+  containerSecurityContext:
     enabled: true
     allowPrivilegeEscalation: false
     privileged: false

@@ -3,8 +3,7 @@
 
 
 import pytest
-
-from pytest_helm.utils import add_jsonpath_prefix, findone, get_containers
+from pytest_helm.utils import get_containers
 from univention.testing.helm.container import ContainerEnvVarSecret
 from univention.testing.helm.deployment import Deployment
 from yaml import safe_load
@@ -18,14 +17,16 @@ class TestDeployment(Deployment):
             safe_load(
                 """
             managementApi:
-              securityContext:
+              podSecurityContext:
                 enabled: false
                 fsGroup: 1000
                 fsGroupChangePolicy: "Always"
             """,
             ),
         )
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         pod_spec = deployment["spec"]["template"]["spec"]
 
         assert "securityContext" not in pod_spec.keys()
@@ -35,43 +36,31 @@ class TestDeployment(Deployment):
             safe_load(
                 """
             managementApi:
-              securityContext:
-                enabled: True
+              podSecurityContext:
+                enabled: true
                 fsGroup: 1000
                 fsGroupChangePolicy: "Always"
                 sysctls: null
             """,
             ),
         )
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         pod_security_context = deployment["spec"]["template"]["spec"]["securityContext"]
-        expected_security_context = {
+        expected_pod_security_context = {
             "fsGroup": 1000,
             "fsGroupChangePolicy": "Always",
             "sysctls": None,
-            'privileged': False,
-            'readOnlyRootFilesystem': True,
-            'runAsGroup': 1000,
-            'runAsNonRoot': True,
-            'runAsUser': 1000,
-            'seccompProfile': {
-              'type': 'RuntimeDefault',
-            },
-            'allowPrivilegeEscalation': False,
-            'capabilities': {
-              'drop': [
-                 'ALL',
-                ],
-            },
         }
-        assert pod_security_context == expected_security_context
+        assert pod_security_context == expected_pod_security_context
 
     def test_container_security_context_can_be_disabled(self, helm, chart_path):
         values = self.add_prefix(
             safe_load(
                 """
             managementApi:
-              securityContext:
+              containerSecurityContext:
                 enabled: false
                 capabilities:
                   drop: []
@@ -80,7 +69,9 @@ class TestDeployment(Deployment):
             ),
         )
         expected_security_context = {}
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         containers = get_containers(deployment)
         _assert_all_have_security_context(containers, expected_security_context)
 
@@ -89,7 +80,7 @@ class TestDeployment(Deployment):
             safe_load(
                 """
             managementApi:
-              securityContext:
+              containerSecurityContext:
                 enabled: true
                 capabilities:
                   drop: []
@@ -104,9 +95,12 @@ class TestDeployment(Deployment):
             "runAsUser": 9876,
         }
 
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         containers = get_containers(deployment)
         _assert_all_have_security_context(containers, expected_security_context)
+
 
 def _assert_all_have_security_context(containers, expected_security_context):
     for container in containers:

@@ -2,10 +2,7 @@
 # SPDX-FileCopyrightText: 2025 Univention GmbH
 
 
-import pytest
-
-from pytest_helm.utils import add_jsonpath_prefix, findone, get_containers
-from univention.testing.helm.container import ContainerEnvVarSecret
+from pytest_helm.utils import get_containers
 from univention.testing.helm.deployment import Deployment
 from yaml import safe_load
 
@@ -25,7 +22,9 @@ class TestDeployment(Deployment):
             """,
             ),
         )
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         pod_spec = deployment["spec"]["template"]["spec"]
 
         assert "securityContext" not in pod_spec.keys()
@@ -35,7 +34,7 @@ class TestDeployment(Deployment):
             safe_load(
                 """
             authorizationApi:
-              securityContext:
+              containerSecurityContext:
                 enabled: True
                 fsGroup: 1000
                 fsGroupChangePolicy: "Always"
@@ -43,7 +42,9 @@ class TestDeployment(Deployment):
             """,
             ),
         )
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         pod_security_context = deployment["spec"]["template"]["spec"]["securityContext"]
         expected_security_context = {
             "fsGroup": 1000,
@@ -56,7 +57,7 @@ class TestDeployment(Deployment):
             safe_load(
                 """
             authorizationApi:
-              securityContext:
+              containerSecurityContext:
                 enabled: false
                 capabilities:
                   drop: []
@@ -65,7 +66,9 @@ class TestDeployment(Deployment):
             ),
         )
         expected_security_context = {}
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         containers = get_containers(deployment)
         _assert_all_have_security_context(containers, expected_security_context)
 
@@ -74,7 +77,7 @@ class TestDeployment(Deployment):
             safe_load(
                 """
             authorizationApi:
-              securityContext:
+              containerSecurityContext:
                 enabled: true
                 capabilities:
                   drop: []
@@ -89,9 +92,12 @@ class TestDeployment(Deployment):
             "runAsUser": 9876,
         }
 
-        deployment = self.helm_template_file(helm, chart_path, values, self.template_file)
+        deployment = self.helm_template_file(
+            helm, chart_path, values, self.template_file
+        )
         containers = get_containers(deployment)
         _assert_all_have_security_context(containers, expected_security_context)
+
 
 def _assert_all_have_security_context(containers, expected_security_context):
     for container in containers:

@@ -28,17 +28,17 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.provisioning.securityContext.enabled }}
+      {{- if .Values.provisioning.podSecurityContext.enabled }}
       securityContext:
-        {{- omit .Values.provisioning.securityContext "enabled" | toYaml | nindent 8 }}
+        {{- omit .Values.provisioning.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       initContainers:
       - name: "wait-for-keycloak-container"
         image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
         imagePullPolicy: {{ coalesce .Values.provisioning.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
-        {{- if .Values.provisioning.securityContext.enabled }}
+        {{- if .Values.provisioning.containerSecurityContext.enabled }}
         securityContext:
-          {{- omit .Values.provisioning.securityContext "enabled" | toYaml | nindent 10 }}
+          {{- omit .Values.provisioning.containerSecurityContext "enabled" | toYaml | nindent 10 }}
         {{- end }}
         envFrom:
           - configMapRef:
@@ -62,9 +62,9 @@ spec:
           {{- end }}
       containers:
       - name: "keycloak-provisioning"
-        {{- if .Values.provisioning.securityContext.enabled }}
+        {{- if .Values.provisioning.containerSecurityContext.enabled }}
         securityContext:
-          {{- omit .Values.provisioning.securityContext "enabled" | toYaml | nindent 10 }}
+          {{- omit .Values.provisioning.containerSecurityContext "enabled" | toYaml | nindent 10 }}
         {{- end }}
         image: "{{ coalesce .Values.provisioning.provisioningImage.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.provisioningImage.repository }}{{ if .Values.provisioning.provisioningImage.sha256 }}@sha256:{{ .Values.provisioning.provisioningImage.sha256 }}{{ else }}:{{ .Values.provisioning.provisioningImage.tag }}{{ end }}"
         imagePullPolicy: {{ coalesce .Values.provisioning.provisioningImage.imagePullPolicy .Values.global.imagePullPolicy | quote }}
