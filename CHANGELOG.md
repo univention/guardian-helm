@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.19.0...v0.19.1) (2025-05-07)
+
+
+### Bug Fixes
+
+* security context warnings at deployment time ([104257a](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/104257a648a4b96bfb43f310721949db66ede097)), closes [univention/dev/internal/team-nubus#1168](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1168)
+
 ## [0.19.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.18.0...v0.19.0) (2025-04-29)
 
 
