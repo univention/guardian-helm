@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.19.2...v0.20.0) (2025-05-09)
+
+
+### Features
+
+* Non-root and read-only filesystem on init containers ([63a1352](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/63a1352368fde64a6d6320d5043a42b691e93296)), closes [univention/dev/internal/team-nubus#1139](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1139)
+
 ## [0.19.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.19.1...v0.19.2) (2025-05-09)
 
 
