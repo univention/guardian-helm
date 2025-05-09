@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.2](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.19.1...v0.19.2) (2025-05-09)
+
+
+### Bug Fixes
+
+* fixes for the guardian spike ([80b9725](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/80b9725284c9c67332fd24e6f7d42a640f462a4c))
+
 ## [0.19.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.19.0...v0.19.1) (2025-05-07)
 
 
