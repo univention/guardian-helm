@@ -25,7 +25,7 @@ If the value .Values.global.nubusDeployment equates to true, the defined templat
 {{- else if .Values.global.nubusDeployment -}}
 {{ printf "https://%s.%s/guardian/management" .Values.global.subDomains.portal .Values.global.domain }}
 {{- else -}}
-{{- required "managementUi.config.viteApiDataAdepterUri is required" .Values.managementUi.config.viteApiDataAdapterUri -}}
+{{- required "managementUi.config.viteApiDataAdapterUri is required" .Values.managementUi.config.viteApiDataAdapterUri -}}
 {{- end -}}
 {{- end -}}
 

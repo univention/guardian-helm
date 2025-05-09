@@ -6,7 +6,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+  name: "{{ include "common.names.fullname" . }}-provisioning-{{ .Release.Revision }}"
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
@@ -14,7 +14,7 @@ spec:
   ttlSecondsAfterFinished: {{ .Values.provisioning.ttlSecondsAfterFinished }}
   template:
     metadata:
-      name: {{ printf "%s-provisioning" (include "common.names.fullname" .) }}
+      name: "{{ include "common.names.fullname" . }}-provisioning-{{ .Release.Revision }}"
       labels:
         {{- include "common.labels.standard" . | nindent 8 }}
       annotations:
@@ -46,7 +46,7 @@ spec:
         {{- with .Values.provisioning.extraEnvVars }}
           {{- . | toYaml | nindent 10 }}
         {{- end }}
-        command: ["/usr/bin/python3", "/scripts/wait-for-keycloak.py"]
+        command: ["wait-for-keycloak.py"]
         {{- if .Values.provisioning.args }}
         args: {{ .Values.provisioning.args }}
         {{- end }}
@@ -55,8 +55,6 @@ spec:
         {{ toYaml . | indent 10 }}
         {{- end }}
         volumeMounts:
-          - name: "wait-for-keycloak"
-            mountPath: "/scripts"
           {{- if .Values.provisioning.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumeMounts "context" .) | nindent 10 }}
           {{- end }}
@@ -177,9 +175,6 @@ spec:
         {{ toYaml . | indent 8 }}
       {{- end }}
       volumes:
-        - name: "wait-for-keycloak"
-          configMap:
-            name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
         - name: "keycloak-credentials-volume"
           secret:
             secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "provisioning-secret" "context" .) | quote }}

@@ -2315,9 +2315,14 @@ null
   },
   "containerSecurityContext": {
     "allowPrivilegeEscalation": false,
+    "capabilities": {
+      "drop": [
+        "ALL"
+      ]
+    },
     "enabled": true,
     "privileged": false,
-    "readOnlyRootFilesystem": false,
+    "readOnlyRootFilesystem": true,
     "runAsGroup": 1000,
     "runAsNonRoot": true,
     "runAsUser": 1000,
@@ -2329,8 +2334,8 @@ null
   "image": {
     "imagePullSecrets": [],
     "registry": "artifacts.software-univention.de",
-    "repository": "nubus-dev/images/guardian-init",
-    "tag": "latest"
+    "repository": "nubus-dev/images/wait-for-dependency",
+    "tag": "0.31.0"
   },
   "keycloak": {
     "auth": {

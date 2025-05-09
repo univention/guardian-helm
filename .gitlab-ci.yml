@@ -12,16 +12,7 @@ include:
       - "jobs/lint-pre-commit.yaml"
       - "jobs/lint-commit-messages.yaml"
       - "jobs/semantic-release-env.yaml"
-      - "jobs/container-build-external.yaml"
       - "jobs/package-and-publish-helm-charts-external.yaml"
-
-.build-matrix: &build-matrix
-  - IMAGE_NAME:
-      - "guardian-init"
-
-.publish-matrix: &publish-matrix
-  - IMAGE_NAME:
-      - "guardian-init"
 
 test-chart-unit:
   stage: test
@@ -34,21 +25,5 @@ lint-pre-commit:
   before_script:
     # Compose lint would fail without the referenced env files
     - helm repo add bitnami https://charts.bitnami.com/bitnami
-
-container-build:
-  parallel:
-    matrix: *build-matrix
-
-container-malware-scan:
-  parallel:
-    matrix: *publish-matrix
-
-container-sign-external:
-  parallel:
-    matrix: *build-matrix
-
-push-image-external:
-  parallel:
-    matrix: *build-matrix
 
 ...
