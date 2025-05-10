@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.20.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.20.0...v0.20.1) (2025-05-10)
+
+
+### Bug Fixes
+
+* move addlicense pre-commit hook ([370b0cf](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/370b0cf6342f08c6e609aaa26cc6072b12d897ae))
+* update common-ci to main ([f470901](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/f470901edd2ad058cb9d2bc5ea873012ba29d526))
+* update common-ci to v1.40.4 ([8b83211](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/8b83211d599026d0eff324673820ce00b23d323e))
+
 ## [0.20.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.19.2...v0.20.0) (2025-05-09)
 
 
