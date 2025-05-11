@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.20.1...v0.21.0) (2025-05-11)
+
+
+### Features
+
+* move and upgrade ucs-base-image to 0.17.3-build-2025-05-11 ([774e665](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/commit/774e665bc4de4d3b504a431c786ffc6ad1d3bc46))
+
 ## [0.20.1](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.20.0...v0.20.1) (2025-05-10)
 
 
