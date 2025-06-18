@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.1](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.21.0...v0.21.1) (2025-06-18)
+
+
+### Bug Fixes
+
+* bump umc-base-image version ([4ef76dd](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/4ef76dd043677348bd11fc7db1e8bd7242c8782e)), closes [univention/dev/internal/team-nubus#1263](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1263)
+
 ## [0.21.0](https://git.knut.univention.de/univention/customers/dataport/upx/guardian-helm/compare/v0.20.1...v0.21.0) (2025-05-11)
 
 
