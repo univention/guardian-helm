@@ -2335,7 +2335,7 @@ null
     "imagePullSecrets": [],
     "registry": "artifacts.software-univention.de",
     "repository": "nubus-dev/images/wait-for-dependency",
-    "tag": "0.31.0"
+    "tag": "0.32.1"
   },
   "keycloak": {
     "auth": {
@@ -2364,7 +2364,7 @@ null
     "imagePullSecrets": [],
     "registry": "artifacts.software-univention.de",
     "repository": "nubus/images/keycloak-bootstrap",
-    "tag": "0.11.0@sha256:55ad741e01dd91bb9b0332fd602a6262d3618abdf97a86c13f1e6148b36bd242"
+    "tag": "0.12.1@sha256:4a36e3753bda7d6ccc6fc98f5e115bf96a4257c1a9458d075888256484cfdd4b"
   },
   "restartPolicy": "OnFailure",
   "tolerations": [],
