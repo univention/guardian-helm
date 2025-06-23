@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.2](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.21.1...v0.21.2) (2025-06-23)
+
+
+### Bug Fixes
+
+* trigger release ([a118834](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/a1188342f8d0f2e42d93ddce4b068c9ef7b2e870)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/issues/0)
+
 ## [0.21.1](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.21.0...v0.21.1) (2025-06-18)
 
 
