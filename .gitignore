@@ -4,3 +4,6 @@ helm/**/.kyverno/manifest.yaml
 
 # helm unit test
 __pycache__
+
+# IDE
+.idea/
