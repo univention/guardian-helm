@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.3](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.21.2...v0.21.3) (2025-06-23)
+
+
+### Bug Fixes
+
+* use default cluster ingress class if not defined ([764831a](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/764831ae274442420f12cfdc1a567403f23100c0)), closes [univention/dev/internal/team-nubus#1134](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1134)
+
 ## [0.21.2](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.21.1...v0.21.2) (2025-06-23)
 
 
