@@ -11,7 +11,7 @@ metadata:
   labels:
     {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
     {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-api" (include "common.names.fullname" .)) }}
-    {{- $mergedLabels := merge $uiLabels $commonLabels}}
+    {{- $mergedLabels := merge $uiLabels $commonLabels }}
     {{- toYaml $mergedLabels | nindent 4 }}
 spec:
   type: {{ .Values.managementApi.service.type }}
@@ -34,7 +34,7 @@ spec:
   selector:
     {{- $commonLabels := include "common.labels.matchLabels" . | fromYaml }}
     {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-api" (include "common.names.fullname" .)) }}
-    {{- merge $uiLabels $commonLabels | toYaml | nindent 4}}
+    {{- merge $uiLabels $commonLabels | toYaml | nindent 4 }}
 
 ...
 {{- end }}

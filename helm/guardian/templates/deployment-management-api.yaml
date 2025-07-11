@@ -26,7 +26,7 @@ spec:
       labels:
         {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
         {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-api" (include "common.names.fullname" .)) }}
-        {{- $mergedLabels := merge $uiLabels $commonLabels}}
+        {{- $mergedLabels := merge $uiLabels $commonLabels }}
         {{- toYaml $mergedLabels | nindent 8 }}
     spec:
       {{- if .Values.serviceAccount.create }}
@@ -81,7 +81,7 @@ spec:
             {{- omit .Values.managementApi.containerSecurityContext "enabled" | toYaml  | nindent 12 }}
           {{- end }}
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
-          imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}
+          imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}

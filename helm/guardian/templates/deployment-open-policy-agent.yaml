@@ -11,7 +11,7 @@ metadata:
   labels:
     {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
     {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-open-policy-agent" (include "common.names.fullname" .)) }}
-    {{- $mergedLabels := merge $uiLabels $commonLabels}}
+    {{- $mergedLabels := merge $uiLabels $commonLabels }}
     {{- toYaml $mergedLabels | nindent 4 }}
 spec:
   replicas: {{ .Values.openPolicyAgent.replicaCount }}
@@ -30,7 +30,7 @@ spec:
       labels:
         {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
         {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-open-policy-agent" (include "common.names.fullname" .)) }}
-        {{- $mergedLabels := merge $uiLabels $commonLabels}}
+        {{- $mergedLabels := merge $uiLabels $commonLabels }}
         {{- toYaml $mergedLabels | nindent 8 }}
     spec:
       {{- if .Values.serviceAccount.create }}
@@ -65,7 +65,7 @@ spec:
             {{- omit .Values.openPolicyAgent.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           image: "{{ coalesce .Values.openPolicyAgent.image.registry .Values.global.imageRegistry }}/{{ .Values.openPolicyAgent.image.repository }}{{ if .Values.openPolicyAgent.image.sha256 }}@sha256:{{ .Values.openPolicyAgent.image.sha256 }}{{ else }}:{{ .Values.openPolicyAgent.image.tag }}{{ end }}"
-          imagePullPolicy: {{ coalesce .Values.openPolicyAgent.image.imagePullPolicy .Values.global.imagePullPolicy | quote}}
+          imagePullPolicy: {{ coalesce .Values.openPolicyAgent.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-open-policy-agent" (include "common.names.fullname" .) }}
