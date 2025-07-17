@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.21.3...v0.22.0) (2025-07-17)
+
+
+### Features
+
+* Update Keycloak bootstrap image to version 0.14.0 ([b7603bc](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/b7603bce11c0598b07937b4d3fd0797f9189d7cb)), closes [univention/dev/internal/team-nubus#1320](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1320)
+
 ## [0.21.3](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.21.2...v0.21.3) (2025-06-23)
 
 
