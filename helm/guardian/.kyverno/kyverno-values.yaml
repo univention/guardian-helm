@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# SPDX-FileCopyrightText: 2024-2025 Univention GmbH
+---
+# Guardian service-specific configuration for Kyverno tests
+authorizationApi:
+  replicaCount: 42
+managementApi:
+  replicaCount: 42
+managementUi:
+  replicaCount: 42
+openPolicyAgent:
+  replicaCount: 42
