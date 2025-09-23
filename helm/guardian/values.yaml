@@ -16,6 +16,8 @@ global:
   securityContext: {}
   tolerations: []
   imageRegistry: "artifacts.software-univention.de"
+  imagePullPolicy: "IfNotPresent"
+  imagePullSecrets: []
   postgresql:
     connection:
       host: ""
@@ -170,7 +172,7 @@ authorizationApi:
 
     registry: "docker.software-univention.de"
     repository: "guardian-authorization-api-authorization-api"
-    tag: "3.0.0"
+    tag: "3.0.0@sha256:d2849b25ddd0322e1bef6c1e7b16f59fb63f35b0924f99f200bc22de834d9a2d"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -323,7 +325,7 @@ managementApi:
 
     registry: "docker.software-univention.de"
     repository: "guardian-management-api-management-api"
-    tag: "3.0.0"
+    tag: "3.0.0@sha256:f3c9af13d50632a7e2232f675408b5559fb9ca314b7babf367cf4db80b62ebea"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -471,7 +473,7 @@ managementUi:
 
     registry: "docker.software-univention.de"
     repository: "guardian-management-ui-management-ui"
-    tag: "3.0.0"
+    tag: "3.0.0@sha256:b90d496a323353c71e29938a6b1980655fb3aefe53bab455da865e3202b7f0f8"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -583,7 +585,7 @@ openPolicyAgent:
 
     registry: "docker.software-univention.de"
     repository: "guardian-authorization-api-opa"
-    tag: "3.0.0"
+    tag: "3.0.0@sha256:85539fb7854fac6ba1b874d639188ee0a33743dc16dad0113c54763f2984fc9d"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -659,6 +661,14 @@ provisioning:
     # -- Change ownership and permission of the volume before being exposed inside a Pod.
     fsGroupChangePolicy: "Always"
 
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
   provisioningImage:
     imagePullSecrets: []
 
@@ -672,9 +682,9 @@ provisioning:
 
     registry: "artifacts.software-univention.de"
     repository: "nubus/images/wait-for-dependency"
-    tag: "0.32.1"
+    tag: "0.32.1@sha256:44d45067e1d4e7a00d3b651e56df5177087e3206368a45cd1816d78ba7b21347"
     # -- Define image sha256 as an alternative to `tag`
-    # sha256: null
+    sha256: null
 
   # -- Keycloak specific settings.
   keycloak:

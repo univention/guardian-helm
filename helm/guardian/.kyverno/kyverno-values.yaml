@@ -1,12 +1,40 @@
 # SPDX-License-Identifier: AGPL-3.0-only
-# SPDX-FileCopyrightText: 2024-2025 Univention GmbH
+# SPDX-FileCopyrightText: 2025 Univention GmbH
 ---
 # Guardian service-specific configuration for Kyverno tests
+global:
+  imageRegistry: "registry.kyverno.test"
+  imagePullPolicy: "kyverno"
+
 authorizationApi:
   replicaCount: 42
+  image:
+    registry: "registry.kyverno.test"
+    imagePullPolicy: "kyverno"
+
 managementApi:
   replicaCount: 42
+  image:
+    registry: "registry.kyverno.test"
+    imagePullPolicy: "kyverno"
+
 managementUi:
   replicaCount: 42
+  image:
+    registry: "registry.kyverno.test"
+    imagePullPolicy: "kyverno"
+
 openPolicyAgent:
   replicaCount: 42
+  image:
+    registry: "registry.kyverno.test"
+    imagePullPolicy: "kyverno"
+
+provisioning:
+  image:
+    registry: "registry.kyverno.test"
+    imagePullPolicy: "kyverno"
+
+  provisioningImage:
+    registry: "registry.kyverno.test"
+    imagePullPolicy: "kyverno"

@@ -52,9 +52,10 @@ spec:
       securityContext:
         {{- omit .Values.openPolicyAgent.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
-      {{- if .Values.openPolicyAgent.imagePullSecrets }}
+      {{- $imagePullSecrets := coalesce .Values.openPolicyAgent.image.imagePullSecrets .Values.global.imagePullSecrets }}
+      {{- if $imagePullSecrets }}
       imagePullSecrets:
-        {{- range .Values.openPolicyAgent.imagePullSecrets }}
+        {{- range $imagePullSecrets }}
         - name: "{{ . }}"
         {{- end }}
       {{- end }}

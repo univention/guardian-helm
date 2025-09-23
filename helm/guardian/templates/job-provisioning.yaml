@@ -24,9 +24,15 @@ spec:
         {{- end }}
     spec:
       restartPolicy: {{ coalesce .Values.provisioning.restartPolicy .Values.global.restartPolicy | quote }}
-      {{- with .Values.provisioning.image.pullSecrets }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "common.names.fullname" . }}
+      {{- end }}
+      {{- $imagePullSecrets := coalesce .Values.provisioning.image.imagePullSecrets .Values.global.imagePullSecrets }}
+      {{- if $imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+        {{- range $imagePullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
       {{- end }}
       {{- if .Values.provisioning.podSecurityContext.enabled }}
       securityContext:
@@ -52,7 +58,7 @@ spec:
         {{- end }}
         {{- with .Values.provisioning.resources }}
         resources:
-        {{ toYaml . | indent 10 }}
+          {{- toYaml . | nindent 10 }}
         {{- end }}
         volumeMounts:
           {{- if .Values.provisioning.extraVolumeMounts }}
@@ -151,7 +157,7 @@ spec:
         {{- end }}
         {{- with .Values.provisioning.resources }}
         resources:
-        {{ toYaml . | indent 10 }}
+          {{- toYaml . | nindent 10 }}
         {{- end }}
         volumeMounts:
           - mountPath: "/credentials/keycloak.secret"
@@ -164,15 +170,15 @@ spec:
           {{- end }}
       {{- with .Values.provisioning.nodeSelector }}
       nodeSelector:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.provisioning.affinity }}
       affinity:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.provisioning.tolerations }}
       tolerations:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
         - name: "keycloak-credentials-volume"

@@ -48,9 +48,10 @@ spec:
       securityContext:
         {{- omit .Values.managementApi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
-      {{- if .Values.managementApi.imagePullSecrets }}
+      {{- $imagePullSecrets := coalesce .Values.managementApi.image.imagePullSecrets .Values.global.imagePullSecrets }}
+      {{- if $imagePullSecrets }}
       imagePullSecrets:
-        {{- range .Values.managementApi.imagePullSecrets }}
+        {{- range $imagePullSecrets }}
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
@@ -58,7 +59,7 @@ spec:
         - name: "database-migrations"
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           command: ["alembic", "upgrade", "head"]
-          imagePullPolicy: "{{ .Values.managementApi.image.imagePullPolicy }}"
+          imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
           {{- if .Values.managementApi.containerSecurityContext.enabled }}
           securityContext:
             {{- omit .Values.managementApi.containerSecurityContext "enabled" | toYaml | nindent 12 }}

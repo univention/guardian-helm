@@ -91,7 +91,7 @@ This chart does install the Guardian Authorization API.
     "registry": "docker.software-univention.de",
     "repository": "guardian-authorization-api-authorization-api",
     "sha256": null,
-    "tag": "3.0.0"
+    "tag": "3.0.0@sha256:d2849b25ddd0322e1bef6c1e7b16f59fb63f35b0924f99f200bc22de834d9a2d"
   },
   "nameOverride": "",
   "nodeSelector": {},
@@ -430,6 +430,24 @@ null
 			<td>string</td>
 			<td><pre lang="json">
 ""
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>global.imagePullPolicy</td>
+			<td>string</td>
+			<td><pre lang="json">
+"IfNotPresent"
+</pre>
+</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>global.imagePullSecrets</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
 </pre>
 </td>
 			<td></td>
@@ -918,7 +936,7 @@ true
     "registry": "docker.software-univention.de",
     "repository": "guardian-management-api-management-api",
     "sha256": null,
-    "tag": "3.0.0"
+    "tag": "3.0.0@sha256:f3c9af13d50632a7e2232f675408b5559fb9ca314b7babf367cf4db80b62ebea"
   },
   "nameOverride": "",
   "nodeSelector": {},
@@ -1466,7 +1484,7 @@ null
 			<td>managementUi.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"3.0.0"
+"3.0.0@sha256:b90d496a323353c71e29938a6b1980655fb3aefe53bab455da865e3202b7f0f8"
 </pre>
 </td>
 			<td></td>
@@ -1970,7 +1988,7 @@ null
 			<td>openPolicyAgent.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"3.0.0"
+"3.0.0@sha256:85539fb7854fac6ba1b874d639188ee0a33743dc16dad0113c54763f2984fc9d"
 </pre>
 </td>
 			<td></td>
@@ -2335,7 +2353,8 @@ null
     "imagePullSecrets": [],
     "registry": "artifacts.software-univention.de",
     "repository": "nubus/images/wait-for-dependency",
-    "tag": "0.32.1"
+    "sha256": null,
+    "tag": "0.32.1@sha256:44d45067e1d4e7a00d3b651e56df5177087e3206368a45cd1816d78ba7b21347"
   },
   "keycloak": {
     "auth": {
@@ -2365,6 +2384,16 @@ null
     "registry": "artifacts.software-univention.de",
     "repository": "nubus/images/keycloak-bootstrap",
     "tag": "0.15.0@sha256:2bb358a4a0c11d11cf07cc16c518287a8257dfa5f6459c7924c241466d8326fe"
+  },
+  "resources": {
+    "limits": {
+      "cpu": "500m",
+      "memory": "512Mi"
+    },
+    "requests": {
+      "cpu": "100m",
+      "memory": "256Mi"
+    }
   },
   "restartPolicy": "OnFailure",
   "tolerations": [],
@@ -2409,6 +2438,15 @@ true
 </pre>
 </td>
 			<td>Whether to run the provisioning job to create the Guardian clients in Keycloak or not.</td>
+		</tr>
+		<tr>
+			<td>provisioning.image.sha256</td>
+			<td>string</td>
+			<td><pre lang="json">
+null
+</pre>
+</td>
+			<td>Define image sha256 as an alternative to `tag`</td>
 		</tr>
 		<tr>
 			<td>provisioning.keycloak</td>

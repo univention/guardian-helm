@@ -52,9 +52,10 @@ spec:
       securityContext:
         {{- omit .Values.managementUi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
-      {{- if .Values.managementUi.imagePullSecrets }}
+      {{- $imagePullSecrets := coalesce .Values.managementUi.image.imagePullSecrets .Values.global.imagePullSecrets }}
+      {{- if $imagePullSecrets }}
       imagePullSecrets:
-        {{- range .Values.managementUi.imagePullSecrets }}
+        {{- range $imagePullSecrets }}
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
