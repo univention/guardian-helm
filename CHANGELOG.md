@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.9](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.22.8...v0.22.9) (2025-09-25)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency univention/dev/nubus-for-k8s/common-ci to v1.44.8 ([cae29b7](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/cae29b7fa32a44ebe5e49fc0d6210d7b17382c56)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/issues/0)
+
 ## [0.22.8](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.22.7...v0.22.8) (2025-09-16)
 
 
