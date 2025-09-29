@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.22.10...v0.23.0) (2025-09-29)
+
+
+### Features
+
+* template improvements for kyverno ([4e58cc0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/4e58cc0900cdfda4b6a620ccccb5e3f172d72076)), closes [univention/dev/internal/team-nubus#1426](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1426)
+
 ## [0.22.10](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.22.9...v0.22.10) (2025-09-28)
 
 
