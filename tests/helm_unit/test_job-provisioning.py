@@ -129,9 +129,6 @@ class TestMainContainer(ContainerEnvVarSecret):
     template_file = "templates/job-provisioning.yaml"
     container_name = "keycloak-provisioning"
 
-    @pytest.mark.skip(
-        reason="Automatic secret creation is not implemented for guardian yet"
-    )
     def test_auth_disabling_existing_secret(
         self, helm, chart_path, key, env_var, key_mapping
     ):

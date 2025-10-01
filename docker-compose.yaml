@@ -13,4 +13,22 @@ services:
     volumes:
       - "./helm/:/app/helm/"
       - "./tests/:/app/tests/"
+
+  # Environment of the pre-commit linter.
+  pre-commit:
+    profiles:
+      - "pre-commit"
+    image: "gitregistry.knut.univention.de/univention/dev/tooling/pre-commit/upx-pre-commit:${IMAGE_TAG:-latest}"
+    volumes:
+      - type: "bind"
+        source: "."
+        target: "/code"
+      - type: "volume"
+        # pre-commit installs dependencies, having them cached speeds things up
+        # a lot.
+        source: "pre-commit-cache"
+        target: "/cache"
+
+volumes:
+  pre-commit-cache: {}
 ...
