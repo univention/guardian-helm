@@ -10,7 +10,11 @@ metadata:
   name: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" . ) | nindent 4 }}
+  {{- include "nubus-common.annotations.render" ( dict
+    "values" ( list .Values.additionalAnnotations )
+    "context" . )
+    | nindent 2 }}
 spec:
   replicas: {{ .Values.authorizationApi.replicaCount }}
   selector:
@@ -50,10 +54,12 @@ spec:
       securityContext:
         {{- omit .Values.authorizationApi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
-      {{- $imagePullSecrets := coalesce .Values.authorizationApi.image.imagePullSecrets .Values.global.imagePullSecrets }}
-      {{- if $imagePullSecrets }}
+      {{- if or .Values.imagePullSecrets .Values.global.imagePullSecrets }}
       imagePullSecrets:
-        {{- range $imagePullSecrets }}
+        {{- range .Values.global.imagePullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
+        {{- range .Values.imagePullSecrets }}
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
@@ -64,7 +70,7 @@ spec:
             {{- omit .Values.authorizationApi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           image: "{{ coalesce .Values.authorizationApi.image.registry .Values.global.imageRegistry }}/{{ .Values.authorizationApi.image.repository }}{{ if .Values.authorizationApi.image.sha256 }}@sha256:{{ .Values.authorizationApi.image.sha256 }}{{ else }}:{{ .Values.authorizationApi.image.tag }}{{ end }}"
-          imagePullPolicy: {{ coalesce .Values.authorizationApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          imagePullPolicy: {{ coalesce .Values.authorizationApi.image.pullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-authorization-api" (include "common.names.fullname" .) }}

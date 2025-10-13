@@ -31,7 +31,7 @@ This chart does install the Guardian Authorization API.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://artifacts.software-univention.de/nubus/charts | nubus-common | ^0.8.x |
+| oci://artifacts.software-univention.de/nubus/charts | nubus-common | 0.27.0 |
 
 ## Values
 
@@ -43,6 +43,24 @@ This chart does install the Guardian Authorization API.
 		<th>Description</th>
 	</thead>
 	<tbody>
+		<tr>
+			<td>additionalAnnotations</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td>Additional custom annotations to add to all deployed objects.</td>
+		</tr>
+		<tr>
+			<td>additionalLabels</td>
+			<td>object</td>
+			<td><pre lang="json">
+{}
+</pre>
+</td>
+			<td>Additional custom labels to add to all deployed objects.</td>
+		</tr>
 		<tr>
 			<td>authorizationApi</td>
 			<td>object</td>
@@ -86,8 +104,7 @@ This chart does install the Guardian Authorization API.
   "environment": {},
   "fullnameOverride": "",
   "image": {
-    "imagePullPolicy": "Always",
-    "imagePullSecrets": [],
+    "pullPolicy": null,
     "registry": "docker.software-univention.de",
     "repository": "guardian-authorization-api-authorization-api",
     "sha256": null,
@@ -438,7 +455,7 @@ null
 			<td>global.imagePullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"IfNotPresent"
+null
 </pre>
 </td>
 			<td></td>
@@ -559,6 +576,15 @@ null
 </pre>
 </td>
 			<td></td>
+		</tr>
+		<tr>
+			<td>imagePullSecrets</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Credentials to fetch images from private registry. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/  imagePullSecrets:   - "docker-registry"</td>
 		</tr>
 		<tr>
 			<td>ingress.annotations</td>
@@ -931,8 +957,7 @@ true
   "environment": {},
   "fullnameOverride": "",
   "image": {
-    "imagePullPolicy": "Always",
-    "imagePullSecrets": [],
+    "pullPolicy": null,
     "registry": "docker.software-univention.de",
     "repository": "guardian-management-api-management-api",
     "sha256": null,
@@ -942,6 +967,7 @@ true
   "nodeSelector": {},
   "oauth": {
     "auth": {
+      "clientSecret": null,
       "existingSecret": {
         "keyMapping": {
           "clientSecret": null
@@ -1193,18 +1219,13 @@ null
 			<td>Define image sha256 as an alternative to `tag`</td>
 		</tr>
 		<tr>
-			<td>managementApi.oauth.auth.existingSecret</td>
-			<td>object</td>
+			<td>managementApi.oauth.auth.clientSecret</td>
+			<td>string</td>
 			<td><pre lang="json">
-{
-  "keyMapping": {
-    "clientSecret": null
-  },
-  "name": null
-}
+null
 </pre>
 </td>
-			<td>Machine-to-machine secret. Either this value or an existing Secret has to be specified. The specification of the secret value directly is not supported currently clientSecret: null</td>
+			<td>Machine-to-machine secret. Either this value or an existing Secret has to be specified. The specification of the secret value directly is not supported currently</td>
 		</tr>
 		<tr>
 			<td>managementApi.oauth.auth.existingSecret.keyMapping</td>
@@ -1436,19 +1457,10 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td>managementUi.image.imagePullPolicy</td>
+			<td>managementUi.image.pullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"Always"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>managementUi.image.imagePullSecrets</td>
-			<td>list</td>
-			<td><pre lang="json">
-[]
+null
 </pre>
 </td>
 			<td></td>
@@ -1940,19 +1952,10 @@ true
 			<td></td>
 		</tr>
 		<tr>
-			<td>openPolicyAgent.image.imagePullPolicy</td>
+			<td>openPolicyAgent.image.pullPolicy</td>
 			<td>string</td>
 			<td><pre lang="json">
-"Always"
-</pre>
-</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>openPolicyAgent.image.imagePullSecrets</td>
-			<td>list</td>
-			<td><pre lang="json">
-[]
+null
 </pre>
 </td>
 			<td></td>
@@ -2350,8 +2353,7 @@ null
   },
   "enabled": true,
   "image": {
-    "imagePullSecrets": [],
-    "registry": "artifacts.software-univention.de",
+    "registry": null,
     "repository": "nubus/images/wait-for-dependency",
     "sha256": null,
     "tag": "0.32.1@sha256:44d45067e1d4e7a00d3b651e56df5177087e3206368a45cd1816d78ba7b21347"
@@ -2379,9 +2381,8 @@ null
     "fsGroupChangePolicy": "Always"
   },
   "provisioningImage": {
-    "imagePullPolicy": "IfNotPresent",
-    "imagePullSecrets": [],
-    "registry": "artifacts.software-univention.de",
+    "pullPolicy": null,
+    "registry": null,
     "repository": "nubus/images/keycloak-bootstrap",
     "tag": "0.15.0@sha256:2bb358a4a0c11d11cf07cc16c518287a8257dfa5f6459c7924c241466d8326fe"
   },

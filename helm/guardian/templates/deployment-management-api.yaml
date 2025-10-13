@@ -8,7 +8,11 @@ metadata:
   name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
-    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" $ ) | nindent 4 }}
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" . ) | nindent 4 }}
+  {{- include "nubus-common.annotations.render" ( dict
+    "values" ( list .Values.additionalAnnotations )
+    "context" . )
+    | nindent 2 }}
 spec:
   replicas: {{ .Values.managementApi.replicaCount }}
   selector:
@@ -48,10 +52,12 @@ spec:
       securityContext:
         {{- omit .Values.managementApi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
-      {{- $imagePullSecrets := coalesce .Values.managementApi.image.imagePullSecrets .Values.global.imagePullSecrets }}
-      {{- if $imagePullSecrets }}
+      {{- if or .Values.imagePullSecrets .Values.global.imagePullSecrets }}
       imagePullSecrets:
-        {{- range $imagePullSecrets }}
+        {{- range .Values.global.imagePullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
+        {{- range .Values.imagePullSecrets }}
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
@@ -59,7 +65,7 @@ spec:
         - name: "database-migrations"
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
           command: ["alembic", "upgrade", "head"]
-          imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          imagePullPolicy: {{ coalesce .Values.managementApi.image.pullPolicy .Values.global.imagePullPolicy | quote }}
           {{- if .Values.managementApi.containerSecurityContext.enabled }}
           securityContext:
             {{- omit .Values.managementApi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
@@ -82,7 +88,7 @@ spec:
             {{- omit .Values.managementApi.containerSecurityContext "enabled" | toYaml  | nindent 12 }}
           {{- end }}
           image: "{{ coalesce .Values.managementApi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementApi.image.repository }}{{ if .Values.managementApi.image.sha256 }}@sha256:{{ .Values.managementApi.image.sha256 }}{{ else }}:{{ .Values.managementApi.image.tag }}{{ end }}"
-          imagePullPolicy: {{ coalesce .Values.managementApi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          imagePullPolicy: {{ coalesce .Values.managementApi.image.pullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-api" (include "common.names.fullname" .) }}

@@ -16,7 +16,7 @@ global:
   securityContext: {}
   tolerations: []
   imageRegistry: "artifacts.software-univention.de"
-  imagePullPolicy: "IfNotPresent"
+  imagePullPolicy: null
   imagePullSecrets: []
   postgresql:
     connection:
@@ -28,6 +28,18 @@ global:
     keycloak: ""
     portal: "portal"
 
+# -- Additional custom annotations to add to all deployed objects.
+additionalAnnotations: {}
+
+# -- Additional custom labels to add to all deployed objects.
+additionalLabels: {}
+
+# -- Credentials to fetch images from private registry.
+# Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+#
+# imagePullSecrets:
+#   - "docker-registry"
+imagePullSecrets: []
 
 #########################
 # INGRESS CONFIGURATION #
@@ -167,8 +179,7 @@ authorizationApi:
   tolerations: []
 
   image:
-    imagePullPolicy: "Always"
-    imagePullSecrets: []
+    pullPolicy: null
 
     registry: "docker.software-univention.de"
     repository: "guardian-authorization-api-authorization-api"
@@ -320,8 +331,7 @@ managementApi:
   tolerations: []
 
   image:
-    imagePullPolicy: "Always"
-    imagePullSecrets: []
+    pullPolicy: null
 
     registry: "docker.software-univention.de"
     repository: "guardian-management-api-management-api"
@@ -377,7 +387,7 @@ managementApi:
     auth:
       # -- Machine-to-machine secret. Either this value or an existing Secret has to be specified.
       # The specification of the secret value directly is not supported currently
-      #clientSecret: null
+      clientSecret: null
       existingSecret:
         # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.
         name: null
@@ -468,8 +478,7 @@ managementUi:
   tolerations: []
 
   image:
-    imagePullPolicy: "Always"
-    imagePullSecrets: []
+    pullPolicy: null
 
     registry: "docker.software-univention.de"
     repository: "guardian-management-ui-management-ui"
@@ -580,8 +589,7 @@ openPolicyAgent:
   tolerations: []
 
   image:
-    imagePullPolicy: "Always"
-    imagePullSecrets: []
+    pullPolicy: null
 
     registry: "docker.software-univention.de"
     repository: "guardian-authorization-api-opa"
@@ -670,17 +678,13 @@ provisioning:
       cpu: "500m"
 
   provisioningImage:
-    imagePullSecrets: []
-
-    registry: "artifacts.software-univention.de"
+    registry: null
     repository: "nubus/images/keycloak-bootstrap"
     tag: "0.15.0@sha256:2bb358a4a0c11d11cf07cc16c518287a8257dfa5f6459c7924c241466d8326fe"
-    imagePullPolicy: "IfNotPresent"
+    pullPolicy: null
 
   image:
-    imagePullSecrets: []
-
-    registry: "artifacts.software-univention.de"
+    registry: null
     repository: "nubus/images/wait-for-dependency"
     tag: "0.32.1@sha256:44d45067e1d4e7a00d3b651e56df5177087e3206368a45cd1816d78ba7b21347"
     # -- Define image sha256 as an alternative to `tag`

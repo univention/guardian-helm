@@ -9,7 +9,8 @@ kind: Ingress
 metadata:
   name: {{ printf "%s-%s" (include "common.names.fullname" $) (required "Ingress must have a name. Missing key \"name\" on extraIngress definition." .name) }}
   namespace: {{ include "common.names.namespace" $ }}
-  labels: {{- include "common.labels.standard" ( dict "customLabels" $.Values.additionalLabels "context" $ ) | nindent 4 }}
+  labels:
+    {{- include "common.labels.standard" ( dict "customLabels" $.Values.additionalLabels "context" $ ) | nindent 4 }}
   annotations:
     {{- if or .annotations $.Values.additionalAnnotations }}
     {{- $annotations := include "common.tplvalues.merge" ( dict "values" ( list .annotations $.Values.ingress.annotations $.Values.additionalAnnotations ) "context" $ ) }}

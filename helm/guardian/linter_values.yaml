@@ -32,6 +32,11 @@ authorizationApi:
         name: "guardian-udm-secret"
         keyMapping:
           password: "udmDataAdapterPassword"
+  # We need to set the registry to null here to override the default value in values.yaml
+  # to make unit tests pass which expect null. Since the guardian-images don't exist in the
+  # global registry like other charts, we have to go this workaround.
+  image:
+    registry: null
 
 managementApi:
   config:
@@ -58,11 +63,16 @@ managementApi:
     guardianManagementLoggingStructured: "0"
     guardianManagementLoggingFormat: "<green>{time:YYYY-MM-DD HH:mm:ss.SSS ZZ}</green> | <level>{level}</level> | <level>{message}</level> | {extra}"
     guardianManagementBaseUrl: "http://guardian-management"
-  oauth:
-    auth:
-      clientSecret: "stub_secret"
-      existingSecret:
-        name: "guardian-keycloak-client-secret"
+  # oauth:
+  #   auth:
+  #     clientSecret: "stub_secret"
+  #     existingSecret:
+  #       name: "stub"
+  # We need to set the registry to null here to override the default value in values.yaml
+  # to make unit tests pass which expect null. Since the guardian-images don't exist in the
+  # global registry like other charts, we have to go this workaround.
+  image:
+    registry: null
 
 managementUi:
   config:
@@ -72,6 +82,11 @@ managementUi:
     viteKeycloakAuthenticationAdapterSsoUri: "http://localhost:8097"
     viteKeycloakAuthenticationAdapterRealm: "ucs"
     viteKeycloakAuthenticationAdapterClientId: "guardian-ui"
+  # We need to set the registry to null here to override the default value in values.yaml
+  # to make unit tests pass which expect null. Since the guardian-images don't exist in the
+  # global registry like other charts, we have to go this workaround.
+  image:
+    registry: null
 
 openPolicyAgent:
   config:
@@ -81,6 +96,11 @@ openPolicyAgent:
     opaPollingMinDelay: 10
     opaPollingMaxDelay: 15
     opaGuardianManagementUrl: "http://guardian-management-api/guardian/management"
+  # We need to set the registry to null here to override the default value in values.yaml
+  # to make unit tests pass which expect null. Since the guardian-images don't exist in the
+  # global registry like other charts, we have to go this workaround.
+  image:
+    registry: null
 
 provisioning:
   config:
@@ -111,10 +131,6 @@ postgresql:
       name: "postgresql-secret"
 
 extraSecrets:
-  - name: "guardian-keycloak-client-secret"
-    stringData:
-      clientSecret: "stub_client_secret"
-
   - name: "guardian-udm-secret"
     stringData:
       udmDataAdapterPassword: "password"

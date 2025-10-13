@@ -9,10 +9,11 @@ kind: Deployment
 metadata:
   name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
   labels:
-    {{- $commonLabels := include "common.labels.standard" . | fromYaml }}
-    {{- $uiLabels := dict "app.kubernetes.io/name" (printf "%s-management-ui" (include "common.names.fullname" .)) }}
-    {{- $mergedLabels := merge $uiLabels $commonLabels }}
-    {{- toYaml $mergedLabels | nindent 4 }}
+    {{- include "common.labels.standard" ( dict "customLabels" .Values.additionalLabels "context" . ) | nindent 4 }}
+  {{- include "nubus-common.annotations.render" ( dict
+    "values" ( list .Values.additionalAnnotations )
+    "context" . )
+    | nindent 2 }}
 spec:
   replicas: {{ .Values.managementUi.replicaCount }}
   selector:
@@ -52,10 +53,12 @@ spec:
       securityContext:
         {{- omit .Values.managementUi.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
-      {{- $imagePullSecrets := coalesce .Values.managementUi.image.imagePullSecrets .Values.global.imagePullSecrets }}
-      {{- if $imagePullSecrets }}
+      {{- if or .Values.imagePullSecrets .Values.global.imagePullSecrets }}
       imagePullSecrets:
-        {{- range $imagePullSecrets }}
+        {{- range .Values.global.imagePullSecrets }}
+        - name: "{{ . }}"
+        {{- end }}
+        {{- range .Values.imagePullSecrets }}
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
@@ -66,7 +69,7 @@ spec:
             {{- omit .Values.managementUi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
-          imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          imagePullPolicy: {{ coalesce .Values.managementUi.image.pullPolicy .Values.global.imagePullPolicy | quote }}
           resources:
             {{- toYaml .Values.managementUi.resources | nindent 12 }}
           env:
@@ -90,7 +93,7 @@ spec:
             {{- omit .Values.managementUi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           image: "{{ coalesce .Values.managementUi.image.registry .Values.global.imageRegistry }}/{{ .Values.managementUi.image.repository }}{{ if .Values.managementUi.image.sha256 }}@sha256:{{ .Values.managementUi.image.sha256 }}{{ else }}:{{ .Values.managementUi.image.tag }}{{ end }}"
-          imagePullPolicy: {{ coalesce .Values.managementUi.image.imagePullPolicy .Values.global.imagePullPolicy | quote }}
+          imagePullPolicy: {{ coalesce .Values.managementUi.image.pullPolicy .Values.global.imagePullPolicy | quote }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
