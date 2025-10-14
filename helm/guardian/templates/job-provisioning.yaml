@@ -71,7 +71,7 @@ spec:
           {{- include "common.tplvalues.render" (dict "value" .Values.provisioning.extraVolumeMounts "context" .) | nindent 10 }}
           {{- end }}
       containers:
-      - name: "keycloak-provisioning"
+      - name: "main"
         {{- if .Values.provisioning.containerSecurityContext.enabled }}
         securityContext:
           {{- omit .Values.provisioning.containerSecurityContext "enabled" | toYaml | nindent 10 }}
@@ -148,12 +148,12 @@ spec:
           - name: KEYCLOAK_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "keycloak-credentials" "context" .) | quote }}
-                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "password") }}
+                name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "keycloak-credentials" "context" .) }}
+                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "adminPassword") }}
           - name: GUARDIAN_MANAGEMENT_API_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
-                name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "defaultNameSuffix" "keycloak-client-secret" "context" .) | quote }}
+                name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "defaultNameSuffix" "keycloak-client-secret" "context" .) }}
                 key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret") }}
         {{- with .Values.provisioning.extraEnvVars }}
           {{- . | toYaml | nindent 10 }}
@@ -168,7 +168,7 @@ spec:
         volumeMounts:
           - mountPath: "/credentials/keycloak.secret"
             name: "keycloak-credentials-volume"
-            subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "password") }}
+            subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "adminPassword") }}
           - name: "temp-dir"
             mountPath: "/tmp"
           {{- if .Values.provisioning.extraVolumeMounts }}
@@ -189,7 +189,7 @@ spec:
       volumes:
         - name: "keycloak-credentials-volume"
           secret:
-            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "keycloak-credentials" "context" .) | quote }}
+            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "keycloak-credentials" "context" .) }}
         - name: "temp-dir"
           emptyDir:
             sizeLimit: "20Mi"

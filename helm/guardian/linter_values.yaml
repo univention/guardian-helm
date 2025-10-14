@@ -112,8 +112,9 @@ provisioning:
     admin: "kcadmin"
     auth:
       username: "stub_username"
+      password: "stub_password"
       existingSecret:
-        name: "guardian-provisioning-secret"
+        name: null
     connection:
       baseUrl: "keycloak"
       host: "keycloak"

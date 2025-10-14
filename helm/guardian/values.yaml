@@ -703,7 +703,7 @@ provisioning:
       existingSecret:
         name: null
         keyMapping:
-          password: null
+          adminPassword: null
     # -- Connection parameters.
     connection:
       # -- Keycloak host.

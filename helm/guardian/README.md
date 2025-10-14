@@ -2362,7 +2362,7 @@ null
     "auth": {
       "existingSecret": {
         "keyMapping": {
-          "password": null
+          "adminPassword": null
         },
         "name": null
       },
@@ -2457,7 +2457,7 @@ null
   "auth": {
     "existingSecret": {
       "keyMapping": {
-        "password": null
+        "adminPassword": null
       },
       "name": null
     },
@@ -2480,7 +2480,7 @@ null
 			<td><pre lang="json">
 {
   "keyMapping": {
-    "password": null
+    "adminPassword": null
   },
   "name": null
 }
