@@ -82,7 +82,7 @@ spec:
                   name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) | quote }}
                   key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password") }}
       containers:
-        - name: "management-api"
+        - name: "main"
           {{- if .Values.managementApi.containerSecurityContext.enabled }}
           securityContext:
             {{- omit .Values.managementApi.containerSecurityContext "enabled" | toYaml  | nindent 12 }}
@@ -130,7 +130,8 @@ spec:
             {{- toYaml .Values.managementApi.resources | nindent 12 }}
           volumeMounts:
             - name: "secrets"
-              mountPath: "/var/secrets"
+              mountPath: "/var/secrets/oauthAdapterM2mSecret"
+              subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret") }}
             - name: "bundles"
               mountPath: "/guardian_service_dir/bundle_server"
             - name: "tmp"
@@ -145,10 +146,7 @@ spec:
           emptyDir: {}
         - name: "secrets"
           secret:
-            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "defaultNameSuffix" "keycloak-client-secret" "context" .) | quote }}
-            items:
-              - key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret") }}
-                path: oauthAdapterM2mSecret
+            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "defaultNameSuffix" "keycloak-client-secret" "context" .) }}
         {{- if .Values.managementApi.extraVolumes }}
           {{- include "common.tplvalues.render" (dict "value" .Values.managementApi.extraVolumes  "context" .) | nindent 8 }}
         {{- end }}
