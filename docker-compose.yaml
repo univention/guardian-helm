@@ -5,7 +5,7 @@
 
 services:
   test-chart:
-    image: gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.27.0
+    image: gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.28.0
     working_dir: "/app/"
     command: pytest tests/chart
     profiles:

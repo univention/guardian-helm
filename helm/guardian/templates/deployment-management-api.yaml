@@ -79,8 +79,8 @@ spec:
             - name: "SQL_PERSISTENCE_ADAPTER__PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) | quote }}
-                  key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password") }}
+                  name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) }}
+                  key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password" "context" .) }}
       containers:
         - name: "main"
           {{- if .Values.managementApi.containerSecurityContext.enabled }}
@@ -96,8 +96,8 @@ spec:
             - name: "SQL_PERSISTENCE_ADAPTER__PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) | quote }}
-                  key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password") }}
+                  name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) }}
+                  key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password" "context" .) }}
           ports:
             {{- range $key, $value := .Values.managementApi.service.ports }}
             - name: {{ $key }}
@@ -131,7 +131,7 @@ spec:
           volumeMounts:
             - name: "secrets"
               mountPath: "/var/secrets/oauthAdapterM2mSecret"
-              subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret") }}
+              subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret" "context" .) }}
             - name: "bundles"
               mountPath: "/guardian_service_dir/bundle_server"
             - name: "tmp"

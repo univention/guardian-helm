@@ -149,12 +149,12 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "defaultNameSuffix" "keycloak-credentials" "context" .) }}
-                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "adminPassword") }}
+                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "adminPassword" "context" .) }}
           - name: GUARDIAN_MANAGEMENT_API_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
                 name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "defaultNameSuffix" "keycloak-client-secret" "context" .) }}
-                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret") }}
+                key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.managementApi.oauth.auth.existingSecret "key" "clientSecret" "context" .) }}
         {{- with .Values.provisioning.extraEnvVars }}
           {{- . | toYaml | nindent 10 }}
         {{- end }}
@@ -168,7 +168,7 @@ spec:
         volumeMounts:
           - mountPath: "/credentials/keycloak.secret"
             name: "keycloak-credentials-volume"
-            subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "adminPassword") }}
+            subPath: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.provisioning.keycloak.auth.existingSecret "key" "adminPassword" "context" .) }}
           - name: "temp-dir"
             mountPath: "/tmp"
           {{- if .Values.provisioning.extraVolumeMounts }}

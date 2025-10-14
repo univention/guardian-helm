@@ -31,7 +31,7 @@ This chart does install the Guardian Authorization API.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://artifacts.software-univention.de/nubus/charts | nubus-common | 0.27.0 |
+| oci://artifacts.software-univention.de/nubus/charts | nubus-common | 0.28.0 |
 
 ## Values
 

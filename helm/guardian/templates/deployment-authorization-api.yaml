@@ -129,9 +129,9 @@ spec:
             name: {{ printf "%s-udm-adapter-user" (include "common.names.fullname" .) }}
         - name: "secrets"
           secret:
-            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.authorizationApi.udm.auth.existingSecret "defaultNameSuffix" "udm-secret" "context" .) | quote }}
+            secretName: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.authorizationApi.udm.auth.existingSecret "defaultNameSuffix" "udm-secret" "context" .) }}
             items:
-              - key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.authorizationApi.udm.auth.existingSecret "key" "password") }}
+              - key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.authorizationApi.udm.auth.existingSecret "key" "password" "context" .) }}
                 path: udm-data-adapter-password
         {{- if .Values.authorizationApi.extraVolumes }}
           {{- include "common.tplvalues.render" (dict "value" .Values.authorizationApi.extraVolumes  "context" .) | nindent 8 }}
