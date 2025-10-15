@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.23.2](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.1...v0.23.2) (2025-10-15)
+
+
+### Bug Fixes
+
+* bump helm test version 0.27.0 / introduce and conform with common behavior tests ([a09ac11](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/a09ac11a2898482ba7e2a02a37da0ddfa12ad12b)), closes [univention/dev/internal/team-nubus#1398](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1398)
+* use correct secret for keycloak provisioning ([0778b52](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/0778b52701659ebba8f1e81d1dea208a97082afc)), closes [univention/dev/internal/team-nubus#1398](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1398)
+
 ## [0.23.1](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.0...v0.23.1) (2025-10-15)
 
 
