@@ -105,8 +105,8 @@ This chart does install the Guardian Authorization API.
   "fullnameOverride": "",
   "image": {
     "pullPolicy": null,
-    "registry": "docker.software-univention.de",
-    "repository": "guardian-authorization-api-authorization-api",
+    "registry": "artifacts.software-univention.de",
+    "repository": "nubus/images/guardian-authorization-api-authorization-api",
     "sha256": null,
     "tag": "3.0.0@sha256:d2849b25ddd0322e1bef6c1e7b16f59fb63f35b0924f99f200bc22de834d9a2d"
   },
@@ -958,8 +958,8 @@ true
   "fullnameOverride": "",
   "image": {
     "pullPolicy": null,
-    "registry": "docker.software-univention.de",
-    "repository": "guardian-management-api-management-api",
+    "registry": "artifacts.software-univention.de",
+    "repository": "nubus/images/guardian-management-api-management-api",
     "sha256": null,
     "tag": "3.0.0@sha256:f3c9af13d50632a7e2232f675408b5559fb9ca314b7babf367cf4db80b62ebea"
   },
@@ -1469,7 +1469,7 @@ null
 			<td>managementUi.image.registry</td>
 			<td>string</td>
 			<td><pre lang="json">
-"docker.software-univention.de"
+"artifacts.software-univention.de"
 </pre>
 </td>
 			<td></td>
@@ -1478,7 +1478,7 @@ null
 			<td>managementUi.image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"guardian-management-ui-management-ui"
+"nubus/images/guardian-management-ui-management-ui"
 </pre>
 </td>
 			<td></td>
@@ -1964,7 +1964,7 @@ null
 			<td>openPolicyAgent.image.registry</td>
 			<td>string</td>
 			<td><pre lang="json">
-"docker.software-univention.de"
+"artifacts.software-univention.de"
 </pre>
 </td>
 			<td></td>
@@ -1973,7 +1973,7 @@ null
 			<td>openPolicyAgent.image.repository</td>
 			<td>string</td>
 			<td><pre lang="json">
-"guardian-authorization-api-opa"
+"nubus/images/guardian-authorization-api-opa"
 </pre>
 </td>
 			<td></td>
