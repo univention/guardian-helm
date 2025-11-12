@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.11](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.10...v0.23.11) (2025-11-12)
+
+
+### Bug Fixes
+
+* use harbor images ([0dba755](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/0dba755a0d56d842f05af78b19760950040b127f)), closes [univention/dev/internal/team-nubus#1466](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1466)
+
 ## [0.23.10](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.9...v0.23.10) (2025-11-12)
 
 
