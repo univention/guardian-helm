@@ -386,7 +386,6 @@ managementApi:
   oauth:
     auth:
       # -- Machine-to-machine secret. Either this value or an existing Secret has to be specified.
-      # The specification of the secret value directly is not supported currently
       clientSecret: null
       existingSecret:
         # -- The reference to the secret containing `oauthAdapterM2mSecret` secret.

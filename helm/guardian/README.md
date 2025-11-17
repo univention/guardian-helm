@@ -1225,7 +1225,7 @@ null
 null
 </pre>
 </td>
-			<td>Machine-to-machine secret. Either this value or an existing Secret has to be specified. The specification of the secret value directly is not supported currently</td>
+			<td>Machine-to-machine secret. Either this value or an existing Secret has to be specified.</td>
 		</tr>
 		<tr>
 			<td>managementApi.oauth.auth.existingSecret.keyMapping</td>
