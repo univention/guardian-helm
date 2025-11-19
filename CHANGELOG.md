@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.14](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.13...v0.23.14) (2025-11-19)
+
+
+### Bug Fixes
+
+* **helm:** support added for clientSecret value ([59138cb](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/59138cb783908d8d6c28186187985a72fa9f41ac)), closes [univention/dev/internal/team-nubus#1523](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1523)
+
 ## [0.23.13](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.12...v0.23.13) (2025-11-19)
 
 
