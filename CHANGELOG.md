@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.16](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.15...v0.23.16) (2025-11-21)
+
+
+### Bug Fixes
+
+* bump images in values ([23880ae](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/23880ae4cea0ad5dfee448a90d4b1a26904a9bd3)), closes [univention/dev/internal/team-nubus#1476](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1476)
+
 ## [0.23.15](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.14...v0.23.15) (2025-11-20)
 
 
