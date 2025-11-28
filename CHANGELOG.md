@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.18](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.17...v0.23.18) (2025-11-28)
+
+
+### Bug Fixes
+
+* bump guardian management ui ([a3ecd3b](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/a3ecd3bd2829b2be3d0ec2437aa47c710c6e90dc)), closes [univention/dev/tooling/vulnerability-management#1](https://git.knut.univention.de/univention/dev/tooling/vulnerability-management/issues/1)
+
 ## [0.23.17](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.16...v0.23.17) (2025-11-28)
 
 
