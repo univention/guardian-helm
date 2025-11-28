@@ -1496,7 +1496,7 @@ null
 			<td>managementUi.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"3.0.0@sha256:b90d496a323353c71e29938a6b1980655fb3aefe53bab455da865e3202b7f0f8"
+"3.0.0-sbom@sha256:df954a880b3ac604e2ac6237797902bf28e37bbd38b4aac51162ac6dc8afdd34"
 </pre>
 </td>
 			<td></td>
