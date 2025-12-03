@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.21](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.20...v0.23.21) (2025-12-03)
+
+
+### Bug Fixes
+
+* bump image to errata 298 ([579a3e3](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/579a3e37ad68bcc2dae84f5edbabbc8952d8bcd6)), closes [univention/dev/internal/team-nubus#1543](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1543)
+
 ## [0.23.20](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.19...v0.23.20) (2025-12-03)
 
 
