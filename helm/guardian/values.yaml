@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
 ---
-
 ## Global values
 global:
   affinity: {}
@@ -134,16 +133,16 @@ ingress:
 # -- Extra ingress configuration
 extraIngresses: []
 # example:
-  # - name: custom
-  #   host: ""
-  #   paths:
-  #     - pathType: Exact
-  #       path: /custom
-  #   ingressClassName: ""
-  #   annotations: {}
-  #   tls:
-  #     enabled: true
-  #     secretName: ""
+# - name: custom
+#   host: ""
+#   paths:
+#     - pathType: Exact
+#       path: /custom
+#   ingressClassName: ""
+#   annotations: {}
+#   tls:
+#     enabled: true
+#     secretName: ""
 
 #####################
 # AUTHORIZATION API #
@@ -187,6 +186,13 @@ authorizationApi:
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
+  # -- Array with extra environment variables to add to containers.
+  #
+  # extraEnvVars:
+  #   - name: FOO
+  #     value: "bar"
+  extraEnvVars: []
+
   config:
     # -- Directory that Guardian will use to save the bundles and configuration.
     # Example: /guardian_service_dir
@@ -209,7 +215,7 @@ authorizationApi:
     isUniventionAppCenter: 0
     # -- The URL of the UDM REST API for data queries.
     # Example: "http://udm-rest-api/univention/udm"
-    udmDataAdapterUrl: ''
+    udmDataAdapterUrl: ""
     # -- File where the UDM username will be stored.
     # Example: "/var/secrets/udmDataAdapterUsername"
     udmDataAdapterUsernameFile: "/var/guardian/udm-data-adapter-username"
@@ -292,7 +298,6 @@ authorizationApi:
       storageClass: ""
       size: "1Gi"
 
-
   ############################
   # END OF AUTHORIZATION API #
   ############################
@@ -338,6 +343,13 @@ managementApi:
     tag: "3.0.0@sha256:f3c9af13d50632a7e2232f675408b5559fb9ca314b7babf367cf4db80b62ebea"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
+
+  # -- Array with extra environment variables to add to containers.
+  #
+  # extraEnvVars:
+  #   - name: FOO
+  #     value: "bar"
+  extraEnvVars: []
 
   config:
     # -- Directory that Guardian will use to save the bundles and configuration.
@@ -485,6 +497,13 @@ managementUi:
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
+  # -- Array with extra environment variables to add to containers.
+  #
+  # extraEnvVars:
+  #   - name: FOO
+  #     value: "bar"
+  extraEnvVars: []
+
   config:
     # -- Configuration for the Nginx server serving the guardian management ui built files.
     nginx:
@@ -554,7 +573,6 @@ managementUi:
 # END OF MANAGEMENT UI #
 ########################
 
-
 #####################
 # OPEN POLICY AGENT #
 #####################
@@ -577,7 +595,7 @@ openPolicyAgent:
     allowPrivilegeEscalation: false
     capabilities:
       drop:
-      - ALL
+        - ALL
     privileged: false
     readOnlyRootFilesystem: true
     runAsGroup: 1000
@@ -595,6 +613,13 @@ openPolicyAgent:
     tag: "3.0.0@sha256:85539fb7854fac6ba1b874d639188ee0a33743dc16dad0113c54763f2984fc9d"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
+
+  # -- Array with extra environment variables to add to containers.
+  #
+  # extraEnvVars:
+  #   - name: FOO
+  #     value: "bar"
+  extraEnvVars: []
 
   config:
     isUniventionAppCenter: 0
@@ -649,7 +674,6 @@ openPolicyAgent:
 # END OF OPEN POLICY AGENT #
 ############################
 
-
 ################
 # provisioning #
 ################
@@ -689,6 +713,13 @@ provisioning:
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
+  # -- Array with extra environment variables to add to containers.
+  #
+  # extraEnvVars:
+  #   - name: FOO
+  #     value: "bar"
+  extraEnvVars: []
+
   # -- Keycloak specific settings.
   keycloak:
     # -- Keycloak realm.
@@ -725,7 +756,7 @@ provisioning:
     enabled: true
     capabilities:
       drop:
-      - ALL
+        - ALL
     allowPrivilegeEscalation: false
     privileged: false
     readOnlyRootFilesystem: true
@@ -739,7 +770,6 @@ provisioning:
 #######################
 # END OF PROVISIONING #
 #######################
-
 
 ##############
 # POSTGRESQL #
@@ -817,6 +847,3 @@ serviceAccount:
   automountServiceAccountToken: false
   # -- Additional custom labels for the ServiceAccount.
   labels: {}
-
-
-...

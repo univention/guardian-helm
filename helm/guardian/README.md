@@ -102,6 +102,7 @@ This chart does install the Guardian Authorization API.
     }
   },
   "environment": {},
+  "extraEnvVars": [],
   "fullnameOverride": "",
   "image": {
     "pullPolicy": null,
@@ -310,6 +311,15 @@ true
 </pre>
 </td>
 			<td>File where the UDM username will be stored. Example: "/var/secrets/udmDataAdapterUsername"</td>
+		</tr>
+		<tr>
+			<td>authorizationApi.extraEnvVars</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Array with extra environment variables to add to containers.  extraEnvVars:   - name: FOO     value: "bar"</td>
 		</tr>
 		<tr>
 			<td>authorizationApi.image.sha256</td>
@@ -955,6 +965,7 @@ true
     }
   },
   "environment": {},
+  "extraEnvVars": [],
   "fullnameOverride": "",
   "image": {
     "pullPolicy": null,
@@ -1210,6 +1221,15 @@ true
 			<td>Dialect of the database.</td>
 		</tr>
 		<tr>
+			<td>managementApi.extraEnvVars</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Array with extra environment variables to add to containers.  extraEnvVars:   - name: FOO     value: "bar"</td>
+		</tr>
+		<tr>
 			<td>managementApi.image.sha256</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -1446,6 +1466,15 @@ true
 </pre>
 </td>
 			<td></td>
+		</tr>
+		<tr>
+			<td>managementUi.extraEnvVars</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Array with extra environment variables to add to containers.  extraEnvVars:   - name: FOO     value: "bar"</td>
 		</tr>
 		<tr>
 			<td>managementUi.fullnameOverride</td>
@@ -1943,6 +1972,15 @@ true
 			<td></td>
 		</tr>
 		<tr>
+			<td>openPolicyAgent.extraEnvVars</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Array with extra environment variables to add to containers.  extraEnvVars:   - name: FOO     value: "bar"</td>
+		</tr>
+		<tr>
 			<td>openPolicyAgent.fullnameOverride</td>
 			<td>string</td>
 			<td><pre lang="json">
@@ -2352,6 +2390,7 @@ null
     }
   },
   "enabled": true,
+  "extraEnvVars": [],
   "image": {
     "registry": null,
     "repository": "nubus/images/wait-for-dependency",
@@ -2439,6 +2478,15 @@ true
 </pre>
 </td>
 			<td>Whether to run the provisioning job to create the Guardian clients in Keycloak or not.</td>
+		</tr>
+		<tr>
+			<td>provisioning.extraEnvVars</td>
+			<td>list</td>
+			<td><pre lang="json">
+[]
+</pre>
+</td>
+			<td>Array with extra environment variables to add to containers.  extraEnvVars:   - name: FOO     value: "bar"</td>
 		</tr>
 		<tr>
 			<td>provisioning.image.sha256</td>

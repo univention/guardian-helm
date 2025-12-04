@@ -2,7 +2,6 @@
 # SPDX-FileCopyrightText: 2024 Univention GmbH
 
 ---
-
 include:
   - project: "univention/dev/nubus-for-k8s/common-ci"
     ref: "v1.53.1"
@@ -22,7 +21,7 @@ include:
 
 test-chart-unit:
   stage: test
-  image: "gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.28.0"
+  image: "gitregistry.knut.univention.de/univention/dev/nubus-for-k8s/common-helm/testrunner:0.29.0"
   needs: []
   script:
     - helm dep build helm/guardian
@@ -129,4 +128,3 @@ container-release-attestation:
           ${image_name}@${image_digest}
 
       done < "${ATTESTATION_IMAGE_LIST_FILE}"
-...

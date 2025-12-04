@@ -75,6 +75,9 @@ spec:
           env:
             - name: "SKIP_CONFIG_GENERATION"
               value: "TRUE"
+            {{- with .Values.managementUi.extraEnvVars }}
+              {{- . | toYaml | nindent 12 }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
@@ -97,6 +100,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-management-ui" (include "common.names.fullname" .) }}
+          {{- with .Values.managementUi.extraEnvVars }}
+          env:
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: "app-config"
               mountPath: "/app"

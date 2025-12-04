@@ -73,6 +73,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-open-policy-agent" (include "common.names.fullname" .) }}
+          {{- with .Values.openPolicyAgent.extraEnvVars }}
+          env:
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
           ports:
             {{- range $key, $value := .Values.openPolicyAgent.service.ports }}
             - name: {{ $key }}

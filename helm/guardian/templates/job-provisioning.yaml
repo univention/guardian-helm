@@ -56,6 +56,7 @@ spec:
           - configMapRef:
               name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
         {{- with .Values.provisioning.extraEnvVars }}
+        env:
           {{- . | toYaml | nindent 10 }}
         {{- end }}
         command: ["wait-for-keycloak.py"]

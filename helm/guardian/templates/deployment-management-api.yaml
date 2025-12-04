@@ -81,6 +81,9 @@ spec:
                 secretKeyRef:
                   name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) }}
                   key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password" "context" .) }}
+          {{- with .Values.managementApi.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
       containers:
         - name: "main"
           {{- if .Values.managementApi.containerSecurityContext.enabled }}
@@ -98,6 +101,9 @@ spec:
                 secretKeyRef:
                   name: {{ include "nubus-common.secrets.name" (dict "existingSecret" .Values.postgresql.auth.existingSecret "defaultNameSuffix" "management-api-postgresql-credentials" "context" .) }}
                   key: {{ include "nubus-common.secrets.key" (dict "existingSecret" .Values.postgresql.auth.existingSecret "key" "password" "context" .) }}
+          {{- with .Values.managementApi.extraEnvVars }}
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
           ports:
             {{- range $key, $value := .Values.managementApi.service.ports }}
             - name: {{ $key }}
