@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.21...v0.24.0) (2025-12-05)
+
+
+### Features
+
+* **helm:** Add component-specific extraEnvVars support ([05cb710](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/05cb710fcddfce1c83faf7ccc50d36d7f2a65017)), closes [univention/dev/internal/team-nubus#977](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/977)
+
 ## [0.23.21](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.23.20...v0.23.21) (2025-12-03)
 
 
