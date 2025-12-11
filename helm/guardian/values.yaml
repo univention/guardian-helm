@@ -182,7 +182,7 @@ authorizationApi:
 
     registry: "artifacts.software-univention.de"
     repository: "nubus/images/guardian-authorization-api-authorization-api"
-    tag: "3.0.0@sha256:d2849b25ddd0322e1bef6c1e7b16f59fb63f35b0924f99f200bc22de834d9a2d"
+    tag: "3.0.2@sha256:b73a59253a6a05c3a56eec005c380e70479dddcd8e2c288d14614c57dc65f4d4"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -340,7 +340,7 @@ managementApi:
 
     registry: "artifacts.software-univention.de"
     repository: "nubus/images/guardian-management-api-management-api"
-    tag: "3.0.0@sha256:f3c9af13d50632a7e2232f675408b5559fb9ca314b7babf367cf4db80b62ebea"
+    tag: "3.0.2@sha256:a1ab01e0dfc7893007b5ecb84916bd5a9e8438aae4acdd183cc8e82726da59b5"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -493,7 +493,7 @@ managementUi:
 
     registry: "artifacts.software-univention.de"
     repository: "nubus/images/guardian-management-ui-management-ui"
-    tag: "3.0.0-sbom@sha256:df954a880b3ac604e2ac6237797902bf28e37bbd38b4aac51162ac6dc8afdd34"
+    tag: "3.0.2@sha256:14beb8872829a07c4c14072eed0f71e99a752df94bbbb522d12dcacb2168488f"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
@@ -610,7 +610,7 @@ openPolicyAgent:
 
     registry: "artifacts.software-univention.de"
     repository: "nubus/images/guardian-authorization-api-opa"
-    tag: "3.0.0@sha256:85539fb7854fac6ba1b874d639188ee0a33743dc16dad0113c54763f2984fc9d"
+    tag: "3.0.2@sha256:99cfd5ada86ddc7cae13ddabab861a8111800b64789849740947a71b42fe1e95"
     # -- Define image sha256 as an alternative to `tag`
     sha256: null
 
