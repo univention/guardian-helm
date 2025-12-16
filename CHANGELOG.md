@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.3](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.2...v0.24.3) (2025-12-16)
+
+
+### Bug Fixes
+
+* Subdependencies security updates ([b598177](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/b598177db2c7ea33e95b60f4561793c41e9dbbc0)), closes [univention/dev/internal/team-nubus#1541](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1541)
+
 ## [0.24.2](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.1...v0.24.2) (2025-12-16)
 
 
