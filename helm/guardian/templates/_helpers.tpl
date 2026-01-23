@@ -1,5 +1,5 @@
 {{- /*
-SPDX-FileCopyrightText: 2024 Univention GmbH
+SPDX-FileCopyrightText: 2024-2026 Univention GmbH
 SPDX-License-Identifier: AGPL-3.0-only
 */}}
 
@@ -13,9 +13,9 @@ If the value .Values.global.nubusDeployment equates to true, the defined templat
 {{- if .Values.authorizationApi.config.udmDataAdapterUrl -}}
 {{- .Values.authorizationApi.config.udmDataAdapterUrl -}}
 {{- else if .Values.global.nubusDeployment -}}
-{{- printf "http://%s-udm-rest-api:9979/udm/" .Release.Name -}}
+{{- printf "http://%s-udm-rest-api:9979/univention/udm/" .Release.Name -}}
 {{- else -}}
-{{- printf "http://udm-rest-api:9979/udm/" -}}
+{{- printf "http://udm-rest-api:9979/univention/udm/" -}}
 {{- end -}}
 {{- end -}}
 
