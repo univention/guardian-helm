@@ -32,10 +32,9 @@ lint-pre-commit:
     # Compose lint would fail without the referenced env files
     - helm repo add bitnami https://charts.bitnami.com/bitnami
 
-# TODO: Deactivate until sonarqube is properly set up
-# sonarqube:
-#   extends: .sonarqube
-#   needs: []
+sonarqube:
+  extends: .sonarqube
+  needs: []
 
 # ===================================================================================================
 # WORKAROUND
