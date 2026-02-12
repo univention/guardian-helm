@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.10](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.9...v0.24.10) (2026-02-12)
+
+
+### Bug Fixes
+
+* Use UDM root_path ([d131911](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/d131911727896f1869831323d88b3d9544d2d345)), closes [univention/dev/internal/team-nubus#1553](https://git.knut.univention.de/univention/dev/internal/team-nubus/issues/1553)
+
 ## [0.24.9](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.8...v0.24.9) (2026-02-11)
 
 
