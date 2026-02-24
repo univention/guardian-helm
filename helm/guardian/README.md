@@ -2423,7 +2423,7 @@ null
     "pullPolicy": null,
     "registry": null,
     "repository": "nubus/images/keycloak-bootstrap",
-    "tag": "0.19.18@sha256:78260a633dbc91dafbcdd5b310b93d34cb209b8b9b91eec7df037ecca22bd756"
+    "tag": "0.21.1@sha256:8d69f1652dbcdd671e698d43fce47d72045c29885a61bf4ba722846e85d8d702"
   },
   "resources": {
     "limits": {
