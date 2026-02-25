@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.11](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.10...v0.24.11) (2026-02-25)
+
+
+### Bug Fixes
+
+* **deps:** Update nubus/images/keycloak-bootstrap Docker tag to v0.21.1 ([b4aac84](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/b4aac8446fe92ad3646452883e1932e1384035b6)), closes [#0](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/issues/0)
+
 ## [0.24.10](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.9...v0.24.10) (2026-02-12)
 
 
