@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.24.12](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.11...v0.24.12) (2026-02-26)
+
+
+### Bug Fixes
+
+* bump guardian images to 3.0.5 ([6e42e80](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/6e42e80a40d3644724fe143f00571292375271d0)), closes [univention/dev/internal/team-horizon#9](https://git.knut.univention.de/univention/dev/internal/team-horizon/issues/9)
+* bump wait-for-dependency ([cf29125](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/commit/cf291255891a84a84e2a8b66f8b02a25dd11576a)), closes [univention/dev/internal/team-horizon#9](https://git.knut.univention.de/univention/dev/internal/team-horizon/issues/9)
+
 ## [0.24.11](https://git.knut.univention.de/univention/dev/nubus-for-k8s/guardian-helm/compare/v0.24.10...v0.24.11) (2026-02-25)
 
 
