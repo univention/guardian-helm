@@ -2395,7 +2395,7 @@ null
     "registry": null,
     "repository": "nubus/images/wait-for-dependency",
     "sha256": null,
-    "tag": "0.36.8@sha256:59d24e468825d577d854a4abfc2803d4591ff876e37a0144a2592e1a0b56178a"
+    "tag": "0.36.9@sha256:6f1c6ff90e295773b5af0ba64db2223f1f9b52d08e39d611ca061315ec5ce079"
   },
   "keycloak": {
     "auth": {
@@ -2423,7 +2423,7 @@ null
     "pullPolicy": null,
     "registry": null,
     "repository": "nubus/images/keycloak-bootstrap",
-    "tag": "0.24.0@sha256:6af5c41078c27d45687d9714cae8776c0ab94af580919b442bf37556001a048c"
+    "tag": "0.25.0@sha256:1cbd9f7ca94c12485e13b639dee0244fec9cb72352475908561158d3fe451828"
   },
   "resources": {
     "limits": {
