@@ -63,6 +63,26 @@ spec:
         - name: "{{ . }}"
         {{- end }}
       {{- end }}
+      {{- if .Values.provisioning.enabled }}
+      initContainers:
+        - name: "wait-for-keycloak"
+          image: "{{ coalesce .Values.provisioning.image.registry .Values.global.imageRegistry }}/{{ .Values.provisioning.image.repository }}{{ if .Values.provisioning.image.sha256 }}@sha256:{{ .Values.provisioning.image.sha256 }}{{ else }}:{{ .Values.provisioning.image.tag }}{{ end }}"
+          imagePullPolicy: {{ coalesce .Values.provisioning.image.pullPolicy .Values.global.imagePullPolicy | quote }}
+          {{- if .Values.authorizationApi.containerSecurityContext.enabled }}
+          securityContext:
+            {{- omit .Values.authorizationApi.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          command: ["wait-for-keycloak.py"]
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-provisioning-init" (include "common.names.fullname" .) }}
+          {{- with .Values.authorizationApi.extraEnvVars}}
+          env:
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.provisioning.resources | nindent 12 }}
+      {{- end }}
       containers:
         - name: "authorization-api"
           {{- if .Values.authorizationApi.containerSecurityContext.enabled }}
