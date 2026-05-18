@@ -109,7 +109,7 @@ This chart does install the Guardian Authorization API.
     "registry": "artifacts.software-univention.de",
     "repository": "nubus/images/guardian-authorization-api-authorization-api",
     "sha256": null,
-    "tag": "3.0.8@sha256:05252b9f093fd4a10d5d2ecdab8bb56831d0531418efb09366be79f3d17bf69f"
+    "tag": "3.0.9@sha256:0feaacb7ee506797ee90084ea23a7068d09087da96169ea2193c0a1d5d732f28"
   },
   "nameOverride": "",
   "nodeSelector": {},
@@ -972,7 +972,7 @@ true
     "registry": "artifacts.software-univention.de",
     "repository": "nubus/images/guardian-management-api-management-api",
     "sha256": null,
-    "tag": "3.0.8@sha256:923bde303da65a4576f069c95dfed523cb21edf5b25f35c8211565a029196ac1"
+    "tag": "3.0.9@sha256:482c7e6c20a5b13478e951a313f7eae1b0a070af13103f807e9fa9fbaa2c35fa"
   },
   "nameOverride": "",
   "nodeSelector": {},
@@ -1525,7 +1525,7 @@ null
 			<td>managementUi.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"3.0.8@sha256:544e6988d927124e545be5c85824c369e8857d5d9ebfb97f099c6f3df52808ac"
+"3.0.9@sha256:4ac4f1181d95f1c49cd2acb1745b8082e7b6a2650ffcd13c040a8bece652d65b"
 </pre>
 </td>
 			<td></td>
@@ -2029,7 +2029,7 @@ null
 			<td>openPolicyAgent.image.tag</td>
 			<td>string</td>
 			<td><pre lang="json">
-"3.0.8@sha256:cd137baebdb1d190e57834a82d76dc60a4ca2b09ba466761a5f91f5855920f70"
+"3.0.9@sha256:31c3a81e0e10e9a3873210fc4119965a192590899196a9ae049f5c806109c2cf"
 </pre>
 </td>
 			<td></td>
